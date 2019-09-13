@@ -31,42 +31,43 @@ public class DrinksController {
     var delegate: DrinkProtocol?
     
     //Fetch data from given API end point based on list parameter passed in (set by user tab bar item selected)
-    func fetchDrinks(list: String) {
+    func fetchDrinks(list: String, _ completion: @escaping (Error?) -> Void)  {
         
         //Create URL object
         let url = URL(string: baseURLString+apiKey)?.appendingPathComponent(list)
         print("API endpoint: \(String(describing: url))")
         
-        //ensure urlObject is not nil nor has encountered an error
-        guard url != nil else {
-            print("Couldn't create Url object")
-            return
-        }
-        
-        let urlSession = URLSession.shared
-        let dataTask = urlSession.dataTask(with: url!) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
             
             if error == nil && data != nil {
                 
                 do {
                     let decoder = JSONDecoder()
-                    let jsonResults = try decoder.decode(Drinks.self, from: data!)
-                    let drinks = jsonResults.drinks!
+                    let jsonDrinks = try decoder.decode(Drinks.self, from: data!)
+                    let drinks = jsonDrinks.drinks!
                     print("Drinks list succesfully fetched with content: \(drinks)")
                     
-                    //Pass results back to meain thread / ViewController via delegate property
+                    //Pass results back to meain thread / ViewController
+                    //via delegate property
                     DispatchQueue.main.async {
                         self.delegate?.jsonFetched(drinks)
                     }
-                
+                    
+                    //via static property
+//                  ViewController.drinks2 = drinks
+                    
                 //catch and print errors to console
                 } catch {
                     print("Couldn't decode JSON data with error: \(error.localizedDescription)")
+                    completion(error)
                     return
                 }
             }
+            
         }
-        dataTask.resume()
+        
+        task.resume()
+      
     }
     
     //Fetch drink images
@@ -84,7 +85,6 @@ public class DrinksController {
                     completion(nil)
                 }
             }
-            
             task.resume()
         }
     }

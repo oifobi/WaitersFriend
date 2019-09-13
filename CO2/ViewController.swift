@@ -24,11 +24,11 @@ class ViewController: UITableViewController, DrinkProtocol {
         self.drinks = drinks
         tableView.reloadData()
         print("protocol / delegate pattern working. Drink fetched")
-        
     }
     
     //property to store drinks
     var drinks: [Drink]?
+//    static var drinks2: [Drink]? //ViewController.drinks2
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,37 +47,64 @@ class ViewController: UITableViewController, DrinkProtocol {
     @objc func fireFetchDrinks() {
     
         //trigger fetch of JSON data from reemote server
-        let list: String
+        var list = String()
+        var title = String()
         
         switch navigationController?.tabBarItem.tag {
         
         //fetch popular
         case 0:
             list = DrinksController.popular
-            DrinksController.shared.fetchDrinks(list: list)
-            title = "Popular Drinks"
-        
+            title = "Top Rated"
+            
         //fetch recent
         case 1:
             list = DrinksController.recent
-            DrinksController.shared.fetchDrinks(list: list)
-            title = "Recent Drinks"
-         
+            title = "Recents"
+            
         //fetch random
         case 2:
             list = DrinksController.random
-            DrinksController.shared.fetchDrinks(list: list)
-            title = "Featured Drink"
+            title = "Featured"
             
         default:
             break
         }
+        
+        //fire fetch drinks list method
+        DrinksController.shared.fetchDrinks(list: list) { (error) in
+        
+            if let error = error {
+                self.showErrorAlert(error)
+            
+            //Display VC title
+            } else {
+                DispatchQueue.main.async {
+                    self.title = title
+                }
+            }
+        }
+        
+    }
+    
+    func showErrorAlert(_ error: Error) {
+        
+        let ac = UIAlertController(title: "Error!", message: "\(error.localizedDescription)", preferredStyle: .alert)
+        
+        ac.addAction(UIAlertAction(title: "Try again?", style: .default, handler: {
+            action in self.fireFetchDrinks()
+        }))
+        ac.addAction(UIAlertAction(title: "Cancel", style: .default))
+        
+        DispatchQueue.main.async {
+            self.present(ac, animated: true)
+        }
     }
 
     // MARK: - Table view data source
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        return 1
-//    }
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -95,27 +122,26 @@ class ViewController: UITableViewController, DrinkProtocol {
         
             //set text of cell labels
             cell.titleLabel.text = drink.name
-            cell.subtitleLabel.text = drink.classification
+            cell.subtitleLabel.text = drink.ingredient1
             
             //Fetch and set drink image
             DrinksController.shared.fetchDrinkImage(from: drink.imageURL!) { (fetchedImage) in
-                
                 guard let image = fetchedImage else { return }
                 
                 //Update cell image to fecthedImage via main thread
                 DispatchQueue.main.async {
-                    
+
                     //Ensure wrong image isn't inserted into a recycled cell
                     if let currentIndexPath = self.tableView.indexPath(for: cell),
-                        
+
                         //If current cell index and table index don't match, exit method
                         currentIndexPath != indexPath {
                         return
                     }
-                    
+
                     //Set cell image
                     cell.drinkImageView?.image = image
-                    
+
                     //Update cell layout to accommodate image
                     cell.setNeedsLayout()
                 }
@@ -124,50 +150,22 @@ class ViewController: UITableViewController, DrinkProtocol {
         
         return cell
     }
- 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
+    
     // MARK: - Navigation
+    //Set and push selected cell data to DetailVC
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        // Get the new view controller using segue.destination
+        if segue.identifier == "DrinksVCtoDrinkDetailVC" {
+            let vc = segue.destination as! DrinkDetailsVC
+            let drink = tableView.indexPathForSelectedRow!.row
+            vc.drink = drinks?[drink]
+        }
+     }
+ 
+    
+    
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
 
 }

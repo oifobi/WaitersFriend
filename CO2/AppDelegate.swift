@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             tabBarController.viewControllers?.append(vc)
         }
         
-        //Random items
+        //Random item
         if let tabBarController = window?.rootViewController as? UITabBarController {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "NavigationController")
