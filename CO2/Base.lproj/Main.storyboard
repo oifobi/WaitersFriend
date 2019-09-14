@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Drinks Table View Controller-->
         <scene sceneID="9MY-ru-oQY">
             <objects>
-                <tableViewController id="2j6-AA-q3l" customClass="ViewController" customModule="CO2" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="2j6-AA-q3l" customClass="DrinksTableViewController" customModule="CO2" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="8ky-0K-fwW">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="672"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -36,18 +36,21 @@
                                             <rect key="frame" x="10" y="0.0" width="291" height="74.666666666666671"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Eh-XZ-dnh">
-                                                    <rect key="frame" x="0.0" y="0.0" width="291" height="50"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="291" height="36"/>
                                                     <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UFl-il-9hJ">
-                                                    <rect key="frame" x="0.0" y="53" width="291" height="21.666666666666671"/>
+                                                    <rect key="frame" x="0.0" y="39" width="291" height="35.666666666666657"/>
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="1Eh-XZ-dnh" firstAttribute="height" secondItem="UFl-il-9hJ" secondAttribute="height" id="Ohk-Re-q5o"/>
+                                            </constraints>
                                         </stackView>
                                     </subviews>
                                     <constraints>
@@ -64,7 +67,7 @@
                                     <outlet property="drinkImageView" destination="Wo4-iG-Pfg" id="XTM-ix-5nr"/>
                                     <outlet property="subtitleLabel" destination="UFl-il-9hJ" id="6A5-e7-y5N"/>
                                     <outlet property="titleLabel" destination="1Eh-XZ-dnh" id="4IY-6L-hYs"/>
-                                    <segue destination="rJa-FV-Fid" kind="show" identifier="DrinksVCtoDrinkDetailVC" id="end-DJ-lDK"/>
+                                    <segue destination="rJa-FV-Fid" kind="show" identifier="TableVCToDrinkDetailsVC" id="evS-SR-87Y"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -77,21 +80,21 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kee-sB-3DZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2139" y="156"/>
+            <point key="canvasLocation" x="2142" y="148"/>
         </scene>
-        <!--Drink DetailsVC-->
+        <!--Drink Details View Controller-->
         <scene sceneID="fcU-Rd-M4A">
             <objects>
-                <viewController id="rJa-FV-Fid" customClass="DrinkDetailsVC" customModule="CO2" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DrinkDetailsVC" id="rJa-FV-Fid" customClass="DrinkDetailsViewController" customModule="CO2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pMF-p5-Pqd">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="672"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mq7-4N-WKi">
-                                <rect key="frame" x="0.0" y="20" width="414" height="296.66666666666669"/>
+                                <rect key="frame" x="0.0" y="20" width="414" height="321"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Iog-uk-yfE">
-                                <rect key="frame" x="10" y="326.66666666666674" width="394" height="296.33333333333326"/>
+                                <rect key="frame" x="10" y="351" width="394" height="321"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="yl1-Ec-cB5">
                                         <rect key="frame" x="0.0" y="0.0" width="394" height="18"/>
@@ -114,7 +117,7 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="bhV-ec-qr7">
-                                        <rect key="frame" x="0.0" y="28" width="394" height="268.33333333333331"/>
+                                        <rect key="frame" x="0.0" y="28" width="394" height="293"/>
                                     </stackView>
                                 </subviews>
                                 <constraints>
@@ -140,18 +143,19 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="7pf-wm-6Mg"/>
                     </view>
+                    <navigationItem key="navigationItem" id="esw-8U-X4f"/>
                     <connections>
-                        <outlet property="drinkDetailsImage" destination="Mq7-4N-WKi" id="eP9-QR-wfI"/>
+                        <outlet property="drinkDetailsImageView" destination="Mq7-4N-WKi" id="eP9-QR-wfI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3z9-VX-GdF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2895.6521739130435" y="155.70652173913044"/>
+            <point key="canvasLocation" x="2987" y="148"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="U91-JJ-mg5">
             <objects>
-                <navigationController storyboardIdentifier="NavigationController" automaticallyAdjustsScrollViewInsets="NO" id="lu1-p8-h7M" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="TableViewNavController" automaticallyAdjustsScrollViewInsets="NO" id="lu1-p8-h7M" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" systemItem="topRated" id="DPM-VO-zwy"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="M82-aM-3mp">
@@ -171,7 +175,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="faB-tM-ZXE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2138" y="-611"/>
+            <point key="canvasLocation" x="2141" y="-636"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="b2B-hn-AFs">
@@ -190,5 +194,29 @@
             </objects>
             <point key="canvasLocation" x="2143" y="-1449"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ZrE-Dt-Lhb">
+            <objects>
+                <navigationController storyboardIdentifier="DrinkDetailsViewNavController" automaticallyAdjustsScrollViewInsets="NO" id="kZf-cQ-RDk" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="tYQ-JU-dz9">
+                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="rJa-FV-Fid" kind="relationship" relationship="rootViewController" id="hFO-AD-XNe"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3GV-5L-tp3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2987" y="-637"/>
+        </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="hFO-AD-XNe"/>
+    </inferredMetricsTieBreakers>
 </document>

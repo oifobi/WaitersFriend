@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol DrinkProtocol {
-    func jsonFetched(_ drinks: [Drink])
+    func json(fetched drinks: [Drink])
     
 }
 
@@ -19,9 +19,9 @@ public class DrinksController {
     static let shared = DrinksController()
     
     //API end points
-    static let popular = "/popular.php" // UI tag: 0
-    static let recent = "/recent.php" // UI tag: 1
-    static let random = "/random.php" // UI tag: 2
+    static let popular = "/popular.php" // UI tag: 0 = Top Rated
+    static let recent = "/recent.php" // UI tag: 1 = Recents
+    static let random = "/random.php" // UI tag: 2 = Featured
     
     //API connectivity properties
     let apiKey = "8673533"
@@ -31,10 +31,12 @@ public class DrinksController {
     var delegate: DrinkProtocol?
     
     //Fetch data from given API end point based on list parameter passed in (set by user tab bar item selected)
-    func fetchDrinks(list: String, _ completion: @escaping (Error?) -> Void)  {
+    func fetchDrinks(from endpoint: String, _ completion: @escaping (Error?) -> Void)  {
+        
+        guard endpoint != "" else { return }
         
         //Create URL object
-        let url = URL(string: baseURLString+apiKey)?.appendingPathComponent(list)
+        let url = URL(string: baseURLString+apiKey)?.appendingPathComponent(endpoint)
         print("API endpoint: \(String(describing: url))")
         
         let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
@@ -43,18 +45,18 @@ public class DrinksController {
                 
                 do {
                     let decoder = JSONDecoder()
-                    let jsonDrinks = try decoder.decode(Drinks.self, from: data!)
-                    let drinks = jsonDrinks.drinks!
+                    let json = try decoder.decode(Drinks.self, from: data!)
+                        //map data fetched to Drink object
+                    print("json fetched successfully with data: \(json)")
+                    
+                    let drinks = json.drinks!
                     print("Drinks list succesfully fetched with content: \(drinks)")
                     
                     //Pass results back to meain thread / ViewController
                     //via delegate property
                     DispatchQueue.main.async {
-                        self.delegate?.jsonFetched(drinks)
+                        self.delegate?.json(fetched: drinks)
                     }
-                    
-                    //via static property
-//                  ViewController.drinks2 = drinks
                     
                 //catch and print errors to console
                 } catch {
@@ -62,6 +64,8 @@ public class DrinksController {
                     completion(error)
                     return
                 }
+            } else if error != nil || data == nil {
+                completion(error)
             }
             
         }
@@ -71,7 +75,7 @@ public class DrinksController {
     }
     
     //Fetch drink images
-    func fetchDrinkImage(from url: String, completion: @escaping (UIImage?) -> Void) {
+    func fetchDrinkImage(with url: String, completion: @escaping (UIImage?) -> Void) {
 
         if let urlString = URL(string: url) {
             let task = URLSession.shared.dataTask(with: urlString) {
@@ -88,6 +92,8 @@ public class DrinksController {
             task.resume()
         }
     }
+    
+    
     
 }
 

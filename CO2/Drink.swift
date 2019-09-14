@@ -7,6 +7,12 @@
 //
 
 import Foundation
+import UIKit
+
+//Collection of Drink type data objects
+struct Drinks: Codable {
+    var drinks: [Drink]?
+}
 
 //Data structure of
 struct Drink: Codable {
@@ -101,10 +107,6 @@ struct Drink: Codable {
     }
 }
 
-//Collection of Drink type data objects
-struct Drinks: Codable {
-    var drinks: [Drink]?
-    
-}
+
 
 

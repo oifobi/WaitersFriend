@@ -13,10 +13,10 @@
 		2AA67071232632BA006534F0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2AA6706F232632BA006534F0 /* LaunchScreen.storyboard */; };
 		2AA6707C232632BA006534F0 /* CO2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA6707B232632BA006534F0 /* CO2Tests.swift */; };
 		2AA67087232632BA006534F0 /* CO2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA67086232632BA006534F0 /* CO2UITests.swift */; };
-		2AA6709523263CD4006534F0 /* DrinkDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA6709423263CD4006534F0 /* DrinkDetailsVC.swift */; };
+		2AA6709523263CD4006534F0 /* DrinkDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA6709423263CD4006534F0 /* DrinkDetailsViewController.swift */; };
 		2AA6709723263EF9006534F0 /* Drink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA6709623263EF9006534F0 /* Drink.swift */; };
 		2AA670AB2327A3D4006534F0 /* DrinksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA670AA2327A3D4006534F0 /* DrinksController.swift */; };
-		2AA670AD2327ABFC006534F0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA670AC2327ABFC006534F0 /* ViewController.swift */; };
+		2AA670AD2327ABFC006534F0 /* DrinksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA670AC2327ABFC006534F0 /* DrinksTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,10 +49,10 @@
 		2AA67082232632BA006534F0 /* CO2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CO2UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AA67086232632BA006534F0 /* CO2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CO2UITests.swift; sourceTree = "<group>"; };
 		2AA67088232632BA006534F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2AA6709423263CD4006534F0 /* DrinkDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkDetailsVC.swift; sourceTree = "<group>"; };
+		2AA6709423263CD4006534F0 /* DrinkDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkDetailsViewController.swift; sourceTree = "<group>"; };
 		2AA6709623263EF9006534F0 /* Drink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drink.swift; sourceTree = "<group>"; };
 		2AA670AA2327A3D4006534F0 /* DrinksController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksController.swift; sourceTree = "<group>"; };
-		2AA670AC2327ABFC006534F0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		2AA670AC2327ABFC006534F0 /* DrinksTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,8 +106,8 @@
 				2AA67066232632B9006534F0 /* AppDelegate.swift */,
 				2AA6709623263EF9006534F0 /* Drink.swift */,
 				2AA670AA2327A3D4006534F0 /* DrinksController.swift */,
-				2AA670AC2327ABFC006534F0 /* ViewController.swift */,
-				2AA6709423263CD4006534F0 /* DrinkDetailsVC.swift */,
+				2AA670AC2327ABFC006534F0 /* DrinksTableViewController.swift */,
+				2AA6709423263CD4006534F0 /* DrinkDetailsViewController.swift */,
 				2AA6706A232632B9006534F0 /* Main.storyboard */,
 				2AA6706D232632BA006534F0 /* Assets.xcassets */,
 				2AA6706F232632BA006534F0 /* LaunchScreen.storyboard */,
@@ -266,9 +266,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2AA670AB2327A3D4006534F0 /* DrinksController.swift in Sources */,
-				2AA6709523263CD4006534F0 /* DrinkDetailsVC.swift in Sources */,
+				2AA6709523263CD4006534F0 /* DrinkDetailsViewController.swift in Sources */,
 				2AA67067232632B9006534F0 /* AppDelegate.swift in Sources */,
-				2AA670AD2327ABFC006534F0 /* ViewController.swift in Sources */,
+				2AA670AD2327ABFC006534F0 /* DrinksTableViewController.swift in Sources */,
 				2AA6709723263EF9006534F0 /* Drink.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
