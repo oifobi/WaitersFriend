@@ -104,7 +104,9 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
         }
     }
     
-    func showAlert(with error: Error) {
+    func showAlert(with error: Error, sender: String = #function) {
+        
+        print("Error Alert called by: \(sender)")
         
         DispatchQueue.main.async {
             let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
@@ -143,28 +145,33 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
             if let imageURL = drink.imageURL {
                 
 //                let image = fireFetchDrinkImage(with: imageURL)
-                DrinksController.shared.fetchDrinkImage(with:imageURL) { (fetchedImage) in
-                    guard let image = fetchedImage else { return }
+                DrinksController.shared.fetchDrinkImage(with:imageURL) { (image, error) in
+                    if let drinkImage = image {
                 
-                    //Update cell image to fecthedImage via main thread
-                    DispatchQueue.main.async {
+                        //Update cell image to fecthedImage via main thread
+                        DispatchQueue.main.async {
 
-                        //Ensure wrong image isn't inserted into a recycled cell
-                        if let currentIndexPath = self.tableView.indexPath(for: cell),
+                            //Ensure wrong image isn't inserted into a recycled cell
+                            if let currentIndexPath = self.tableView.indexPath(for: cell),
 
-                            //If current cell index and table index don't match, exit method
-                            currentIndexPath != indexPath {
-                            return
-                            }
-                        
-                        //append drinks images array with image
-                        self.drinkImages.append(image)
-                        
-                        //Set cell image
-                        cell.drinkImageView?.image = image
+                                //If current cell index and table index don't match, exit method
+                                currentIndexPath != indexPath {
+                                return
+                                }
+                            
+                            //append drinks images array with image
+                            self.drinkImages.append(drinkImage)
+                            
+                            //Set cell image
+                            cell.drinkImageView?.image = drinkImage
 
-                        //Update cell layout to accommodate image
-                        cell.setNeedsLayout()
+                            //Update cell layout to accommodate image
+                            cell.setNeedsLayout()
+                        }
+                    
+                    //catch any errors fetching image
+                    } else if let error = error {
+                        print("Error fetching image with error \(error.localizedDescription)")
                     }
                 }
             }
@@ -172,17 +179,25 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
         return cell
     }
     
+    //Not currently called as results in image not being loaded??
     @objc func fireFetchDrinkImage(with url: String) -> UIImage {
-       
-        var drinkImage = UIImage()
-        DrinksController.shared.fetchDrinkImage(with: url) { (fetchedImage) in
-            guard let image = fetchedImage else { return }
-            drinkImage = image
+        
+        var image = UIImage()
+        
+        DrinksController.shared.fetchDrinkImage(with: url) { (fetchedImage, error) in
+            
+            //set fetched image
+            if let drinkImage = fetchedImage {
+                image = drinkImage
+            
+            //catch any errors fetching image
+            } else if let error = error {
+                print("Error fetching image with error \(error.localizedDescription)")
+            }
         }
         
-        return drinkImage
+        return image
     }
-    
     
     
     // MARK: - Navigation

@@ -62,8 +62,18 @@ class DrinkDetailsViewController: UIViewController, DrinkProtocol {
         DispatchQueue.main.async {
             self.title = self.drink?.name
             self.navigationController?.navigationBar.prefersLargeTitles = true
-            self.drinkDetailsImageView.image = self.drinkImage
+            
+            //load UIImage set by a sending VC
+            if self.sender != nil {
+                self.drinkDetailsImageView.image = self.drinkImage
+            
+            //load image fetched by this VC
+            } else {
+                //Fetch and set drink image
+                self.performSelector(inBackground: #selector(self.fireFetchDrinksImage), with: nil)
+            }
         }
+
     }
     
     @objc func fireFetchDrinks() {
@@ -76,26 +86,32 @@ class DrinkDetailsViewController: UIViewController, DrinkProtocol {
             if let error = error {
                 self.showAlert(with: error)
             }
-            
-            //Fetch and set drink image
-            self.performSelector(inBackground: #selector(self.fireFetchDrinksImage), with: nil)
         }
-        
     }
     
     @objc func fireFetchDrinksImage() {
+        
         if let imageURL = drinks?[0].imageURL {
-            DrinksController.shared.fetchDrinkImage(with: imageURL) { (fetchedImage) in
-                guard let image = fetchedImage else { return }
-                //set UIView image to image fetched
-                self.drinkImage = image
+            DrinksController.shared.fetchDrinkImage(with: imageURL) { (image, error) in
+                if let drinkImage = image {
+                
+                    //set UIView image to image fetched
+                    DispatchQueue.main.async {
+                        self.drinkDetailsImageView.image = drinkImage
+                    }
+                
+                    //catch any errors fetching image
+                } else if let error = error {
+                    print("Error fetching image with error \(error.localizedDescription)")
+                }
             }
         }
-        
-        self.updateUI()
     }
     
-    func showAlert(with error: Error) {
+    //Error alert handeler for data / image etc fetching issues
+    func showAlert(with error: Error, sender: String = #function) {
+        
+        print("Error Alert called by: \(sender)")
         
         DispatchQueue.main.async {
             let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)

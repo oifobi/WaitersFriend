@@ -16,6 +16,8 @@ protocol DrinkProtocol {
 
 public class DrinksController {
     
+    //set protocol delegate to communicate with ViewController
+    var delegate: DrinkProtocol?
     static let shared = DrinksController()
     
     //API end points
@@ -26,9 +28,6 @@ public class DrinksController {
     //API connectivity properties
     let apiKey = "8673533"
     let baseURLString = "https://www.thecocktaildb.com/api/json/v2/"
-    
-    //set protocol delegate to communicate with ViewController
-    var delegate: DrinkProtocol?
     
     //Fetch data from given API end point based on list parameter passed in (set by user tab bar item selected)
     func fetchDrinks(from endpoint: String, _ completion: @escaping (Error?) -> Void)  {
@@ -75,7 +74,7 @@ public class DrinksController {
     }
     
     //Fetch drink images
-    func fetchDrinkImage(with url: String, completion: @escaping (UIImage?) -> Void) {
+    func fetchDrinkImage(with url: String, completion: @escaping (UIImage?, Error?) -> Void) {
 
         if let urlString = URL(string: url) {
             let task = URLSession.shared.dataTask(with: urlString) {
@@ -83,10 +82,10 @@ public class DrinksController {
                 
                 if let data = data,
                     let image = UIImage(data: data) {
-                    completion(image)
+                    completion(image, nil)
                     
                 } else {
-                    completion(nil)
+                    completion(nil, error)
                 }
             }
             task.resume()
