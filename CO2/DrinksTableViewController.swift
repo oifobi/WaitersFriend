@@ -16,7 +16,7 @@ enum TabBarItem: Int  {
 }
 
 //Custom tableView cell definition
-class drinkTableViewCell: UITableViewCell {
+class DrinkTableViewCell: UITableViewCell {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
@@ -29,14 +29,12 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
     //protocol conformance. Pass in drinks fetched to VC drinks property
     func json(fetched drinks: [Drink]) {
         self.drinks = drinks
-//        tableView.reloadData()
         updateUI()
-        print("DrinksTableViewController protocol / delegate pattern working. Drinks fetched")
+        print("DrinksTableViewController protocol / delegate pattern working. Drinks fetched\n")
     }
     
     //properties to store drinks and related images
     var drinks: [Drink]?
-    var drinkImages = [UIImage]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,10 +86,10 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
         
         switch navigationController?.tabBarItem.tag {
         case TabBarItem.Popular.rawValue:
-            title = "Top Rated"
+            title = "Top Rated Drinks"
             
         case TabBarItem.Recents.rawValue:
-            title = "Recents"
+            title = "Trending Drinks"
             
         default:
             break
@@ -99,14 +97,14 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
         
         DispatchQueue.main.async {
             self.title = title
-            self.navigationController?.navigationBar.prefersLargeTitles = true
+//            self.navigationController?.navigationBar.prefersLargeTitles = true
             self.tableView.reloadData()
         }
     }
     
     func showAlert(with error: Error, sender: String = #function) {
         
-        print("Error Alert called by: \(sender)")
+        print("Error Alert called by: \(sender)\n")
         
         DispatchQueue.main.async {
             let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
@@ -133,7 +131,7 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //point cellForRowAt method to custom cell class by down casting to custom class
-        let cell = tableView.dequeueReusableCell(withIdentifier: "DrinkCell", for: indexPath) as! drinkTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DrinkCell", for: indexPath) as! DrinkTableViewCell
         
         if let drink = drinks?[indexPath.row] {
         
@@ -159,9 +157,6 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
                                 return
                                 }
                             
-                            //append drinks images array with image
-                            self.drinkImages.append(drinkImage)
-                            
                             //Set cell image
                             cell.drinkImageView?.image = drinkImage
 
@@ -171,7 +166,7 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
                     
                     //catch any errors fetching image
                     } else if let error = error {
-                        print("Error fetching image with error \(error.localizedDescription)")
+                        print("Error fetching image with error \(error.localizedDescription)\n")
                     }
                 }
             }
@@ -192,7 +187,7 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
             
             //catch any errors fetching image
             } else if let error = error {
-                print("Error fetching image with error \(error.localizedDescription)")
+                print("Error fetching image with error \(error.localizedDescription)\n")
             }
         }
         
@@ -209,8 +204,8 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
             let vc = segue.destination as! DrinkDetailsViewController
             let drinkTapped = tableView.indexPathForSelectedRow!.row
             vc.drink = drinks?[drinkTapped]
-            vc.drinkImage = drinkImages[drinkTapped]
-            vc.sender = "DrinksTableViewController" 
+            vc.sender = "DrinksTableViewController"
+            
         }
      }
     

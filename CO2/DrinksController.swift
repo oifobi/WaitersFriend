@@ -36,7 +36,7 @@ public class DrinksController {
         
         //Create URL object
         let url = URL(string: baseURLString+apiKey)?.appendingPathComponent(endpoint)
-        print("API endpoint: \(String(describing: url))")
+        print("API endpoint: \(String(describing: url))\n")
         
         let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
             
@@ -46,10 +46,10 @@ public class DrinksController {
                     let decoder = JSONDecoder()
                     let json = try decoder.decode(Drinks.self, from: data!)
                         //map data fetched to Drink object
-                    print("json fetched successfully with data: \(json)")
+//                    print("json fetched successfully with data: \(json)\n")
                     
                     let drinks = json.drinks!
-                    print("Drinks list succesfully fetched with content: \(drinks)")
+//                    print("Drinks list succesfully fetched with content: \(drinks)\n")
                     
                     //Pass results back to meain thread / ViewController
                     //via delegate property
@@ -59,7 +59,7 @@ public class DrinksController {
                     
                 //catch and print errors to console
                 } catch {
-                    print("Couldn't decode JSON data with error: \(error.localizedDescription)")
+                    print("Couldn't decode JSON data with error: \(error.localizedDescription)\n")
                     completion(error)
                     return
                 }

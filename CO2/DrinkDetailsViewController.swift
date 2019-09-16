@@ -8,72 +8,96 @@
 
 import UIKit
 
-class DrinkDetailsViewController: UIViewController, DrinkProtocol {
+class DrinkDetailsViewController: UIViewController, DrinkProtocol, UITableViewDataSource, UITableViewDelegate {
     
     func json(fetched drinks: [Drink]) {
-        self.drinks = drinks
         self.drink = drinks[0]
-        updateUI()
-        print("DrinkDetailsViewController protocol / delegate pattern working. Drinks fetched")
+        updateUI(sender: "TabBarItem")
+        print("DrinkDetailsViewController protocol / delegate pattern working. Drinks fetched\n")
         
     }
     
     @IBOutlet weak var drinkDetailsImageView: UIImageView!
+    @IBOutlet weak var ingredientsTableView: UITableView!
+    @IBOutlet weak var howToPrepareLabel: UILabel!
     
-    //Property to store drinks data received via deleegat / protocol pattern
-    var drinks: [Drink]?
+    @IBAction func segmentedControlTapped(_ sender: UISegmentedControl) {
+        
+        switch sender.selectedSegmentIndex {
+        case 1:
+            howToPrepareLabel.isHidden = false
+            
+        default:
+            howToPrepareLabel.isHidden = true
+            
+            
+        }
+        
+        
+    }
     
-    //Properties to receive drink object data from DrinksTableViewController
+    //Properties to receive drink object data from sender VC/s
     var drink: Drink?
-    var sender: Any?
+    var sender: String?
     
-    //Property to set Drink detail image. Set by either sending VC/s or by delegate pattern
-    var drinkImage: UIImage?
+    //update view image
+    var drinkImage: UIImage? {
+        didSet  {
+            DispatchQueue.main.async {
+                self.drinkDetailsImageView.image = self.drinkImage
+            }
+        }
+    }
+    
+    //properties to construct and save ingredients
+    var ingredients: [(key: String, value: String)]?
+    var measures: [(key: String, value: String)]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
     }
     
-    //Prepare data contents
+    //Prepare Drink data content
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        //if sender is DrinksTableVC, updateUI
-        if let sender = sender {
-            if sender as! String == "DrinksTableViewController" {
-                updateUI()
-            }
-            
-        //Get Drinks data and image
-        } else {
-            
-            //Setup communication for when Drinks data is ready and needs to be passed from DrinkController to VC
-            DrinksController.shared.delegate = self
-            
-            //Fire fetch data depending in Tab Bar Item selected
-            performSelector(inBackground: #selector(fireFetchDrinks), with: nil)
-        }
+        updateUI(sender: self.sender)
+        
     }
     
     //perform UI setup
-    func updateUI() {
+    func updateUI(sender: String?) {
+        
+        print("Sender is: \(self.sender ?? "nil")")
+        
+        //Set view as delegate
+        DrinksController.shared.delegate = self
         
         DispatchQueue.main.async {
-            self.title = self.drink?.name
-            self.navigationController?.navigationBar.prefersLargeTitles = true
             
-            //load UIImage set by a sending VC
-            if self.sender != nil {
-                self.drinkDetailsImageView.image = self.drinkImage
-            
-            //load image fetched by this VC
-            } else {
-                //Fetch and set drink image
-                self.performSelector(inBackground: #selector(self.fireFetchDrinksImage), with: nil)
+            //Fire fetch data depending on sender
+            if sender == nil {
+                self.performSelector(inBackground: #selector(self.fireFetchDrinks), with: nil)
+                
             }
+            
+            //Fetch drink image from API server and set
+            self.performSelector(inBackground: #selector(self.fireFetchDrinksImage), with: nil)
+            
+            //Get ingredients / meassure
+            self.loadIngredientsTableData()
+            print("Drink: \(String(describing: self.drink?.name))\n ID: \(String(describing: self.drink?.id))\n")
+            
+            //Set up How to prepareLabel
+            self.howToPrepareLabel.text = self.drink?.instructions
+            
+            //Set navigation items
+//            self.navigationController?.navigationBar.prefersLargeTitles = true
+            self.title = self.drink?.name
+            
+            
         }
-
     }
     
     @objc func fireFetchDrinks() {
@@ -91,18 +115,15 @@ class DrinkDetailsViewController: UIViewController, DrinkProtocol {
     
     @objc func fireFetchDrinksImage() {
         
-        if let imageURL = drinks?[0].imageURL {
+        if let imageURL = drink?.imageURL {
             DrinksController.shared.fetchDrinkImage(with: imageURL) { (image, error) in
                 if let drinkImage = image {
                 
-                    //set UIView image to image fetched
-                    DispatchQueue.main.async {
-                        self.drinkDetailsImageView.image = drinkImage
-                    }
+                    self.drinkImage = drinkImage
                 
                     //catch any errors fetching image
                 } else if let error = error {
-                    print("Error fetching image with error \(error.localizedDescription)")
+                    print("Error fetching image with error \(error.localizedDescription)\n")
                 }
             }
         }
@@ -111,7 +132,7 @@ class DrinkDetailsViewController: UIViewController, DrinkProtocol {
     //Error alert handeler for data / image etc fetching issues
     func showAlert(with error: Error, sender: String = #function) {
         
-        print("Error Alert called by: \(sender)")
+        print("Error Alert called by: \(sender)\n")
         
         DispatchQueue.main.async {
             let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
@@ -123,4 +144,106 @@ class DrinkDetailsViewController: UIViewController, DrinkProtocol {
         }
     }
     
+    //MARK:- TableView data prep method/s\
+    func loadIngredientsTableData() {
+    
+        ingredients = getIngredients()
+        measures = getMeasures()
+        ingredientsTableView.reloadData()
+    
+    }
+    
+    func getIngredients() -> [(key: String, value: String)] {
+        var dict = [String: String]()
+        
+            dict["ingredient01"] = drink?.ingredient1
+            dict["ingredient02"] = drink?.ingredient2
+            dict["ingredient03"] = drink?.ingredient3
+            dict["ingredient04"] = drink?.ingredient4
+            dict["ingredient05"] = drink?.ingredient5
+            dict["ingredient06"] = drink?.ingredient6
+            dict["ingredient07"] = drink?.ingredient7
+            dict["ingredient08"] = drink?.ingredient8
+            dict["ingredient09"] = drink?.ingredient9
+            dict["ingredient10"] = drink?.ingredient10
+            dict["ingredient11"] = drink?.ingredient11
+            dict["ingredient12"] = drink?.ingredient12
+            dict["ingredient13"] = drink?.ingredient13
+            dict["ingredient14"] = drink?.ingredient14
+            dict["ingredient15"] = drink?.ingredient15
+        
+        
+        //sort by key and transform into array of key/value pairs
+        let sorted = dict.sorted(by: { $0.key < $1.key } )
+        
+        //filter empty properties and return result
+        return sorted.filter({$0.value != "" || $0.value != " "})
+    }
+    
+    func getMeasures() -> [(key: String, value: String)] {
+        var dict = [String: String]()
+
+            dict["measure01"] = drink?.measure1
+            dict["measure02"] = drink?.measure2
+            dict["measure03"] = drink?.measure3
+            dict["measure04"] = drink?.measure4
+            dict["measure05"] = drink?.measure5
+            dict["measure06"] = drink?.measure6
+            dict["measure07"] = drink?.measure7
+            dict["measure08"] = drink?.measure8
+            dict["measure09"] = drink?.measure9
+            dict["measure10"] = drink?.measure10
+            dict["measure11"] = drink?.measure11
+            dict["measure12"] = drink?.measure12
+            dict["measure13"] = drink?.measure13
+            dict["measure14"] = drink?.measure14
+            dict["measure15"] = drink?.measure15
+        
+        //sort by key and transform into array of key/value pairs
+        let sorted = dict.sorted(by: { $0.key < $1.key } )
+        
+        //filter empty properties and return result
+        return sorted.filter({$0.value != "" || $0.value != " "})
+    }
+
+    
+    //MARK:- TableView methods
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+       
+        return ingredients?.count ?? 0
+    }
+    
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell", for: indexPath)
+        
+        
+        //set cell ingredient text
+        if  indexPath.row < ingredients!.count {
+            if let ingredient = ingredients?[indexPath.row] {
+                cell.textLabel!.text = ingredient.value
+            }
+        }
+        
+        //set cell measure text
+        if  indexPath.row < measures!.count {
+            if let measure = measures?[indexPath.row] {
+                cell.detailTextLabel!.text = measure.value
+            }
+        }
+        
+        return cell
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+//        drinkImage = nil
+        navigationController?.popToRootViewController(animated: false)
+        howToPrepareLabel.isHidden = true
+    }
+    
+    
+    
 }
+
