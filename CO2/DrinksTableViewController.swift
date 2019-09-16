@@ -97,7 +97,6 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
         
         DispatchQueue.main.async {
             self.title = title
-//            self.navigationController?.navigationBar.prefersLargeTitles = true
             self.tableView.reloadData()
         }
     }

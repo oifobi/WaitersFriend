@@ -10,31 +10,45 @@ import UIKit
 
 class DrinkDetailsViewController: UIViewController, DrinkProtocol, UITableViewDataSource, UITableViewDelegate {
     
+    //Delegate Method
     func json(fetched drinks: [Drink]) {
         self.drink = drinks[0]
         updateUI(sender: "TabBarItem")
         print("DrinkDetailsViewController protocol / delegate pattern working. Drinks fetched\n")
-        
     }
     
-    @IBOutlet weak var drinkDetailsImageView: UIImageView!
-    @IBOutlet weak var ingredientsTableView: UITableView!
-    @IBOutlet weak var howToPrepareLabel: UILabel!
+    //Handle switching between segments
+    var segmentControlIndex = 0 {
+        didSet {
+        
+            switch segmentControlIndex {
+            case 1:
+                containerScrollView.isHidden = false
+                ingredientsTableView.isHidden = true
+                segmentedControl.selectedSegmentIndex = 1
+                
+            default:
+                containerScrollView.isHidden = true
+                ingredientsTableView.isHidden = false
+                segmentedControl.selectedSegmentIndex = 0
+            }
+        }
+    }
     
+    //MARK:- Inteface Builder outlets and Actions
+    @IBOutlet weak var drinkDetailsImageView: UIImageView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBAction func segmentedControlTapped(_ sender: UISegmentedControl) {
         
-        switch sender.selectedSegmentIndex {
-        case 1:
-            howToPrepareLabel.isHidden = false
-            
-        default:
-            howToPrepareLabel.isHidden = true
-            
-            
-        }
-        
-        
+        segmentControlIndex = sender.selectedSegmentIndex
     }
+    
+    @IBOutlet weak var ingredientsTableView: UITableView!
+    @IBOutlet weak var containerScrollView: UIScrollView!
+    @IBOutlet weak var instructionsLabel: UILabel!
+    
+    
+    //MARK:- View / Class properties
     
     //Properties to receive drink object data from sender VC/s
     var drink: Drink?
@@ -53,6 +67,8 @@ class DrinkDetailsViewController: UIViewController, DrinkProtocol, UITableViewDa
     var ingredients: [(key: String, value: String)]?
     var measures: [(key: String, value: String)]?
     
+    
+    //MARK:- Built-in View managemenet
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -66,6 +82,16 @@ class DrinkDetailsViewController: UIViewController, DrinkProtocol, UITableViewDa
         
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        //        drinkImage = nil
+        navigationController?.popToRootViewController(animated: false)
+        
+        //Reset segmented control default state
+        segmentControlIndex = 0
+    }
+    
+    //MARK:- Custom View management
     //perform UI setup
     func updateUI(sender: String?) {
         
@@ -89,11 +115,12 @@ class DrinkDetailsViewController: UIViewController, DrinkProtocol, UITableViewDa
             self.loadIngredientsTableData()
             print("Drink: \(String(describing: self.drink?.name))\n ID: \(String(describing: self.drink?.id))\n")
             
-            //Set up How to prepareLabel
-            self.howToPrepareLabel.text = self.drink?.instructions
+            //Set up How to prepare text
+            self.instructionsLabel.text = self.drink?.instructions
+            self.instructionsLabel.sizeToFit()
+//            self.containerScrollView.contentSize = CGSize(width: self.view.frame.width - 10, height: 500)
             
             //Set navigation items
-//            self.navigationController?.navigationBar.prefersLargeTitles = true
             self.title = self.drink?.name
             
             
@@ -144,7 +171,7 @@ class DrinkDetailsViewController: UIViewController, DrinkProtocol, UITableViewDa
         }
     }
     
-    //MARK:- TableView data prep method/s\
+    //MARK:- TableView data prep method/s (TO BE FIXED!!)
     func loadIngredientsTableData() {
     
         ingredients = getIngredients()
@@ -235,15 +262,6 @@ class DrinkDetailsViewController: UIViewController, DrinkProtocol, UITableViewDa
         
         return cell
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-//        drinkImage = nil
-        navigationController?.popToRootViewController(animated: false)
-        howToPrepareLabel.isHidden = true
-    }
-    
-    
     
 }
 
