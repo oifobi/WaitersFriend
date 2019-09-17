@@ -123,7 +123,6 @@ class DrinkDetailsViewController: UIViewController, DrinkProtocol, UITableViewDa
             //Set navigation items
             self.title = self.drink?.name
             
-            
         }
     }
     

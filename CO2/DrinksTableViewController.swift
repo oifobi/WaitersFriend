@@ -189,7 +189,6 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
                 print("Error fetching image with error \(error.localizedDescription)\n")
             }
         }
-        
         return image
     }
     
@@ -204,7 +203,6 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
             let drinkTapped = tableView.indexPathForSelectedRow!.row
             vc.drink = drinks?[drinkTapped]
             vc.sender = "DrinksTableViewController"
-            
         }
      }
     

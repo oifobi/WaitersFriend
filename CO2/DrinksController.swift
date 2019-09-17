@@ -11,7 +11,6 @@ import UIKit
 
 protocol DrinkProtocol {
     func json(fetched drinks: [Drink])
-    
 }
 
 public class DrinksController {
@@ -70,7 +69,6 @@ public class DrinksController {
         }
         
         task.resume()
-      
     }
     
     //Fetch drink images
