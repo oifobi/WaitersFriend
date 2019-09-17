@@ -87,7 +87,6 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         drinkImage = nil
         drinkDetailsImageView.setNeedsDisplay()
 
-        
     }
     
     //MARK:- Custom View management
@@ -130,7 +129,6 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
             
             //fire UI update if fetch successful
             if let drinks = drinks {
-//                DrinksController.drinks = drinks
                 self.drink = drinks[0]
                 self.updateUI(sender: "TabBarItem")
 //                print("Fetched Drinks: \(drinks)\n")

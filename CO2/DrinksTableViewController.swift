@@ -232,7 +232,6 @@ class DrinksTableViewController: UITableViewController {
         return cell
     }
     
-    
     // MARK: - Navigation
     //Set and push selected cell data to DetailVC
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -240,11 +239,14 @@ class DrinksTableViewController: UITableViewController {
         // Get the new view controller using segue.destination
         if segue.identifier == "TableVCToDrinkDetailsVC" {
             let vc = segue.destination as! DrinkDetailsViewController
-            let drinkTapped = tableView.indexPathForSelectedRow!.row
-            vc.drink = DrinksController.drinks?[drinkTapped]
-            vc.sender = "DrinksTableViewController"
             
+            let sectionIndexOfRowTapped = tableView.indexPathForSelectedRow!.section
+            let indexOfRowTapped = tableView.indexPathForSelectedRow!.row
+            let indexItem = tableSectionsIndex?[sectionIndexOfRowTapped]
+            vc.drink = indexItem?.value[indexOfRowTapped]
+            
+//            vc.drink = DrinksController.drinks?[drinkTapped]
+            vc.sender = "DrinksTableViewController"
         }
      }
-    
 }

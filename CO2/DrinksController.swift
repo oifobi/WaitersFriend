@@ -20,7 +20,7 @@ public class DrinksController {
         didSet {
             
             //sort drinks array in ascending order by name
-            drinks?.sort(by: { $0.name < $1.name })
+//            drinks?.sort(by: { $0.name < $1.name })
         }
     }
     
