@@ -29,6 +29,11 @@ class DrinksTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        //Fire fetch data depending in Tab Bar Item selected
+//        performSelector(inBackground: #selector(fireFetchDrinks), with: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         //Fire fetch data depending in Tab Bar Item selected
         performSelector(inBackground: #selector(fireFetchDrinks), with: nil)
     }
@@ -116,7 +121,7 @@ class DrinksTableViewController: UITableViewController {
         return DrinksController.drinks.count
     }
 
-    //method uses custome defined classs
+    //method uses custom defined classs
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //point cellForRowAt method to custom cell class by down casting to custom class
@@ -127,8 +132,7 @@ class DrinksTableViewController: UITableViewController {
             //set text of cell labels
             cell.titleLabel.text = drink.name
             cell.subtitleLabel.text = drink.ingredient1
-            
-    
+        
             //Fetch and set drink image
             if let imageURL = drink.imageURL {
                 
