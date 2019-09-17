@@ -9,20 +9,13 @@
 import Foundation
 import UIKit
 
-protocol DrinkProtocol {
-    func json(fetched drinks: [Drink])
-    func image(fetched: UIImage)
-    
-}
-
 public class DrinksController {
     
-    //set protocol delegate to communicate with ViewController
-    var delegate: DrinkProtocol?
+    //Global Property for VCs to access DrinkController methods
     static let shared = DrinksController()
     
-    //Property store fetched drinks when called (set by caller)
-    static var drinks = [Drink]()
+    //Global property for VCs to store fetched data when called (set by callling VC)
+    static var drinks: [Drink]?
     
     //API end points
     static let popular = "/popular.php" // UI tag: 0 = Top Rated

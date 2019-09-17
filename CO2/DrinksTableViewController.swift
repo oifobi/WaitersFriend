@@ -118,7 +118,9 @@ class DrinksTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return DrinksController.drinks.count
+        guard DrinksController.drinks != nil else {return 0}
+        return DrinksController.drinks!.count
+
     }
 
     //method uses custom defined classs
@@ -127,43 +129,47 @@ class DrinksTableViewController: UITableViewController {
         //point cellForRowAt method to custom cell class by down casting to custom class
         let cell = tableView.dequeueReusableCell(withIdentifier: "DrinkCell", for: indexPath) as! DrinkTableViewCell
         
-        let drink = DrinksController.drinks[indexPath.row]
-        
-            //set text of cell labels
-            cell.titleLabel.text = drink.name
-            cell.subtitleLabel.text = drink.ingredient1
-        
-            //Fetch and set drink image
-            if let imageURL = drink.imageURL {
-                
-//                let image = fireFetchDrinkImage(with: imageURL)
-                DrinksController.shared.fetchDrinkImage(with:imageURL) { (image, error) in
-                    if let drinkImage = image {
-                
-                        //Update cell image to fecthedImage via main thread
-                        DispatchQueue.main.async {
-
-                            //Ensure wrong image isn't inserted into a recycled cell
-                            if let currentIndexPath = self.tableView.indexPath(for: cell),
-
-                                //If current cell index and table index don't match, exit method
-                                currentIndexPath != indexPath {
-                                return
-                                }
-                            
-                            //Set cell image
-                            cell.drinkImageView?.image = drinkImage
-
-                            //Update cell layout to accommodate image
-                            cell.setNeedsLayout()
-                        }
+        //ensure table rows matches drinks object array since the same tableView controller is used for different calls to fetch data
+        if indexPath.row < DrinksController.drinks!.count {
+            if let drink = DrinksController.drinks?[indexPath.row] {
+            
+                //set text of cell labels
+                cell.titleLabel.text = drink.name
+                cell.subtitleLabel.text = drink.ingredient1
+            
+                //Fetch and set drink image
+                if let imageURL = drink.imageURL {
                     
-                    //catch any errors fetching image
-                    } else if let error = error {
-                        print("Error fetching image with error \(error.localizedDescription)\n")
+    //                let image = fireFetchDrinkImage(with: imageURL)
+                    DrinksController.shared.fetchDrinkImage(with:imageURL) { (image, error) in
+                        if let drinkImage = image {
+                    
+                            //Update cell image to fecthedImage via main thread
+                            DispatchQueue.main.async {
+
+                                //Ensure wrong image isn't inserted into a recycled cell
+                                if let currentIndexPath = self.tableView.indexPath(for: cell),
+
+                                    //If current cell index and table index don't match, exit fetch image method
+                                    currentIndexPath != indexPath {
+                                    return
+                                    }
+                                
+                                //Set cell image
+                                cell.drinkImageView?.image = drinkImage
+
+                                //Update cell layout to accommodate image
+                                cell.setNeedsLayout()
+                            }
+                        
+                        //catch any errors fetching image
+                        } else if let error = error {
+                            print("Error fetching image with error \(error.localizedDescription)\n")
+                        }
                     }
                 }
             }
+        }
 
         return cell
     }
@@ -197,7 +203,7 @@ class DrinksTableViewController: UITableViewController {
         if segue.identifier == "TableVCToDrinkDetailsVC" {
             let vc = segue.destination as! DrinkDetailsViewController
             let drinkTapped = tableView.indexPathForSelectedRow!.row
-            vc.drink = DrinksController.drinks[drinkTapped]
+            vc.drink = DrinksController.drinks?[drinkTapped]
             vc.sender = "DrinksTableViewController"
             
         }
