@@ -15,7 +15,14 @@ public class DrinksController {
     static let shared = DrinksController()
     
     //Global property for VCs to store fetched data when called (set by callling VC)
-    static var drinks: [Drink]?
+    static var drinks: [Drink]? {
+        
+        didSet {
+            
+            //sort drinks array in ascending order by name
+            drinks?.sort(by: { $0.name < $1.name })
+        }
+    }
     
     //API end points
     static let popular = "/popular.php" // UI tag: 0 = Top Rated
@@ -41,8 +48,10 @@ public class DrinksController {
                 
                 do {
                     let decoder = JSONDecoder()
+                    
+                    //map data fetched to Drink object
                     let drinks = try decoder.decode(Drinks.self, from: data!)
-                        //map data fetched to Drink object
+                    
 //                    print("json fetched successfully with data: \(json)\n")
                     
                     //Pass drinks back to caller

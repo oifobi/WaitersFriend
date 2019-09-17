@@ -52,6 +52,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         didSet  {
             DispatchQueue.main.async {
                 self.drinkDetailsImageView.image = self.drinkImage
+                self.drinkDetailsImageView.setNeedsDisplay()
             }
         }
     }
@@ -77,11 +78,16 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        //        drinkImage = nil
         navigationController?.popToRootViewController(animated: false)
         
         //Reset segmented control default state
         segmentControlIndex = 0
+        
+        //unset drink image so it's not loaded on navigation back VC
+        drinkImage = nil
+        drinkDetailsImageView.setNeedsDisplay()
+
+        
     }
     
     //MARK:- Custom View management
@@ -113,7 +119,6 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
             //Set navigation items
             self.title = self.drink?.name
             
-            
         }
     }
     
@@ -128,7 +133,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
 //                DrinksController.drinks = drinks
                 self.drink = drinks[0]
                 self.updateUI(sender: "TabBarItem")
-                print("Fetched Drinks: \(drinks)\n")
+//                print("Fetched Drinks: \(drinks)\n")
                 
                 //fire error handler if error
             } else {

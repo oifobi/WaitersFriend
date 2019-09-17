@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CO2/DrinksTableViewController.swift"
-            timestampString = "590380363.121484"
+            timestampString = "590420843.430882"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "fireFetchDrinks()"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
+            landmarkName = "createTableSectionsIndex()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,107 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CO2/DrinksTableViewController.swift"
-            timestampString = "590380363.12226"
+            timestampString = "590420843.431459"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
-            landmarkName = "viewWillAppear(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CO2/DrinksTableViewController.swift"
-            timestampString = "590380363.1225719"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "62"
-            endingLineNumber = "62"
-            landmarkName = "fireFetchDrinks()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "CO2.DrinksTableViewController.fireFetchDrinks() -&gt; ()"
-                  moduleName = "CO2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/simonitalia/Documents/Programming/Swift%20_%20Xcode/My%20Projects/iOS/Apps/CO2/CO2/CO2/DrinksTableViewController.swift"
-                  timestampString = "590379427.950158"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "62"
-                  endingLineNumber = "62"
-                  offsetFromSymbolStart = "857">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;CO2.Drink&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in CO2.DrinksTableViewController.fireFetchDrinks() -&gt; ()"
-                  moduleName = "CO2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/simonitalia/Documents/Programming/Swift%20_%20Xcode/My%20Projects/iOS/Apps/CO2/CO2/CO2/DrinksTableViewController.swift"
-                  timestampString = "590379427.9528331"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "65"
-                  endingLineNumber = "65"
-                  offsetFromSymbolStart = "223">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CO2/DrinksTableViewController.swift"
-            timestampString = "590380363.122851"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "fireFetchDrinks()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CO2/DrinksTableViewController.swift"
-            timestampString = "590380363.123126"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "122"
-            endingLineNumber = "122"
-            landmarkName = "tableView(_:numberOfRowsInSection:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CO2/DrinksTableViewController.swift"
-            timestampString = "590380363.1234"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>

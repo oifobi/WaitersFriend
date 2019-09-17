@@ -19,30 +19,30 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DrinkCell" id="pzF-bP-cYq" customClass="DrinkTableViewCell" customModule="CO2" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DrinkCell" id="pzF-bP-cYq" customClass="DrinkTableViewCell" customModule="CO2" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pzF-bP-cYq" id="x5n-Xq-Xf7">
-                                    <rect key="frame" x="0.0" y="0.0" width="341" height="79.666666666666671"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="79.666666666666671"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Wo4-iG-Pfg">
-                                            <rect key="frame" x="266" y="0.0" width="75" height="79.666666666666671"/>
+                                            <rect key="frame" x="300" y="0.0" width="75" height="79.666666666666671"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="75" id="Sab-fC-OYb"/>
                                             </constraints>
                                         </imageView>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="CfQ-0S-K5W">
-                                            <rect key="frame" x="10" y="0.0" width="256" height="74.666666666666671"/>
+                                            <rect key="frame" x="10" y="0.0" width="290" height="74.666666666666671"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Eh-XZ-dnh">
-                                                    <rect key="frame" x="0.0" y="0.0" width="256" height="36"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="290" height="36"/>
                                                     <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UFl-il-9hJ">
-                                                    <rect key="frame" x="0.0" y="39" width="256" height="35.666666666666657"/>
+                                                    <rect key="frame" x="0.0" y="39" width="290" height="35.666666666666657"/>
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -271,6 +271,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="hFO-AD-XNe"/>
+        <segue reference="evS-SR-87Y"/>
     </inferredMetricsTieBreakers>
 </document>
