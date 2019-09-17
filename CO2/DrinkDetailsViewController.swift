@@ -8,14 +8,7 @@
 
 import UIKit
 
-class DrinkDetailsViewController: UIViewController, DrinkProtocol, UITableViewDataSource, UITableViewDelegate {
-    
-    //Delegate Method
-    func json(fetched drinks: [Drink]) {
-        self.drink = drinks[0]
-        updateUI(sender: "TabBarItem")
-        print("DrinkDetailsViewController protocol / delegate pattern working. Drinks fetched\n")
-    }
+class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     //Handle switching between segments
     var segmentControlIndex = 0 {
@@ -97,9 +90,6 @@ class DrinkDetailsViewController: UIViewController, DrinkProtocol, UITableViewDa
         
         print("Sender is: \(self.sender ?? "nil")")
         
-        //Set view as delegate
-        DrinksController.shared.delegate = self
-        
         DispatchQueue.main.async {
             
             //Fire fetch data depending on sender
@@ -131,11 +121,20 @@ class DrinkDetailsViewController: UIViewController, DrinkProtocol, UITableViewDa
         let endpoint = DrinksController.random
         
         //fire fetch drinks list method
-        DrinksController.shared.fetchDrinks(from: endpoint) { (error) in
+        DrinksController.shared.fetchDrinks(from: endpoint) { (drinks, error) in
             
-            //fire error handler if error
-            if let error = error {
-                self.showAlert(with: error)
+            //fire UI update if fetch successful
+            if let drinks = drinks {
+                DrinksController.drinks = drinks
+                self.drink = drinks[0]
+                self.updateUI(sender: "TabBarItem")
+                print("Fetched Drinks: \(drinks)\n")
+                
+                //fire error handler if error
+            } else {
+                if let error = error {
+                    self.showAlert(with: error)
+                }
             }
         }
     }

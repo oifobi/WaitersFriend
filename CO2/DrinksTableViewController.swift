@@ -24,23 +24,10 @@ class DrinkTableViewCell: UITableViewCell {
     
 }
 
-class DrinksTableViewController: UITableViewController, DrinkProtocol {
-    
-    //protocol conformance. Pass in drinks fetched to VC drinks property
-    func json(fetched drinks: [Drink]) {
-        self.drinks = drinks
-        updateUI()
-        print("DrinksTableViewController protocol / delegate pattern working. Drinks fetched\n")
-    }
-    
-    //properties to store drinks and related images
-    var drinks: [Drink]?
+class DrinksTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //Setup communication for when Drinks data is ready and needs to be passed from DrinkController to VC
-        DrinksController.shared.delegate = self
         
         //Fire fetch data depending in Tab Bar Item selected
         performSelector(inBackground: #selector(fireFetchDrinks), with: nil)
@@ -67,17 +54,21 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
         }
     
         //fire fetch drinks list method
-        DrinksController.shared.fetchDrinks(from: endpoint) { (error) in
+        DrinksController.shared.fetchDrinks(from: endpoint) { (drinks, error) in
         
+            //fire UI update if fetch successful
+            if let drinks = drinks {
+                DrinksController.drinks = drinks
+                self.updateUI()
+                print("Fetched Drinks: \(drinks)\n")
+            
             //fire error handler if error
-            if let error = error {
+            } else {
+                if let error = error {
                 self.showAlert(with: error)
+                }
             }
         }
-        
-        //fire updateUI if no error
-        updateUI()
-       
     }
     
     func updateUI() {
@@ -122,8 +113,7 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        guard drinks?.count != nil else {return 0}
-        return drinks!.count
+        return DrinksController.drinks.count
     }
 
     //method uses custome defined classs
@@ -132,12 +122,13 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
         //point cellForRowAt method to custom cell class by down casting to custom class
         let cell = tableView.dequeueReusableCell(withIdentifier: "DrinkCell", for: indexPath) as! DrinkTableViewCell
         
-        if let drink = drinks?[indexPath.row] {
+        let drink = DrinksController.drinks[indexPath.row]
         
             //set text of cell labels
             cell.titleLabel.text = drink.name
             cell.subtitleLabel.text = drink.ingredient1
             
+    
             //Fetch and set drink image
             if let imageURL = drink.imageURL {
                 
@@ -169,7 +160,7 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
                     }
                 }
             }
-        }
+
         return cell
     }
     
@@ -202,7 +193,7 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
         if segue.identifier == "TableVCToDrinkDetailsVC" {
             let vc = segue.destination as! DrinkDetailsViewController
             let drinkTapped = tableView.indexPathForSelectedRow!.row
-            vc.drink = drinks?[drinkTapped]
+            vc.drink = DrinksController.drinks[drinkTapped]
             vc.sender = "DrinksTableViewController"
             
         }
