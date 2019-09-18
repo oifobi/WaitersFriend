@@ -8,14 +8,7 @@
 
 import UIKit
 
-class DrinkDetailsViewController: UIViewController, DrinkProtocol, UITableViewDataSource, UITableViewDelegate {
-    
-    //Delegate Method
-    func json(fetched drinks: [Drink]) {
-        self.drink = drinks[0]
-        updateUI(sender: "TabBarItem")
-        print("DrinkDetailsViewController protocol / delegate pattern working. Drinks fetched\n")
-    }
+class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     //Handle switching between segments
     var segmentControlIndex = 0 {
@@ -59,6 +52,7 @@ class DrinkDetailsViewController: UIViewController, DrinkProtocol, UITableViewDa
         didSet  {
             DispatchQueue.main.async {
                 self.drinkDetailsImageView.image = self.drinkImage
+                self.drinkDetailsImageView.setNeedsDisplay()
             }
         }
     }
@@ -84,11 +78,15 @@ class DrinkDetailsViewController: UIViewController, DrinkProtocol, UITableViewDa
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        //        drinkImage = nil
         navigationController?.popToRootViewController(animated: false)
         
         //Reset segmented control default state
         segmentControlIndex = 0
+        
+        //unset drink image so it's not loaded on navigation back VC
+        drinkImage = nil
+        drinkDetailsImageView.setNeedsDisplay()
+
     }
     
     //MARK:- Custom View management
@@ -96,9 +94,6 @@ class DrinkDetailsViewController: UIViewController, DrinkProtocol, UITableViewDa
     func updateUI(sender: String?) {
         
         print("Sender is: \(self.sender ?? "nil")")
-        
-        //Set view as delegate
-        DrinksController.shared.delegate = self
         
         DispatchQueue.main.async {
             
@@ -130,11 +125,19 @@ class DrinkDetailsViewController: UIViewController, DrinkProtocol, UITableViewDa
         let endpoint = DrinksController.random
         
         //fire fetch drinks list method
-        DrinksController.shared.fetchDrinks(from: endpoint) { (error) in
+        DrinksController.shared.fetchDrinks(from: endpoint) { (drinks, error) in
             
-            //fire error handler if error
-            if let error = error {
-                self.showAlert(with: error)
+            //fire UI update if fetch successful
+            if let drinks = drinks {
+                self.drink = drinks[0]
+                self.updateUI(sender: "TabBarItem")
+//                print("Fetched Drinks: \(drinks)\n")
+                
+                //fire error handler if error
+            } else {
+                if let error = error {
+                    self.showAlert(with: error)
+                }
             }
         }
     }

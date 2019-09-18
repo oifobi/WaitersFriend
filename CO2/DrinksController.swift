@@ -9,15 +9,20 @@
 import Foundation
 import UIKit
 
-protocol DrinkProtocol {
-    func json(fetched drinks: [Drink])
-}
-
 public class DrinksController {
     
-    //set protocol delegate to communicate with ViewController
-    var delegate: DrinkProtocol?
+    //Global Property for VCs to access DrinkController methods
     static let shared = DrinksController()
+    
+    //Global property for VCs to store fetched data when called (set by callling VC)
+    static var drinks: [Drink]? {
+        
+        didSet {
+            
+            //sort drinks array in ascending order by name
+//            drinks?.sort(by: { $0.name < $1.name })
+        }
+    }
     
     //API end points
     static let popular = "/popular.php" // UI tag: 0 = Top Rated
@@ -29,7 +34,7 @@ public class DrinksController {
     let baseURLString = "https://www.thecocktaildb.com/api/json/v2/"
     
     //Fetch data from given API end point based on list parameter passed in (set by user tab bar item selected)
-    func fetchDrinks(from endpoint: String, _ completion: @escaping (Error?) -> Void)  {
+    func fetchDrinks(from endpoint: String, _ completion: @escaping ([Drink]?, Error?) -> Void)  {
         
         guard endpoint != "" else { return }
         
@@ -43,29 +48,24 @@ public class DrinksController {
                 
                 do {
                     let decoder = JSONDecoder()
-                    let json = try decoder.decode(Drinks.self, from: data!)
-                        //map data fetched to Drink object
+                    
+                    //map data fetched to Drink object
+                    let drinks = try decoder.decode(Drinks.self, from: data!)
+                    
 //                    print("json fetched successfully with data: \(json)\n")
                     
-                    let drinks = json.drinks!
-//                    print("Drinks list succesfully fetched with content: \(drinks)\n")
-                    
-                    //Pass results back to meain thread / ViewController
-                    //via delegate property
-                    DispatchQueue.main.async {
-                        self.delegate?.json(fetched: drinks)
-                    }
+                    //Pass drinks back to caller
+                    completion(drinks.drinks, nil)
                     
                 //catch and print errors to console
                 } catch {
                     print("Couldn't decode JSON data with error: \(error.localizedDescription)\n")
-                    completion(error)
+                    completion(nil, error)
                     return
                 }
             } else if error != nil || data == nil {
-                completion(error)
+                completion(nil, error)
             }
-            
         }
         
         task.resume()
@@ -89,8 +89,5 @@ public class DrinksController {
             task.resume()
         }
     }
-    
-    
-    
 }
 

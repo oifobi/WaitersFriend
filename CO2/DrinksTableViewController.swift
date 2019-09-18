@@ -15,36 +15,33 @@ enum TabBarItem: Int  {
     case Search = 3
 }
 
-//Custom tableView cell definition
+//MARK:- Custom tableView cell definition
 class DrinkTableViewCell: UITableViewCell {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var drinkImageView: UIImageView!
-    
 }
 
-class DrinksTableViewController: UITableViewController, DrinkProtocol {
+//MARK:- Class Definition
+class DrinksTableViewController: UITableViewController {
     
-    //protocol conformance. Pass in drinks fetched to VC drinks property
-    func json(fetched drinks: [Drink]) {
-        self.drinks = drinks
-        updateUI()
-        print("DrinksTableViewController protocol / delegate pattern working. Drinks fetched\n")
-    }
+    //Property to store Table section index
+    var tableSectionsIndex: [(key: Substring, value: [Drink])]?
     
-    //properties to store drinks and related images
-    var drinks: [Drink]?
-    
+    //MARK:- Built in view management methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Setup communication for when Drinks data is ready and needs to be passed from DrinkController to VC
-        DrinksController.shared.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         
         //Fire fetch data depending in Tab Bar Item selected
         performSelector(inBackground: #selector(fireFetchDrinks), with: nil)
     }
+    
+    //MARK:- Custom Get Data / setup UI methods
     
     //Fire fetch reequest and pass in drinks list paramter, based on tab item selected by user
     @objc func fireFetchDrinks() {
@@ -67,23 +64,26 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
         }
     
         //fire fetch drinks list method
-        DrinksController.shared.fetchDrinks(from: endpoint) { (error) in
+        DrinksController.shared.fetchDrinks(from: endpoint) { (fetchedDrinks, error) in
         
+            //fire UI update if fetch successful
+            if let drinks = fetchedDrinks {
+                DrinksController.drinks = drinks
+                self.updateUI()
+//                print("Fetched Drinks: \(drinks)\n")
+            
             //fire error handler if error
-            if let error = error {
+            } else {
+                if let error = error {
                 self.showAlert(with: error)
+                }
             }
         }
-        
-        //fire updateUI if no error
-        updateUI()
-       
     }
     
     func updateUI() {
         
         var title = String()
-        
         switch navigationController?.tabBarItem.tag {
         case TabBarItem.Popular.rawValue:
             title = "Top Rated Drinks"
@@ -97,6 +97,7 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
         
         DispatchQueue.main.async {
             self.title = title
+            self.createTableSectionsIndex()
             self.tableView.reloadData()
         }
     }
@@ -114,62 +115,120 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
             self.present(ac, animated: true)
         }
     }
+    
+    //setup tableViewIndex
+    func createTableSectionsIndex() {
+        
+        guard DrinksController.drinks != nil else {return }
+        
+        let names = DrinksController.drinks!.map {$0.name}.sorted()
+        print("Drink names: \(names)\n")
+        
+        //create dictionary of letters to for index (based on first letter of Drinks name), then sort by keys
+        let dict = Dictionary(grouping: DrinksController.drinks!, by: { $0.name.prefix(1)})
+        
+        tableSectionsIndex = dict.sorted(by: {$0.key < $1.key})
+    }
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        
+        guard tableSectionsIndex != nil else {return 0}
+        
+        //set number of sections based on number of section title objects
+        return tableSectionsIndex!.count
     }
-
+    
+    //set number of section rows based on number of drinks contained within in each section title
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        guard drinks?.count != nil else {return 0}
-        return drinks!.count
+        guard tableSectionsIndex != nil else { return 0 }
+        
+        //Get the number of rows per section by accessing the key's drinks count
+        let section = tableSectionsIndex![section]
+        return section.value.count
     }
+    
+    //set and display tbale section headings in tableView (Letter)
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        guard tableSectionsIndex != nil else { return "" }
+        
+        //Pull out the key value (Letter) and set as Section heading
+        let title = tableSectionsIndex![section].key
+        return String(title)
+    }
+    
+    //set titles to display in index on RHS of tableView
+    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        
+        guard tableSectionsIndex != nil else { return [""] }
+        
+        //create an array of all the letters for the table index, using the keys and transform to type string
+        let titles = tableSectionsIndex!.map( { String($0.key) } )
+        return titles
+    }
+    
 
-    //method uses custome defined classs
+    //method uses custom defined classs
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //point cellForRowAt method to custom cell class by down casting to custom class
         let cell = tableView.dequeueReusableCell(withIdentifier: "DrinkCell", for: indexPath) as! DrinkTableViewCell
         
-        if let drink = drinks?[indexPath.row] {
+    
+        //get reference to the section (being shown
+        if let section = tableSectionsIndex?[indexPath.section] {
         
-            //set text of cell labels
-            cell.titleLabel.text = drink.name
-            cell.subtitleLabel.text = drink.ingredient1
+            //get drinks for the section to be shown
+            let drinks = section.value
+        
+        
+            //ensure table rows matches drinks object array since the same tableView controller is used for different calls to fetch data
+            if indexPath.row < DrinksController.drinks!.count {
             
-            //Fetch and set drink image
-            if let imageURL = drink.imageURL {
+//                if let drink = DrinksController.drinks?[indexPath.row] {
+                let drink = drinks[indexPath.row]
                 
-//                let image = fireFetchDrinkImage(with: imageURL)
-                DrinksController.shared.fetchDrinkImage(with:imageURL) { (image, error) in
-                    if let drinkImage = image {
-                
-                        //Update cell image to fecthedImage via main thread
-                        DispatchQueue.main.async {
+                //set text of cell labels
+                cell.titleLabel.text = drink.name
+                cell.subtitleLabel.text = drink.ingredient1
+            
+                    //Fetch and set drink image
+                    if let imageURL = drink.imageURL {
+                        
+                        DrinksController.shared.fetchDrinkImage(with:imageURL) { (fetchedImage, error) in
+                            if let drinkImage = fetchedImage {
 
-                            //Ensure wrong image isn't inserted into a recycled cell
-                            if let currentIndexPath = self.tableView.indexPath(for: cell),
+                                //Update cell image to fecthedImage via main thread
+                                DispatchQueue.main.async {
 
-                                //If current cell index and table index don't match, exit method
-                                currentIndexPath != indexPath {
-                                return
+                                    //Ensure wrong image isn't inserted into a recycled cell
+                                    if let currentIndexPath = self.tableView.indexPath(for: cell),
+
+                                        //If current cell index and table index don't match, exit fetch image method
+                                        currentIndexPath != indexPath {
+                                            return
+                                        }
+
+                                    //Set cell image
+                                    cell.drinkImageView?.image = drinkImage
+
+                                    //Update cell layout to accommodate image
+                                    cell.setNeedsLayout()
                                 }
-                            
-                            //Set cell image
-                            cell.drinkImageView?.image = drinkImage
 
-                            //Update cell layout to accommodate image
-                            cell.setNeedsLayout()
+                            //catch any errors fetching image
+                            } else if let error = error {
+                                print("Error fetching image with error \(error.localizedDescription)\n")
+                            }
                         }
-                    
-                    //catch any errors fetching image
-                    } else if let error = error {
-                        print("Error fetching image with error \(error.localizedDescription)\n")
                     }
-                }
+//                }
             }
         }
+    
+
         return cell
     }
     
@@ -200,10 +259,14 @@ class DrinksTableViewController: UITableViewController, DrinkProtocol {
         // Get the new view controller using segue.destination
         if segue.identifier == "TableVCToDrinkDetailsVC" {
             let vc = segue.destination as! DrinkDetailsViewController
-            let drinkTapped = tableView.indexPathForSelectedRow!.row
-            vc.drink = drinks?[drinkTapped]
+            
+            let sectionIndexOfRowTapped = tableView.indexPathForSelectedRow!.section
+            let indexOfRowTapped = tableView.indexPathForSelectedRow!.row
+            let indexItem = tableSectionsIndex?[sectionIndexOfRowTapped]
+            vc.drink = indexItem?.value[indexOfRowTapped]
+            
+//            vc.drink = DrinksController.drinks?[drinkTapped]
             vc.sender = "DrinksTableViewController"
         }
      }
-    
 }
