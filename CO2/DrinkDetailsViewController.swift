@@ -41,6 +41,44 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     @IBOutlet weak var instructionsLabel: UILabel!
     
     
+    //Detect and take action with Long press on UIViewImage
+    @IBAction func drinkDetailsImageViewGesture(recognizer: UILongPressGestureRecognizer) {
+        
+        //set min duration before recognizer actions fire
+        recognizer.minimumPressDuration = 0.25
+  
+        //trigger transform
+        if recognizer.state == .began {
+            print("Long Press started")
+            self.becomeFirstResponder()
+            
+            //move recognizer view to front of all other views
+            recognizer.view?.superview?.bringSubviewToFront(recognizer.view!)
+            
+            //set new image scaling
+            drinkDetailsImageView.contentMode = .scaleAspectFit
+            
+            //set transforms
+            recognizer.view?.transform = CGAffineTransform(scaleX: 2.5, y: 2.5).translatedBy(x: 0, y: 50)
+
+        }
+        
+        //stop transform, reset to pre-transform state
+        if recognizer.state == .ended {
+            print("Long press ended")
+            self.resignFirstResponder()
+            
+            //reset new image scaling
+            drinkDetailsImageView.contentMode = .scaleAspectFill
+        
+            //move recognizer views to back of all other views
+            recognizer.view?.superview?.bringSubviewToFront(recognizer.view!)
+            
+            //reset transform
+            recognizer.view?.transform = CGAffineTransform.identity
+        }
+    }
+    
     //MARK:- View / Class properties
     
     //Properties to receive drink object data from sender VC/s
@@ -61,7 +99,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     var ingredients: [(key: String, value: String)]?
     var measures: [(key: String, value: String)]?
     
-    
+
     //MARK:- Built-in View managemenet
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,7 +124,6 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         //unset drink image so it's not loaded on navigation back VC
         drinkImage = nil
         drinkDetailsImageView.setNeedsDisplay()
-
     }
     
     //MARK:- Custom View management
@@ -113,11 +150,9 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
             //Set up How to prepare text
             self.instructionsLabel.text = self.drink?.instructions
             self.instructionsLabel.sizeToFit()
-//            self.containerScrollView.contentSize = CGSize(width: self.view.frame.width - 10, height: 500)
             
             //Set navigation items
             self.title = self.drink?.name
-            
         }
     }
     
@@ -264,6 +299,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         
         return cell
     }
+
     
 }
 

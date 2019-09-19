@@ -105,7 +105,6 @@ struct Drink: Codable {
         case measure15 = "strMeasure15"
         
     }
-
 }
 
 

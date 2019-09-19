@@ -15,14 +15,7 @@ public class DrinksController {
     static let shared = DrinksController()
     
     //Global property for VCs to store fetched data when called (set by callling VC)
-    static var drinks: [Drink]? {
-        
-        didSet {
-            
-            //sort drinks array in ascending order by name
-//            drinks?.sort(by: { $0.name < $1.name })
-        }
-    }
+    static var drinks: [Drink]? 
     
     //API end points
     static let popular = "/popular.php" // UI tag: 0 = Top Rated

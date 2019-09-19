@@ -183,48 +183,45 @@ class DrinksTableViewController: UITableViewController {
             //get drinks for the section to be shown
             let drinks = section.value
         
-        
             //ensure table rows matches drinks object array since the same tableView controller is used for different calls to fetch data
             if indexPath.row < DrinksController.drinks!.count {
             
-//                if let drink = DrinksController.drinks?[indexPath.row] {
-                let drink = drinks[indexPath.row]
-                
-                //set text of cell labels
-                cell.titleLabel.text = drink.name
-                cell.subtitleLabel.text = drink.ingredient1
+            let drink = drinks[indexPath.row]
             
-                    //Fetch and set drink image
-                    if let imageURL = drink.imageURL {
-                        
-                        DrinksController.shared.fetchDrinkImage(with:imageURL) { (fetchedImage, error) in
-                            if let drinkImage = fetchedImage {
+            //set text of cell labels
+            cell.titleLabel.text = drink.name
+            cell.subtitleLabel.text = drink.ingredient1
+        
+                //Fetch and set drink image
+                if let imageURL = drink.imageURL {
+                    
+                    DrinksController.shared.fetchDrinkImage(with:imageURL) { (fetchedImage, error) in
+                        if let drinkImage = fetchedImage {
 
-                                //Update cell image to fecthedImage via main thread
-                                DispatchQueue.main.async {
+                            //Update cell image to fecthedImage via main thread
+                            DispatchQueue.main.async {
 
-                                    //Ensure wrong image isn't inserted into a recycled cell
-                                    if let currentIndexPath = self.tableView.indexPath(for: cell),
+                                //Ensure wrong image isn't inserted into a recycled cell
+                                if let currentIndexPath = self.tableView.indexPath(for: cell),
 
-                                        //If current cell index and table index don't match, exit fetch image method
-                                        currentIndexPath != indexPath {
-                                            return
-                                        }
+                                    //If current cell index and table index don't match, exit fetch image method
+                                    currentIndexPath != indexPath {
+                                        return
+                                    }
 
-                                    //Set cell image
-                                    cell.drinkImageView?.image = drinkImage
+                                //Set cell image
+                                cell.drinkImageView?.image = drinkImage
 
-                                    //Update cell layout to accommodate image
-                                    cell.setNeedsLayout()
-                                }
-
-                            //catch any errors fetching image
-                            } else if let error = error {
-                                print("Error fetching image with error \(error.localizedDescription)\n")
+                                //Update cell layout to accommodate image
+                                cell.setNeedsLayout()
                             }
+
+                        //catch any errors fetching image
+                        } else if let error = error {
+                            print("Error fetching image with error \(error.localizedDescription)\n")
                         }
                     }
-//                }
+                }
             }
         }
     
@@ -251,7 +248,6 @@ class DrinksTableViewController: UITableViewController {
         return image
     }
     
-    
     // MARK: - Navigation
     //Set and push selected cell data to DetailVC
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -264,8 +260,6 @@ class DrinksTableViewController: UITableViewController {
             let indexOfRowTapped = tableView.indexPathForSelectedRow!.row
             let indexItem = tableSectionsIndex?[sectionIndexOfRowTapped]
             vc.drink = indexItem?.value[indexOfRowTapped]
-            
-//            vc.drink = DrinksController.drinks?[drinkTapped]
             vc.sender = "DrinksTableViewController"
         }
      }

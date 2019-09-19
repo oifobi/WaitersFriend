@@ -93,8 +93,12 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="s34-tE-YkV">
                                 <rect key="frame" x="5" y="5" width="365" height="719"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mq7-4N-WKi">
+                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mq7-4N-WKi">
                                         <rect key="frame" x="0.0" y="0.0" width="365" height="339.66666666666669"/>
+                                        <gestureRecognizers/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="rbh-wQ-fmT" appends="YES" id="P8k-EH-4pf"/>
+                                        </connections>
                                     </imageView>
                                     <segmentedControl opaque="NO" contentMode="center" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PfA-6z-I4G">
                                         <rect key="frame" x="0.0" y="344.66666666666669" width="365" height="31"/>
@@ -202,6 +206,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3z9-VX-GdF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="rbh-wQ-fmT">
+                    <connections>
+                        <action selector="drinkDetailsImageViewGestureWithRecognizer:" destination="rJa-FV-Fid" id="VZm-cA-Ohe"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2986.4000000000001" y="147.78325123152709"/>
         </scene>
