@@ -17,11 +17,13 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
             switch segmentControlIndex {
             case 1:
                 containerScrollView.isHidden = false
+                instructionsLabel.isHidden = false
                 ingredientsTableView.isHidden = true
                 segmentedControl.selectedSegmentIndex = 1
                 
             default:
                 containerScrollView.isHidden = true
+                instructionsLabel.isHidden = true
                 ingredientsTableView.isHidden = false
                 segmentedControl.selectedSegmentIndex = 0
             }
@@ -55,6 +57,13 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
             //move recognizer view to front of all other views
             recognizer.view?.superview?.bringSubviewToFront(recognizer.view!)
             
+            //hide other UIViews
+            if segmentControlIndex == 1 {
+                containerScrollView.isHidden = true
+                instructionsLabel.isHidden = true
+            }
+
+            
             //set new image scaling
             drinkDetailsImageView.contentMode = .scaleAspectFit
             
@@ -71,9 +80,11 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
             //reset new image scaling
             drinkDetailsImageView.contentMode = .scaleAspectFill
         
-            //move recognizer views to back of all other views
-            recognizer.view?.superview?.bringSubviewToFront(recognizer.view!)
-            
+            //unhide other UIViews
+            if segmentControlIndex == 1 {
+                containerScrollView.isHidden = false
+                instructionsLabel.isHidden = false
+            }
             //reset transform
             recognizer.view?.transform = CGAffineTransform.identity
         }
@@ -153,6 +164,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
             
             //Set navigation items
             self.title = self.drink?.name
+            
         }
     }
     
