@@ -3,4 +3,117 @@
    uuid = "036EF17F-8C67-460B-A051-D1CE9BB8C05F"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F6340A22-9BC4-489F-8515-13BF6474D43B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CO2/DrinksTableViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
+            landmarkName = "fireFetchDrinks()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AA1E5304-C57B-4C5F-93BE-3ECE70B7D4A7"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CO2/DrinksTableViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "fireFetchDrinks()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A8FA2D5E-88B0-4BAB-97FC-BFC1AA1A3DC3"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CO2/DrinksTableViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "fireFetchDrinks()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A8FA2D5E-88B0-4BAB-97FC-BFC1AA1A3DC3 - 20dabd383ef5a55a"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in CO2.DrinksTableViewController.fireFetchDrinks() -&gt; ()"
+                  moduleName = "CO2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/simonitalia/Documents/Programming/Swift%20_%20Xcode/My%20Projects/iOS/Apps/CO2/CO2/CO2/DrinksTableViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
+                  offsetFromSymbolStart = "112">
+               </Location>
+               <Location
+                  uuid = "A8FA2D5E-88B0-4BAB-97FC-BFC1AA1A3DC3 - 20dabd383ef5a55a"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in CO2.DrinksTableViewController.fireFetchDrinks() -&gt; ()"
+                  moduleName = "CO2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/simonitalia/Documents/Programming/Swift%20_%20Xcode/My%20Projects/iOS/Apps/CO2/CO2/CO2/DrinksTableViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
+                  offsetFromSymbolStart = "500">
+               </Location>
+               <Location
+                  uuid = "A8FA2D5E-88B0-4BAB-97FC-BFC1AA1A3DC3 - 20dabd383ef5a55a"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in CO2.DrinksTableViewController.fireFetchDrinks() -&gt; ()"
+                  moduleName = "CO2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/simonitalia/Documents/Programming/Swift%20_%20Xcode/My%20Projects/iOS/Apps/CO2/CO2/CO2/DrinksTableViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
+                  offsetFromSymbolStart = "684">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4147A61B-D92B-4887-A67F-91C930028CB8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CO2/DrinksTableViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "fireFetchDrinks()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

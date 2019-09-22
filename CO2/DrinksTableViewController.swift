@@ -49,10 +49,10 @@ class DrinksTableViewController: UITableViewController {
         //trigger fetch of JSON data from remote server
         var endpoint = String()
         
-//        DispatchQueue.main.async {
+        DispatchQueue.main.async {
         
             //Fetch json from "Popular" and "Recents" API end points
-            switch navigationController?.tabBarItem.tag {
+            switch self.navigationController?.tabBarItem.tag {
             //fetch popular
             case TabBarItem.Popular.rawValue:
                 endpoint = DrinksController.popular
@@ -64,31 +64,32 @@ class DrinksTableViewController: UITableViewController {
             default:
                 break
             }
-//        }
-    
-        //fire fetch drinks list method
-        DrinksController.shared.fetchDrinks(from: endpoint) { (fetchedDrinks, error) in
-        
-            //fire UI update if fetch successful
-            if let drinks = fetchedDrinks {
-                DrinksController.drinks = drinks
-                self.updateUI()
-//                print("Fetched Drinks: \(drinks)\n")
+
+            //fire fetch drinks list method
+            DrinksController.shared.fetchDrinks(from: endpoint) { (fetchedDrinks, error) in
             
-            //fire error handler if error
-            } else {
-                if let error = error {
-                self.showAlert(with: error)
+                //fire UI update if fetch successful
+                if let drinks = fetchedDrinks {
+                    DrinksController.drinks = drinks
+                    self.updateUI()
+    //                print("Fetched Drinks: \(drinks)\n")
+                
+                //fire error handler if error
+                } else {
+                    if let error = error {
+                    self.showAlert(with: error)
+                    }
                 }
             }
         }
+        
     }
     
     func updateUI() {
         
         var title = String()
         
-//        DispatchQueue.main.async {
+        DispatchQueue.main.async {
             switch self.navigationController?.tabBarItem.tag {
             case TabBarItem.Popular.rawValue:
                 title = "Top Rated Drinks"
@@ -99,8 +100,7 @@ class DrinksTableViewController: UITableViewController {
             default:
                 break
             }
-        
-            DispatchQueue.main.async {
+
             self.title = title
             self.createTableSectionsIndex()
             self.tableView.reloadData()

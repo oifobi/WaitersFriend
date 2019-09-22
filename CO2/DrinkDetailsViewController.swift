@@ -212,7 +212,6 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
                 
                 //Stop and remove activity spinnner
                 DispatchQueue.main.async() {
-                    // then remove the spinner view controller
                     ActivitySpinnerViewController.sharedSpinner.willMove(toParent: nil)
                     ActivitySpinnerViewController.sharedSpinner.view.removeFromSuperview()
                     ActivitySpinnerViewController.sharedSpinner.removeFromParent()
