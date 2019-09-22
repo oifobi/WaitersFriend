@@ -243,7 +243,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         addChild(ActivitySpinnerViewController.sharedSpinner)
         
         //Add spinner view to view controller
-        ActivitySpinnerViewController.sharedSpinner.view.frame = UIScreen.main.bounds
+        ActivitySpinnerViewController.sharedSpinner.view.frame = view.bounds
 
         view.addSubview(ActivitySpinnerViewController.sharedSpinner.view)
         ActivitySpinnerViewController.sharedSpinner.didMove(toParent: self)
