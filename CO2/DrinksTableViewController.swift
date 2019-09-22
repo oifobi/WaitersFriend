@@ -49,19 +49,22 @@ class DrinksTableViewController: UITableViewController {
         //trigger fetch of JSON data from remote server
         var endpoint = String()
         
-        //Fetch json from "Popular" and "Recents" API end points
-        switch navigationController?.tabBarItem.tag {
-        //fetch popular
-        case TabBarItem.Popular.rawValue:
-            endpoint = DrinksController.popular
+//        DispatchQueue.main.async {
         
-        //fetch recent
-        case TabBarItem.Recents.rawValue:
-            endpoint = DrinksController.recent
-        
-        default:
-            break
-        }
+            //Fetch json from "Popular" and "Recents" API end points
+            switch navigationController?.tabBarItem.tag {
+            //fetch popular
+            case TabBarItem.Popular.rawValue:
+                endpoint = DrinksController.popular
+            
+            //fetch recent
+            case TabBarItem.Recents.rawValue:
+                endpoint = DrinksController.recent
+            
+            default:
+                break
+            }
+//        }
     
         //fire fetch drinks list method
         DrinksController.shared.fetchDrinks(from: endpoint) { (fetchedDrinks, error) in
@@ -84,18 +87,20 @@ class DrinksTableViewController: UITableViewController {
     func updateUI() {
         
         var title = String()
-        switch navigationController?.tabBarItem.tag {
-        case TabBarItem.Popular.rawValue:
-            title = "Top Rated Drinks"
-            
-        case TabBarItem.Recents.rawValue:
-            title = "Trending Drinks"
-            
-        default:
-            break
-        }
         
-        DispatchQueue.main.async {
+//        DispatchQueue.main.async {
+            switch self.navigationController?.tabBarItem.tag {
+            case TabBarItem.Popular.rawValue:
+                title = "Top Rated Drinks"
+                
+            case TabBarItem.Recents.rawValue:
+                title = "Trending Drinks"
+                
+            default:
+                break
+            }
+        
+            DispatchQueue.main.async {
             self.title = title
             self.createTableSectionsIndex()
             self.tableView.reloadData()

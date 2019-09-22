@@ -110,10 +110,11 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     var ingredients: [(key: String, value: String)]?
     var measures: [(key: String, value: String)]?
     
-
+    
     //MARK:- Built-in View managemenet
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
     }
     
@@ -121,9 +122,11 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        //setup UI
         updateUI(sender: self.sender)
-        
+    
     }
+    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -145,8 +148,12 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         
         DispatchQueue.main.async {
             
+            //display activity spinner
+            self.setUpActivitySpinner()
+            
             //Fire fetch data depending on sender
             if sender == nil {
+                
                 self.performSelector(inBackground: #selector(self.fireFetchDrinks), with: nil)
                 
             }
@@ -169,6 +176,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     @objc func fireFetchDrinks() {
+        
         let endpoint = DrinksController.random
         
         //fire fetch drinks list method
@@ -201,6 +209,14 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
                 } else if let error = error {
                     print("Error fetching image with error \(error.localizedDescription)\n")
                 }
+                
+                //Stop and remove activity spinnner
+                DispatchQueue.main.async() {
+                    // then remove the spinner view controller
+                    ActivitySpinnerViewController.sharedSpinner.willMove(toParent: nil)
+                    ActivitySpinnerViewController.sharedSpinner.view.removeFromSuperview()
+                    ActivitySpinnerViewController.sharedSpinner.removeFromParent()
+                }
             }
         }
     }
@@ -220,7 +236,21 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
-    //MARK:- TableView data prep method/s (TO BE FIXED!!)
+    //Activity indicator / spinner
+    func setUpActivitySpinner() {
+    
+        //Add to relevant view
+        addChild(ActivitySpinnerViewController.sharedSpinner)
+        
+        //Add spinner view to view controller
+        ActivitySpinnerViewController.sharedSpinner.view.frame = UIScreen.main.bounds
+
+        view.addSubview(ActivitySpinnerViewController.sharedSpinner.view)
+        ActivitySpinnerViewController.sharedSpinner.didMove(toParent: self)
+        
+    }
+    
+    //MARK:- TableView data prep method/s (TO BE REFACTORED!)
     func loadIngredientsTableData() {
     
         ingredients = getIngredients()
