@@ -16,14 +16,10 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         
             switch segmentControlIndex {
             case 1:
-                containerScrollView.isHidden = false
-                instructionsLabel.isHidden = false
                 ingredientsTableView.isHidden = true
                 segmentedControl.selectedSegmentIndex = 1
                 
             default:
-                containerScrollView.isHidden = true
-                instructionsLabel.isHidden = true
                 ingredientsTableView.isHidden = false
                 segmentedControl.selectedSegmentIndex = 0
             }
@@ -31,64 +27,60 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     //MARK:- Inteface Builder outlets and Actions
+    
+    //Scrollview outlets
+    @IBOutlet weak var containerScrollView: UIScrollView!
+    @IBOutlet weak var instructionsLabel: UILabel!
+    
+    //Stackview outlets
+    //ImageView
     @IBOutlet weak var drinkDetailsImageView: UIImageView!
+    
+    //Detect and take action with Long press on UIViewImage
+    @IBAction func drinkDetailsImageViewGesture(recognizer: UILongPressGestureRecognizer) {
+      
+      //set min duration before recognizer actions fire
+      recognizer.minimumPressDuration = 0.25
+
+      //trigger transform
+      if recognizer.state == .began {
+          print("Long Press started")
+          self.becomeFirstResponder()
+          
+          //move recognizer view to front of all other views
+          recognizer.view?.superview?.bringSubviewToFront(recognizer.view!)
+
+          //set new image scaling
+          drinkDetailsImageView.contentMode = .scaleAspectFit
+          
+          //set transforms
+          recognizer.view?.transform = CGAffineTransform(scaleX: 2.5, y: 2.5).translatedBy(x: 0, y: 50)
+
+      }
+      
+      //stop transform, reset to pre-transform state
+      if recognizer.state == .ended {
+          print("Long press ended")
+          self.resignFirstResponder()
+          
+          //reset new image scaling
+          drinkDetailsImageView.contentMode = .scaleAspectFill
+          
+          //reset transform
+          recognizer.view?.transform = CGAffineTransform.identity
+      }
+    }
+    
+    //Segmenet controller
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBAction func segmentedControlTapped(_ sender: UISegmentedControl) {
         
         segmentControlIndex = sender.selectedSegmentIndex
     }
     
+    //tableView outlets
     @IBOutlet weak var ingredientsTableView: UITableView!
-    @IBOutlet weak var containerScrollView: UIScrollView!
-    @IBOutlet weak var instructionsLabel: UILabel!
-    
-    
-    //Detect and take action with Long press on UIViewImage
-    @IBAction func drinkDetailsImageViewGesture(recognizer: UILongPressGestureRecognizer) {
-        
-        //set min duration before recognizer actions fire
-        recognizer.minimumPressDuration = 0.25
-  
-        //trigger transform
-        if recognizer.state == .began {
-            print("Long Press started")
-            self.becomeFirstResponder()
-            
-            //move recognizer view to front of all other views
-            recognizer.view?.superview?.bringSubviewToFront(recognizer.view!)
-            
-            //hide other UIViews
-            if segmentControlIndex == 1 {
-                containerScrollView.isHidden = true
-                instructionsLabel.isHidden = true
-            }
 
-            
-            //set new image scaling
-            drinkDetailsImageView.contentMode = .scaleAspectFit
-            
-            //set transforms
-            recognizer.view?.transform = CGAffineTransform(scaleX: 2.5, y: 2.5).translatedBy(x: 0, y: 50)
-
-        }
-        
-        //stop transform, reset to pre-transform state
-        if recognizer.state == .ended {
-            print("Long press ended")
-            self.resignFirstResponder()
-            
-            //reset new image scaling
-            drinkDetailsImageView.contentMode = .scaleAspectFill
-        
-            //unhide other UIViews
-            if segmentControlIndex == 1 {
-                containerScrollView.isHidden = false
-                instructionsLabel.isHidden = false
-            }
-            //reset transform
-            recognizer.view?.transform = CGAffineTransform.identity
-        }
-    }
     
     //MARK:- View / Class properties
     
