@@ -29,7 +29,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     //MARK:- Inteface Builder outlets and Actions
     
     //Scrollview outlets
-    @IBOutlet weak var containerScrollView: UIScrollView!
+    @IBOutlet weak var instructionsScrollView: UIScrollView!
     @IBOutlet weak var instructionsLabel: UILabel!
     
     //Stackview outlets
