@@ -12,7 +12,8 @@ enum TabBarItem: Int  {
     case Popular = 0
     case Recents = 1
     case Random = 2
-    case Search = 3
+    case Home = 3
+    case Favorites = 4
 }
 
 //MARK:- Custom tableView cell definition
@@ -50,6 +51,9 @@ class DrinksTableViewController: UITableViewController {
         var endpoint = String()
         
         DispatchQueue.main.async {
+            
+            //start / display activity spinner
+            self.loadActivitySpinner()
         
             //Fetch json from "Popular" and "Recents" API end points
             switch self.navigationController?.tabBarItem.tag {
@@ -73,12 +77,18 @@ class DrinksTableViewController: UITableViewController {
                     DrinksController.drinks = drinks
                     self.updateUI()
     //                print("Fetched Drinks: \(drinks)\n")
+                }
+                
+                //Stop and remove activity spinnner
+                DispatchQueue.main.async() {
+                    ActivitySpinnerViewController.shared.willMove(toParent: nil)
+                    ActivitySpinnerViewController.shared.view.removeFromSuperview()
+                    ActivitySpinnerViewController.shared.removeFromParent()
+                }
                 
                 //fire error handler if error
-                } else {
-                    if let error = error {
+                if let error = error {
                     self.showAlert(with: error)
-                    }
                 }
             }
         }
@@ -90,6 +100,7 @@ class DrinksTableViewController: UITableViewController {
         var title = String()
         
         DispatchQueue.main.async {
+            
             switch self.navigationController?.tabBarItem.tag {
             case TabBarItem.Popular.rawValue:
                 title = "Top Rated Drinks"
@@ -121,6 +132,19 @@ class DrinksTableViewController: UITableViewController {
         }
     }
     
+    //Activity indicator / spinner
+    func loadActivitySpinner() {
+    
+        //Add to relevant view
+        addChild(ActivitySpinnerViewController.shared)
+        
+        //Add spinner view to view controller
+        ActivitySpinnerViewController.shared.view.frame = view.bounds
+
+        view.addSubview(ActivitySpinnerViewController.shared.view)
+        ActivitySpinnerViewController.shared.didMove(toParent: self)
+    }
+    
     //setup tableViewIndex
     func createTableSectionsIndex() {
         
@@ -133,6 +157,25 @@ class DrinksTableViewController: UITableViewController {
         let dict = Dictionary(grouping: DrinksController.drinks!, by: { $0.name.prefix(1)})
         
         tableSectionsIndex = dict.sorted(by: {$0.key < $1.key})
+    }
+    
+    //Not currently called as results in image not being loaded??
+    @objc func fireFetchDrinkImage(with url: String) -> UIImage {
+        
+        var image = UIImage()
+        
+        DrinksController.shared.fetchDrinkImage(with: url) { (fetchedImage, error) in
+            
+            //set fetched image
+            if let drinkImage = fetchedImage {
+                image = drinkImage
+            
+            //catch any errors fetching image
+            } else if let error = error {
+                print("Error fetching image with error \(error.localizedDescription)\n")
+            }
+        }
+        return image
     }
 
     // MARK: - Table view data source
@@ -174,14 +217,12 @@ class DrinksTableViewController: UITableViewController {
         return titles
     }
     
-
     //method uses custom defined classs
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //point cellForRowAt method to custom cell class by down casting to custom class
         let cell = tableView.dequeueReusableCell(withIdentifier: "DrinkCell", for: indexPath) as! DrinkTableViewCell
         
-    
         //get reference to the section (being shown
         if let section = tableSectionsIndex?[indexPath.section] {
         
@@ -229,29 +270,10 @@ class DrinksTableViewController: UITableViewController {
                 }
             }
         }
-    
-
+        
         return cell
     }
-    
-    //Not currently called as results in image not being loaded??
-    @objc func fireFetchDrinkImage(with url: String) -> UIImage {
-        
-        var image = UIImage()
-        
-        DrinksController.shared.fetchDrinkImage(with: url) { (fetchedImage, error) in
-            
-            //set fetched image
-            if let drinkImage = fetchedImage {
-                image = drinkImage
-            
-            //catch any errors fetching image
-            } else if let error = error {
-                print("Error fetching image with error \(error.localizedDescription)\n")
-            }
-        }
-        return image
-    }
+
     
     // MARK: - Navigation
     //Set and push selected cell data to DetailVC

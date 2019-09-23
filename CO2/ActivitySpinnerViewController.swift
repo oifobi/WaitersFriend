@@ -10,20 +10,23 @@ import UIKit
 
 class ActivitySpinnerViewController: UIViewController {
     
-    static var sharedSpinner = ActivitySpinnerViewController()
+    static var shared = ActivitySpinnerViewController()
     var spinner = UIActivityIndicatorView(style: .whiteLarge)
 
     override func loadView() {
+        
+        //create parent / superview to host spinner indicator
         view = UIView()
         view.backgroundColor = UIColor(white: 0, alpha: 0.7)
-
         spinner.translatesAutoresizingMaskIntoConstraints = false
+        
+        //start spinner animation and add to its parent view
         spinner.startAnimating()
         view.addSubview(spinner)
         
         //set spinner constraints within parent view
         spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
- 
     }
+    
 }
