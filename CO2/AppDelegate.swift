@@ -29,17 +29,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 //"NavigationController" set in the Storyboard ID field of the NavigationController storyboard object
             
             //create new UITabBarItem object
+            //recents tab item
             vc.tabBarItem = UITabBarItem(tabBarSystemItem: .recents, tag: 1)
             
             //add new viewController to the tab bar controller's viewControllers array
             tabBarController.viewControllers?.append(vc)
         }
         
-        //Random / featured item
+        //Random / featured tab item
         if let tabBarController = window?.rootViewController as? UITabBarController {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "DrinkDetailsViewNavController")
             vc.tabBarItem = UITabBarItem(tabBarSystemItem: .featured, tag: 2)
+            tabBarController.viewControllers?.append(vc)
+        }
+        
+//        //Favorites tab item
+//        if let tabBarController = window?.rootViewController as? UITabBarController {
+//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            let vc = storyboard.instantiateViewController(withIdentifier: "DrinkDetailsViewNavController")
+//            vc.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 3)
+//            tabBarController.viewControllers?.append(vc)
+//        }
+        
+        //Home / search tab item
+        if let tabBarController = window?.rootViewController as? UITabBarController {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "DrinkCollectionViewNavController")
+            vc.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 4)
             tabBarController.viewControllers?.append(vc)
         }
 

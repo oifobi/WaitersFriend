@@ -18,9 +18,10 @@ public class DrinksController {
     static var drinks: [Drink]? 
     
     //API end points
-    static let popular = "/popular.php" // UI tag: 0 = Top Rated
+    static let popular = "/popular.php" // UI tag: 0 = Most Top rated
     static let recent = "/recent.php" // UI tag: 1 = Recents
     static let random = "/random.php" // UI tag: 2 = Featured
+    static let search = "" // UI tag: 4 = search/home
     
     //API connectivity properties
     let apiKey = "8673533"

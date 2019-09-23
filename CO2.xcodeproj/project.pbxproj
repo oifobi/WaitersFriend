@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A3A19A9233904BA0029DD59 /* DrinkCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3A19A8233904BA0029DD59 /* DrinkCollectionViewController.swift */; };
 		2A53D2E22337302400506AFD /* ActivitySpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A53D2E12337302400506AFD /* ActivitySpinnerViewController.swift */; };
 		2AA67067232632B9006534F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA67066232632B9006534F0 /* AppDelegate.swift */; };
 		2AA6706C232632B9006534F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2AA6706A232632B9006534F0 /* Main.storyboard */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2A3A19A8233904BA0029DD59 /* DrinkCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkCollectionViewController.swift; sourceTree = "<group>"; };
 		2A53D2E12337302400506AFD /* ActivitySpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySpinnerViewController.swift; sourceTree = "<group>"; };
 		2AA67063232632B9006534F0 /* CO2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CO2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AA67066232632B9006534F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				2AA670AC2327ABFC006534F0 /* DrinksTableViewController.swift */,
 				2AA6709423263CD4006534F0 /* DrinkDetailsViewController.swift */,
 				2A53D2E12337302400506AFD /* ActivitySpinnerViewController.swift */,
+				2A3A19A8233904BA0029DD59 /* DrinkCollectionViewController.swift */,
 				2AA6706A232632B9006534F0 /* Main.storyboard */,
 				2AA6706D232632BA006534F0 /* Assets.xcassets */,
 				2AA6706F232632BA006534F0 /* LaunchScreen.storyboard */,
@@ -269,6 +272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2AA670AB2327A3D4006534F0 /* DrinksController.swift in Sources */,
+				2A3A19A9233904BA0029DD59 /* DrinkCollectionViewController.swift in Sources */,
 				2AA6709523263CD4006534F0 /* DrinkDetailsViewController.swift in Sources */,
 				2AA67067232632B9006534F0 /* AppDelegate.swift in Sources */,
 				2AA670AD2327ABFC006534F0 /* DrinksTableViewController.swift in Sources */,

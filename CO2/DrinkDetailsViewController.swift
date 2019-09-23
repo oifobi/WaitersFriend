@@ -104,12 +104,6 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     
     
     //MARK:- Built-in View managemenet
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        
-    }
-    
     //Prepare Drink data content
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -117,6 +111,11 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         //setup UI
         updateUI(sender: self.sender)
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)

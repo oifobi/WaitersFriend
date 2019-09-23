@@ -31,15 +31,15 @@ class DrinksTableViewController: UITableViewController {
     var tableSectionsIndex: [(key: Substring, value: [Drink])]?
     
     //MARK:- Built in view management methods
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         
         //Fire fetch data depending in Tab Bar Item selected
         performSelector(inBackground: #selector(fireFetchDrinks), with: nil)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
     }
     
     //MARK:- Custom Get Data / setup UI methods
@@ -61,9 +61,11 @@ class DrinksTableViewController: UITableViewController {
             case TabBarItem.Popular.rawValue:
                 endpoint = DrinksController.popular
             
-            //fetch recent
+            //fetch recents
             case TabBarItem.Recents.rawValue:
                 endpoint = DrinksController.recent
+                
+            //fetch search item
             
             default:
                 break
