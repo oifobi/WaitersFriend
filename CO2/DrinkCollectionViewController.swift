@@ -12,10 +12,15 @@ private let reuseIdentifier = "Cell"
 
 class DrinkCollectionViewController: UICollectionViewController, UISearchResultsUpdating, UISearchBarDelegate {
     
+    var baseIngredients = [String]()
+    var drinksList = [String]()
     
-
+    //MARK:- Built-in CollectionView handlers
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        //Fire fetch Base Ingredients List
+        performSelector(inBackground: #selector(fireFetchBaseIngredients), with: nil)
         
         updateUI()
     }
@@ -34,13 +39,45 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
         
     }
     
+    //MARK:- Custom Methods
     func updateUI() {
         
         //load navigationBar items
         setupNavigationBar()
         
+    }
+    
+    //Fetch List of Base Ingredients (ie: Vodka, Bitters, etc)
+    @objc func fireFetchBaseIngredients() {
+        
+        //fire fetch drinks list method
+        DrinksController.shared.fetchList(from: "/list.php", using: URLQueryItem(name: "i", value: "list")) { (fetchedLists, error) in
+        
+            //fire UI update if fetch successful
+            if let lists = fetchedLists {
+                
+                //set fetechedList data to baseIngredients property
+                self.baseIngredients = lists.map( { $0.ingredients!} )
+                
+//                self.updateUI()
+                print("Successfully fetched list: \(self.baseIngredients)\n")
+            }
+            
+            //fire error meessage if error
+            if let error = error {
+                print("Error fetching list with error: \(error.localizedDescription)\n")
+            }
+        }
+    }
+    
+    //Fetch Drinks List made from a specific Base Ingredient
+    @objc func fireFetchDrinkList() {
+        
         
     }
+    
+    
+    
 
     //MARK:- Custom methods
     func setupNavigationBar() {

@@ -9,12 +9,15 @@
 import Foundation
 import UIKit
 
-//Collection of Drink type data objects
+
+
+
+//Collection of Drink data objects
 struct Drinks: Codable {
     var drinks: [Drink]?
 }
 
-//Data structure of
+//Data structure of Drink (Full details)
 struct Drink: Codable {
     
     //Define app data properties / fields
@@ -103,9 +106,11 @@ struct Drink: Codable {
         case measure13 = "strMeasure13"
         case measure14 = "strMeasure14"
         case measure15 = "strMeasure15"
-        
     }
 }
+
+
+
 
 
 

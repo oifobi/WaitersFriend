@@ -17,26 +17,39 @@ public class DrinksController {
     //Global property for VCs to store fetched data when called (set by callling VC)
     static var drinks: [Drink]? 
     
-    //API end points
+    //API end points and Url struturing
     static let popular = "/popular.php" // UI tag: 0 = Most Top rated
     static let recent = "/recent.php" // UI tag: 1 = Recents
     static let random = "/random.php" // UI tag: 2 = Featured
-    static let search = "" // UI tag: 4 = search/home
     
-    //API connectivity properties
-    let apiKey = "8673533"
-    let baseURLString = "https://www.thecocktaildb.com/api/json/v2/"
+    //MARK:- Fetch data from given API end point based on list parameter passed in (set by user tab bar item selected)
     
-    //Fetch data from given API end point based on list parameter passed in (set by user tab bar item selected)
+    //Setup construction of URL
+    func constructURLComponents() -> URLComponents {
+        
+        //API connectivity properties
+        let apiKey = "8673533"
+        let baseURLString = "www.thecocktaildb.com"
+        
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = baseURLString
+        components.path = "/api/json/v2/"+apiKey
+        return components
+    }
+    
+    //Fetch Drink Details
     func fetchDrinks(from endpoint: String, _ completion: @escaping ([Drink]?, Error?) -> Void)  {
         
         guard endpoint != "" else { return }
         
-        //Create URL object
-        let url = URL(string: baseURLString+apiKey)?.appendingPathComponent(endpoint)
+        //Create URL object and append endpoint
+        let components = constructURLComponents()
+        let url = components.url!.appendingPathComponent(endpoint)
+        
         print("API endpoint: \(String(describing: url))\n")
         
-        let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
             if error == nil && data != nil {
                 
@@ -45,7 +58,6 @@ public class DrinksController {
                     
                     //map data fetched to Drink object
                     let drinks = try decoder.decode(Drinks.self, from: data!)
-                    
 //                    print("json fetched successfully with data: \(json)\n")
                     
                     //Pass drinks back to caller
@@ -65,7 +77,7 @@ public class DrinksController {
         task.resume()
     }
     
-    //Fetch drink images
+    //Fetch Drink images
     func fetchDrinkImage(with url: String, completion: @escaping (UIImage?, Error?) -> Void) {
 
         if let urlString = URL(string: url) {
@@ -82,6 +94,36 @@ public class DrinksController {
             }
             task.resume()
         }
+    }
+    
+    //Fetch List type (generic method to fetch any list type)
+    func fetchList(from endpoint: String, using query: URLQueryItem, completion: @escaping ([List]?, Error?) -> Void) {
+//        guard query != "" else { return }
+        
+        //Create URL object with querry item/s and append endpoint
+        var components = constructURLComponents()
+        components.queryItems = [query]
+        
+        let url = components.url!.appendingPathComponent(endpoint)
+        
+        let task = URLSession.shared.dataTask(with: url) {
+            (data, response, error) in
+            
+            let jsonDecoder = JSONDecoder()
+            if let data = data,
+                
+                let lists = try? jsonDecoder.decode(Lists.self, from: data) {
+                completion(lists.list, nil)
+                
+            } else {
+                if let error = error {
+                    print("Couldn't decode JSON data with error: \(error.localizedDescription)\n")
+                    completion(nil, error)
+                }
+            }
+        }
+        
+        task.resume()
     }
 }
 
