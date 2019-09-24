@@ -8,37 +8,31 @@
 
 import Foundation
 
+struct ListType: Codable {
+    var type: [List]
+    
+    enum CodingKeys: String, CodingKey {
+        case type = "drinks"
+    }
+}
+
 //Generic Collection of different list types (ie: base ingredients, drink types, glass types etc)
 struct List: Codable  {
-    var ingredients: String?
+    
+    //Base ingredients properties
+    let baseIngredient: String?
+    
+    //Base Ingredient Drinks properties
+    let id: String?
+    let name: String?
+    let imageURL: String?
     
     enum CodingKeys: String, CodingKey {
-        case ingredients = "strIngredient1"
+        case id = "idDrink"
+        case name = "strDrink"
+        case imageURL = "strDrinkThumb"
+        case baseIngredient = "strIngredient1"
     }
 }
 
-struct Lists: Codable {
-    var list: [List]
-    
-    enum CodingKeys: String, CodingKey {
-        case list = "drinks"
-    }
-}
 
-//
-struct BaseIngredient: Codable {
-    let ingredient: String
-    
-    enum CodingKeys: String, CodingKey {
-        case ingredient = "strIngredient1"
-    }
-}
-
-struct BaseIngredients: Codable {
-    var ingredients: [BaseIngredient]
-    
-    enum CodingKeys: String, CodingKey {
-        case ingredients = "drinks"
-    }
-    
-}

@@ -9,9 +9,6 @@
 import Foundation
 import UIKit
 
-
-
-
 //Collection of Drink data objects
 struct Drinks: Codable {
     var drinks: [Drink]?
@@ -65,6 +62,7 @@ struct Drink: Codable {
     
     //Map app data fields to JSON API data (sAPI defined field are shown on RHS)
     enum CodingKeys: String, CodingKey {
+        
         case id = "idDrink"
         case name = "strDrink"
         case glass = "strGlass"

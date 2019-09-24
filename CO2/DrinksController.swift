@@ -40,7 +40,6 @@ public class DrinksController {
     
     //Fetch Drink Details
     func fetchDrinks(from endpoint: String, _ completion: @escaping ([Drink]?, Error?) -> Void)  {
-        
         guard endpoint != "" else { return }
         
         //Create URL object and append endpoint
@@ -79,7 +78,7 @@ public class DrinksController {
     
     //Fetch Drink images
     func fetchDrinkImage(with url: String, completion: @escaping (UIImage?, Error?) -> Void) {
-
+        
         if let urlString = URL(string: url) {
             let task = URLSession.shared.dataTask(with: urlString) {
                 (data, response, error) in
@@ -97,14 +96,13 @@ public class DrinksController {
     }
     
     //Fetch List type (generic method to fetch any list type)
-    func fetchList(from endpoint: String, using query: URLQueryItem, completion: @escaping ([List]?, Error?) -> Void) {
-//        guard query != "" else { return }
+    func fetchList(from path: String, using queryItems: [URLQueryItem], completion: @escaping ([List]?, Error?) -> Void) {
         
         //Create URL object with querry item/s and append endpoint
         var components = constructURLComponents()
-        components.queryItems = [query]
+        components.queryItems = queryItems
         
-        let url = components.url!.appendingPathComponent(endpoint)
+        let url = components.url!.appendingPathComponent(path)
         
         let task = URLSession.shared.dataTask(with: url) {
             (data, response, error) in
@@ -112,8 +110,8 @@ public class DrinksController {
             let jsonDecoder = JSONDecoder()
             if let data = data,
                 
-                let lists = try? jsonDecoder.decode(Lists.self, from: data) {
-                completion(lists.list, nil)
+                let list = try? jsonDecoder.decode(ListType.self, from: data) {
+                completion(list.type, nil)
                 
             } else {
                 if let error = error {
@@ -123,6 +121,34 @@ public class DrinksController {
             }
         }
         
+        task.resume()
+    }
+    
+    //Fetch drink details by drink id lookup
+    func fetchDrink(from path: String, using queryItems: [URLQueryItem], completion: @escaping (Drink?, Error?) -> Void) {
+        
+        //Create URL object with querry item/s and append endpoint
+        var components = constructURLComponents()
+        components.queryItems = queryItems
+        
+        let url = components.url!.appendingPathComponent(path)
+        
+        let task = URLSession.shared.dataTask(with: url) {
+            (data, response, error) in
+            
+            let jsonDecoder = JSONDecoder()
+            if let data = data,
+                
+                let drinks = try? jsonDecoder.decode(Drinks.self, from: data) {
+                completion(drinks.drinks![0], nil)
+                
+            } else {
+                if let error = error {
+                    print("Couldn't decode JSON data with error: \(error.localizedDescription)\n")
+                    completion(nil, error)
+                }
+            }
+        }
         task.resume()
     }
 }
