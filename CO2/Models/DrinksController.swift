@@ -9,25 +9,31 @@
 import Foundation
 import UIKit
 
+//API end points and Url struturing
+enum EndPoints: String {
+    
+    //Absolute endpoints
+    case random = "/random.php"
+    case popular = "/popular.php"
+    case recent = "/recent.php"
+    
+    //Endpoints for use with Queries
+    case search = "/search.php"
+    case lookup = "/lookup.php"
+    case filter = "/filter.php"
+    case list = "/list.php"
+}
+
 public class DrinksController {
     
     //Global Property for VCs to access DrinkController methods
     static let shared = DrinksController()
     
-    //Global property for VCs to store fetched data when called (set by callling VC)
-    static var drinks: [Drink]? 
-    
-    //API end points and Url struturing
-    static let popular = "/popular.php" // UI tag: 0 = Most Top rated
-    static let recent = "/recent.php" // UI tag: 1 = Recents
-    static let random = "/random.php" // UI tag: 2 = Featured
-    
     //MARK:- Fetch data from given API end point based on list parameter passed in (set by user tab bar item selected)
-    
     //Setup construction of URL
     func constructURLComponents() -> URLComponents {
         
-        //API connectivity properties
+        //API connection properties
         let apiKey = "8673533"
         let baseURLString = "www.thecocktaildb.com"
         
@@ -91,6 +97,7 @@ public class DrinksController {
                     completion(nil, error)
                 }
             }
+            
             task.resume()
         }
     }
@@ -149,6 +156,7 @@ public class DrinksController {
                 }
             }
         }
+        
         task.resume()
     }
 }

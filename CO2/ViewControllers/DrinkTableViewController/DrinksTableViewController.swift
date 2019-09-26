@@ -8,24 +8,19 @@
 
 import UIKit
 
-enum TabBarItem: Int  {
-    case Popular = 0
-    case Recents = 1
-    case Random = 2
-    case Home = 3
-    case Favorites = 4
-}
-
 //MARK:- Custom tableView cell definition
-class DrinkTableViewCell: UITableViewCell {
-    
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var drinkImageView: UIImageView!
-}
+//class DrinkTableViewCell: UITableViewCell {
+//    
+//    @IBOutlet weak var titleLabel: UILabel!
+//    @IBOutlet weak var subtitleLabel: UILabel!
+//    @IBOutlet weak var drinkImageView: UIImageView!
+//}
 
 //MARK:- Class Definition
 class DrinksTableViewController: UITableViewController {
+    
+    //Property to store fetched data when called
+    var drinks: [Drink]? 
     
     //Property to store Table section index
     var tableSectionsIndex: [(key: Substring, value: [Drink])]?
@@ -48,35 +43,17 @@ class DrinksTableViewController: UITableViewController {
     @objc func fireFetchDrinks() {
     
         //trigger fetch of JSON data from remote server
-        var endpoint = String()
-        
         DispatchQueue.main.async {
             
             //start / display activity spinner
             self.loadActivitySpinner()
-        
-            //Fetch json from "Popular" and "Recents" API end points
-            switch self.navigationController?.tabBarItem.tag {
-            //fetch popular
-            case TabBarItem.Popular.rawValue:
-                endpoint = DrinksController.popular
-            
-            //fetch recents
-            case TabBarItem.Recents.rawValue:
-                endpoint = DrinksController.recent
-                
-            //fetch search item
-            
-            default:
-                break
-            }
 
             //fire fetch drinks list method
-            DrinksController.shared.fetchDrinks(from: endpoint) { (fetchedDrinks, error) in
+            DrinksController.shared.fetchDrinks(from: EndPoints.popular.rawValue) { (fetchedDrinks, error) in
             
                 //fire UI update if fetch successful
                 if let drinks = fetchedDrinks {
-                    DrinksController.drinks = drinks
+                    self.drinks = drinks
                     self.updateUI()
     //                print("Fetched Drinks: \(drinks)\n")
                 }
@@ -94,27 +71,12 @@ class DrinksTableViewController: UITableViewController {
                 }
             }
         }
-        
     }
     
     func updateUI() {
         
-        var title = String()
-        
         DispatchQueue.main.async {
-            
-            switch self.navigationController?.tabBarItem.tag {
-            case TabBarItem.Popular.rawValue:
-                title = "Top Rated Drinks"
-                
-            case TabBarItem.Recents.rawValue:
-                title = "Trending Drinks"
-                
-            default:
-                break
-            }
-
-            self.title = title
+            self.title = "Top Rated Drinks"
             self.createTableSectionsIndex()
             self.tableView.reloadData()
         }
@@ -150,40 +112,21 @@ class DrinksTableViewController: UITableViewController {
     //setup tableViewIndex
     func createTableSectionsIndex() {
         
-        guard DrinksController.drinks != nil else {return }
+        guard drinks != nil else { return }
         
-        let names = DrinksController.drinks!.map {$0.name}.sorted()
-        print("Drink names: \(names)\n")
+//        let names = DrinksController.drinks!.map {$0.name}.sorted()
+//        print("Drink names: \(names)\n")
         
         //create dictionary of letters to for index (based on first letter of Drinks name), then sort by keys
-        let dict = Dictionary(grouping: DrinksController.drinks!, by: { $0.name.prefix(1)})
+        let dict = Dictionary(grouping: drinks!, by: { $0.name.prefix(1)})
         
         tableSectionsIndex = dict.sorted(by: {$0.key < $1.key})
-    }
-    
-    //Not currently called as results in image not being loaded??
-    @objc func fireFetchDrinkImage(with url: String) -> UIImage {
-        
-        var image = UIImage()
-        
-        DrinksController.shared.fetchDrinkImage(with: url) { (fetchedImage, error) in
-            
-            //set fetched image
-            if let drinkImage = fetchedImage {
-                image = drinkImage
-            
-            //catch any errors fetching image
-            } else if let error = error {
-                print("Error fetching image with error \(error.localizedDescription)\n")
-            }
-        }
-        return image
     }
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         
-        guard tableSectionsIndex != nil else {return 0}
+        guard tableSectionsIndex != nil else { return 0 }
         
         //set number of sections based on number of section title objects
         return tableSectionsIndex!.count
@@ -232,7 +175,7 @@ class DrinksTableViewController: UITableViewController {
             let drinks = section.value
         
             //ensure table rows matches drinks object array since the same tableView controller is used for different calls to fetch data
-            if indexPath.row < DrinksController.drinks!.count {
+            if indexPath.row < drinks.count {
             
             let drink = drinks[indexPath.row]
             
@@ -258,7 +201,7 @@ class DrinksTableViewController: UITableViewController {
                                     }
 
                                 //Set cell image
-                                cell.drinkImageView?.image = drinkImage
+                                cell.imageView?.image = drinkImage
 
                                 //Update cell layout to accommodate image
                                 cell.setNeedsLayout()
@@ -276,10 +219,9 @@ class DrinksTableViewController: UITableViewController {
         return cell
     }
 
-    
     // MARK: - Navigation
     //Set and push selected cell data to DetailVC
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         // Get the new view controller using segue.destination
         if segue.identifier == "TableVCToDrinkDetailsVC" {
@@ -291,5 +233,5 @@ class DrinksTableViewController: UITableViewController {
             vc.drink = indexItem?.value[indexOfRowTapped]
             vc.sender = "DrinksTableViewController"
         }
-     }
+    }
 }

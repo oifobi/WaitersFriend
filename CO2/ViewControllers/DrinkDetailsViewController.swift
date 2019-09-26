@@ -164,7 +164,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     
     @objc func fireFetchDrinks() {
         
-        let endpoint = DrinksController.random
+        let endpoint = EndPoints.random.rawValue
         
         //fire fetch drinks list method
         DrinksController.shared.fetchDrinks(from: endpoint) { (drinks, error) in

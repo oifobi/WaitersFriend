@@ -11,13 +11,14 @@ import UIKit
 class ActivitySpinnerViewController: UIViewController {
     
     static var shared = ActivitySpinnerViewController()
-    var spinner = UIActivityIndicatorView(style: .whiteLarge)
+    
+    var spinner = UIActivityIndicatorView(style: .large)
 
     override func loadView() {
         
         //create parent / superview to host spinner indicator
         view = UIView()
-        view.backgroundColor = UIColor(white: 0, alpha: 0.7)
+        view.backgroundColor = UIColor(white: 0, alpha: 0.5)
         spinner.translatesAutoresizingMaskIntoConstraints = false
         
         //start spinner animation and add to its parent view
@@ -28,5 +29,4 @@ class ActivitySpinnerViewController: UIViewController {
         spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
-    
 }

@@ -15,50 +15,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        
-        //Programmatically create another ViewController for each other tab bar item
-        //Receent items
-        if let tabBarController = window?.rootViewController as? UITabBarController {
-            
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                //bundle = nil since we used the current app bundle
-            
-            //instantiateViewController = create new ViewController
-            let vc = storyboard.instantiateViewController(withIdentifier: "TableViewNavController")
-                //"NavigationController" set in the Storyboard ID field of the NavigationController storyboard object
-            
-            //create new UITabBarItem object
-            //recents tab item
-            vc.tabBarItem = UITabBarItem(tabBarSystemItem: .recents, tag: 1)
-            
-            //add new viewController to the tab bar controller's viewControllers array
-            tabBarController.viewControllers?.append(vc)
-        }
         
         //Random / featured tab item
         if let tabBarController = window?.rootViewController as? UITabBarController {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "DrinkDetailsViewNavController")
-            vc.tabBarItem = UITabBarItem(tabBarSystemItem: .featured, tag: 2)
+            vc.tabBarItem = UITabBarItem(tabBarSystemItem: .featured, tag: 1)
             tabBarController.viewControllers?.append(vc)
         }
-        
-//        //Favorites tab item
-//        if let tabBarController = window?.rootViewController as? UITabBarController {
-//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//            let vc = storyboard.instantiateViewController(withIdentifier: "DrinkDetailsViewNavController")
-//            vc.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 3)
-//            tabBarController.viewControllers?.append(vc)
-//        }
         
         //Home / search tab item
         if let tabBarController = window?.rootViewController as? UITabBarController {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "DrinkCollectionViewNavController")
-            vc.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 4)
+            vc.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 2)
             tabBarController.viewControllers?.append(vc)
         }
+
 
         return true
     }
