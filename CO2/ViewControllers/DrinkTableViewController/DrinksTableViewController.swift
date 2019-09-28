@@ -114,9 +114,6 @@ class DrinksTableViewController: UITableViewController {
         
         guard drinks != nil else { return }
         
-//        let names = DrinksController.drinks!.map {$0.name}.sorted()
-//        print("Drink names: \(names)\n")
-        
         //create dictionary of letters to for index (based on first letter of Drinks name), then sort by keys
         let dict = Dictionary(grouping: drinks!, by: { $0.name.prefix(1)})
         
@@ -125,7 +122,6 @@ class DrinksTableViewController: UITableViewController {
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        
         guard tableSectionsIndex != nil else { return 0 }
         
         //set number of sections based on number of section title objects
@@ -179,10 +175,10 @@ class DrinksTableViewController: UITableViewController {
             
             let drink = drinks[indexPath.row]
             
-            //set text of cell labels
-            cell.titleLabel.text = drink.name
-            cell.subtitleLabel.text = drink.ingredient1
-        
+            //set cell lables text
+            cell.setTitleLabel(text: drink.name)
+            cell.setSubtitleLabel(text: drink.ingredient1 ?? "")
+                
                 //Fetch and set drink image
                 if let imageURL = drink.imageURL {
                     
@@ -201,9 +197,9 @@ class DrinksTableViewController: UITableViewController {
                                     }
 
                                 //Set cell image
-                                cell.imageView?.image = drinkImage
+                                cell.setImage(drinkImage)
 
-                                //Update cell layout to accommodate image
+                                //Refresh cell to display fetched image
                                 cell.setNeedsLayout()
                             }
 

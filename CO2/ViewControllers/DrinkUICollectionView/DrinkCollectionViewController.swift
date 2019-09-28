@@ -9,9 +9,9 @@
 import UIKit
 
 enum Section: Int {
-    case baseIngredientNames
-    case baseIngredientDrinkNames
-    case recentDrinks
+    case baseIngredients
+    case baseIngredientDrinks
+    case drinks
 }
 
 private let reuseIdentifier = "Cell"
@@ -23,8 +23,8 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
     
     //Properties for storing feteched drink/s data objects
     var baseIngredients = [String]() //Base ingredient
-    var baseIngredientDrinks = [String]() //List of drinks made with base ingredient
-    var drinks: [Drink]? //Recent drinks
+    var baseIngredientDrinks = [List]() //List of drinks made with base ingredient
+    var drinks = [Drink]() //Recent drinks
     var drink: Drink?
     
     //MARK:- Built-in CollectionView Life-Cycle handlers
@@ -48,8 +48,16 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
         // preserve selection between presentations
          self.clearsSelectionOnViewWillAppear = true
 
-        // Register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        // Register cell classes and nibs
+        //Section 0 cells
+        collectionView.register(UINib(nibName: "BaseIngredientCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "BaseIngredientCell")
+        
+//        //Section 1 cells
+        collectionView.register(UINib(nibName: "DrinkCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "BaseIngredientDrinkCell")
+
+        //section 2 cells
+        collectionView.register(UINib(nibName: "DrinkCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "RecentDrinkCell")
+        
 
         //Setup initial UI
         //Load navigationBar items
@@ -69,13 +77,13 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
         
             switch Section(rawValue: sectionIndex) {
             
-            case .baseIngredientNames:
+            case .baseIngredients:
                 return self?.setUpBaseIngredientNamesSection()
             
-            case .baseIngredientDrinkNames:
+            case .baseIngredientDrinks:
                 return self?.setUpBaseIngredientDrinkNamesSection()
             
-            case .recentDrinks:
+            case .drinks:
                 return self?.setUpRecentDrinksSection()
             
             case .none:
@@ -313,11 +321,11 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
     @objc func fetchDrinksList(for baseIngredient: String) {
         
         //fire fetch list method
-        DrinksController.shared.fetchList(from: "/filter.php", using: [URLQueryItem(name: "i", value: baseIngredient)]) { (fetchedLists, error) in
+        DrinksController.shared.fetchList(from: "/filter.php", using: [URLQueryItem(name: "i", value: baseIngredient)]) { (fetchedList, error) in
        
            //If success, set fetechedList data to drinksList property
-           if let lists = fetchedLists {
-                self.baseIngredientDrinks = lists.map( { $0.name!} )
+           if let list = fetchedList {
+                self.baseIngredientDrinks = list
                 self.updateUI()
                 print("Fetched drink list made with Base ingredient. Items: \(self.baseIngredientDrinks.count)\n")
            }
@@ -361,18 +369,17 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
         
         switch Section(rawValue: section) {
         
-        case .baseIngredientNames:
+        case .baseIngredients:
             return baseIngredients.count
             
-        case .baseIngredientDrinkNames:
+        case .baseIngredientDrinks:
             return baseIngredientDrinks.count
             
-        case .recentDrinks:
-            guard drinks != nil else { return 0 }
-            return drinks!.count
+        case .drinks:
+            return drinks.count
             
         case .none:
-            fatalError("Should not be none")
+            fatalError("Section should not be none")
         }
 
     }
@@ -388,14 +395,14 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
             
             switch Section(rawValue: indexPath.section) {
             
-            case .baseIngredientNames:
-                sectionHeaderView.setHeaderLabel(text: "Base Ingredients")
+            case .baseIngredients:
+                sectionHeaderView.setHeaderLabel(text: "Select a Base ingredient")
             
-            case .baseIngredientDrinkNames:
-                sectionHeaderView.setHeaderLabel(text: "Drinks made with Base Ingredient")
+            case .baseIngredientDrinks:
+                sectionHeaderView.setHeaderLabel(text: "Drinks made with <base ingredient>")
             
-            case .recentDrinks:
-                sectionHeaderView.setHeaderLabel(text: "Recent Drinks")
+            case .drinks:
+                sectionHeaderView.setHeaderLabel(text: "Trending drinks")
             
             case .none:
                 fatalError("Should not be none")
@@ -409,30 +416,125 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
         }
     }
     
-
     //Define cells / content per section item
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-    
-        // Configure the cell
-        //Section 3 (Recent Drinks)
-        if indexPath.section == 2 {
+        
+        
+        // Configure the cell for each section
+        switch Section(rawValue: indexPath.section) {
             
-            if let drinks = drinks {
-                let drink = drinks[indexPath.item]
-            
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DrinkCollectionViewCell", for: indexPath) as! DrinkCollectionViewCell
-                
-                //Set cell properties
-                cell.setDrinkNameLabel(text: drink.name)
-            
-            return cell
+        //Section 0
+        case .baseIngredients:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BaseIngredientCell", for: indexPath) as? BaseIngredientCollectionViewCell
+              else {
+                preconditionFailure("Invalid cell type")
             }
             
-        }
+            //Cell text
+            let ingredient = baseIngredients[indexPath.item]
+            cell.setLabel(text: ingredient)
+            return cell
         
-    
-        return cell
+        //Section 1
+        case .baseIngredientDrinks:
+            guard let cell = collectionView.dequeueReusableCell(
+              withReuseIdentifier: "BaseIngredientDrinkCell", for: indexPath) as? DrinkCollectionViewCell
+              else {
+                preconditionFailure("Invalid cell type")
+            }
+            
+            //Cell text
+            let drink = baseIngredientDrinks[indexPath.item]
+            cell.setLabel(text: drink.name!)
+            
+            //cell image
+            //Fetch and set drink image
+            if let imageURL = drink.imageURL {
+               
+               DrinksController.shared.fetchDrinkImage(with: imageURL) { (fetchedImage, error) in
+                   if let drinkImage = fetchedImage {
+
+                       //Update cell image to fecthedImage via main thread
+                       DispatchQueue.main.async {
+
+                           //Ensure wrong image isn't inserted into a recycled cell
+                            if let currentIndexPath = self.collectionView.indexPath(for: cell),
+
+                               //If current cell index and table index don't match, exit fetch image method
+                               currentIndexPath != indexPath {
+                                   return
+                               }
+
+                           //Set cell image
+                           cell.setImage(drinkImage)
+
+                           //Refresh cell to display fetched image
+                           cell.setNeedsLayout()
+                       }
+
+                   //catch any errors fetching image
+                   } else if let error = error {
+                       print("Error fetching image with error \(error.localizedDescription)\n")
+                   }
+               }
+            
+            }
+            return cell
+            
+            
+            return cell
+            
+        //Section 2
+        case .drinks:
+            guard let cell = collectionView.dequeueReusableCell(
+              withReuseIdentifier: "RecentDrinkCell", for: indexPath) as? DrinkCollectionViewCell
+              else {
+                preconditionFailure("Invalid cell type")
+            }
+            
+            let drink = drinks[indexPath.item]
+            
+            //Set cell properties
+            //Cell text
+            cell.setLabel(text: drink.name)
+            
+            //cell image
+            //Fetch and set drink image
+            if let imageURL = drink.imageURL {
+               
+               DrinksController.shared.fetchDrinkImage(with: imageURL) { (fetchedImage, error) in
+                   if let drinkImage = fetchedImage {
+
+                       //Update cell image to fecthedImage via main thread
+                       DispatchQueue.main.async {
+
+                           //Ensure wrong image isn't inserted into a recycled cell
+                            if let currentIndexPath = self.collectionView.indexPath(for: cell),
+
+                               //If current cell index and table index don't match, exit fetch image method
+                               currentIndexPath != indexPath {
+                                   return
+                               }
+
+                           //Set cell image
+                           cell.setImage(drinkImage)
+
+                           //Refresh cell to display fetched image
+                           cell.setNeedsLayout()
+                       }
+
+                   //catch any errors fetching image
+                   } else if let error = error {
+                       print("Error fetching image with error \(error.localizedDescription)\n")
+                   }
+               }
+            
+            }
+            return cell
+        
+        case .none:
+            fatalError("Should not be none")
+        }
     }
 
     // UICollectionViewDelegate

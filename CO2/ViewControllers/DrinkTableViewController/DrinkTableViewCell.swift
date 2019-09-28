@@ -11,7 +11,20 @@ import UIKit
 
 class DrinkTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var drinkImageView: UIImageView!
+    @IBOutlet weak var cellTitleLabel: UILabel!
+    @IBOutlet weak var cellSubtitleLabel: UILabel!
+    @IBOutlet weak var cellImageView: UIImageView!
+    
+    func setTitleLabel(text: String) {
+        cellTitleLabel.text = text
+    }
+        
+    func setSubtitleLabel(text: String) {
+        cellSubtitleLabel.text = text
+    }
+    
+    func setImage(_ image: UIImage) {
+        cellImageView.image = image
+    }
+    
 }

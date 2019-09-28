@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DrinkCollectionViewCell: UICollectionViewCell {
+class DrinkCollectionViewCell2: UICollectionViewCell {
     
     @IBOutlet weak var cellImageView: UIImageView!
     @IBOutlet weak var cellLabel: UILabel!

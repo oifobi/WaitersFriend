@@ -19,7 +19,7 @@ struct ListType: Codable {
 //Generic Collection of different list types (ie: base ingredients, drink types, glass types etc)
 struct List: Codable  {
     
-    //Base ingredients properties
+    //Base ingredient properties
     let baseIngredient: String?
     
     //Base Ingredient Drinks properties
