@@ -14,8 +14,6 @@ enum Section: Int {
     case drinks
 }
 
-private let reuseIdentifier = "Cell"
-
 class DrinkCollectionViewController: UICollectionViewController, UISearchResultsUpdating, UISearchBarDelegate {
     
     //IBOutlets
@@ -26,6 +24,7 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
     var baseIngredientDrinks = [List]() //List of drinks made with base ingredient
     var drinks = [Drink]() //Recent drinks
     var drink: Drink?
+    var currentBaseIngredient = String() //for tracking currently selected base ingredient
     
     //MARK:- Built-in CollectionView Life-Cycle handlers
     override func viewWillAppear(_ animated: Bool) {
@@ -38,7 +37,7 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
         performSelector(inBackground: #selector(fetchDrinksList), with: "vodka")
         
         //Fire fetch Recents Drink
-        performSelector(inBackground: #selector(fireFetchRecentDrinks), with: nil)
+        performSelector(inBackground: #selector(performFetchRecentDrinks), with: nil)
         
     }
     
@@ -61,7 +60,7 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
 
         //Setup initial UI
         //Load navigationBar items
-        self.setUpNavigationBar()
+//        self.setUpNavigationBar()
         
         //set compositionViewLayout
         self.collectionView.collectionViewLayout = self.setUpUICollectionViewCompositionLayout()
@@ -72,16 +71,17 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
     //Define / configure and create UICollectionView compositional layout
     func setUpUICollectionViewCompositionLayout() -> UICollectionViewCompositionalLayout {
         
+        //Define Layout
         let layout = UICollectionViewCompositionalLayout { [weak self]
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
         
             switch Section(rawValue: sectionIndex) {
             
             case .baseIngredients:
-                return self?.setUpBaseIngredientNamesSection()
+                return self?.setUpBaseIngredientsSection()
             
             case .baseIngredientDrinks:
-                return self?.setUpBaseIngredientDrinkNamesSection()
+                return self?.setUpBaseIngredientDrinksSection()
             
             case .drinks:
                 return self?.setUpRecentDrinksSection()
@@ -94,17 +94,22 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
     }
     
     //Section 0 setup
-    func setUpBaseIngredientNamesSection() -> NSCollectionLayoutSection {
+    func setUpBaseIngredientsSection() -> NSCollectionLayoutSection {
+        
+        //Define Item
         let item = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                heightDimension: .fractionalHeight(1.0)))
         item.contentInsets = NSDirectionalEdgeInsets(top: 0.0, leading: 8.0, bottom: 0.0, trailing: 8.0)
-
+        
+        //Define Group
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: NSCollectionLayoutSize(widthDimension: .estimated(136),
                                                heightDimension: .absolute(44)),
             subitem: item,
             count: 1)
+        
+        //Define Section
         let section = NSCollectionLayoutSection(group: group)
 
         let headerView = NSCollectionLayoutBoundarySupplementaryItem(
@@ -125,7 +130,7 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
     }
     
     //Section 1 setup
-    func setUpBaseIngredientDrinkNamesSection() -> NSCollectionLayoutSection {
+    func setUpBaseIngredientDrinksSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                heightDimension: .fractionalHeight(1.0)))
@@ -148,7 +153,8 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
                                                         leading: 0.0,
                                                         bottom: 16.0,
                                                         trailing: 0.0)
-
+        
+        //Set horizntal scrolling for this section
         section.orthogonalScrollingBehavior = .groupPaging
         return section
     }
@@ -222,7 +228,7 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
     }
     
     //Fetch Recent Drinks
-    @objc func fireFetchRecentDrinks() {
+    @objc func performFetchRecentDrinks() {
         
         //start / display activity spinner
         DispatchQueue.main.async {
@@ -259,7 +265,7 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
            DispatchQueue.main.async {
                let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
                ac.addAction(UIAlertAction(title: "Try again?", style: .default, handler: {
-                   action in self.fireFetchRecentDrinks()
+                   action in self.performFetchRecentDrinks()
                }))
                ac.addAction(UIAlertAction(title: "OK", style: .default))
                self.present(ac, animated: true)
@@ -280,7 +286,7 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
     }
     
     //MARK:- Data Fetching methods
-    @objc func fireFetchDrinksImage() {
+    @objc func performFetchDrinksImage() {
         
         if let imageURL = drink?.imageURL {
             DrinksController.shared.fetchDrinkImage(with: imageURL) { (image, error) in
@@ -304,7 +310,7 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
         
             //If success, set fetechedList data to baseIngredients property
             if let list = fetchedList {
-                self.baseIngredients = list.map( { $0.baseIngredient!} )
+                self.baseIngredients = list.map( { $0.baseIngredient! } )
                 self.updateUI()
                 print("Fetched Base ingredient list. Items:  \(self.baseIngredients.count)\n")
             }
@@ -326,6 +332,7 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
            //If success, set fetechedList data to drinksList property
            if let list = fetchedList {
                 self.baseIngredientDrinks = list
+                self.currentBaseIngredient = baseIngredient
                 self.updateUI()
                 print("Fetched drink list made with Base ingredient. Items: \(self.baseIngredientDrinks.count)\n")
            }
@@ -338,7 +345,7 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
     }
     
     //Fetch drink details in prep tp pass to DrinkDetailsVC
-    @objc func fireFetchDrink() {
+    @objc func performFetchDrink() {
         
         //fire fetch drink method
          DrinksController.shared.fetchDrink(from: "/lookup.php", using: [URLQueryItem(name: "i", value: "14282")]) { (fetchedDrink, error) in
@@ -396,13 +403,13 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
             switch Section(rawValue: indexPath.section) {
             
             case .baseIngredients:
-                sectionHeaderView.setHeaderLabel(text: "Select a Base ingredient")
+                sectionHeaderView.setHeaderLabel(text: "Tap a Drink Base")
             
             case .baseIngredientDrinks:
-                sectionHeaderView.setHeaderLabel(text: "Drinks made with <base ingredient>")
+                sectionHeaderView.setHeaderLabel(text: "'\(currentBaseIngredient.capitalized)' Drinks")
             
             case .drinks:
-                sectionHeaderView.setHeaderLabel(text: "Trending drinks")
+                sectionHeaderView.setHeaderLabel(text: "Drinks Trending")
             
             case .none:
                 fatalError("Should not be none")
@@ -419,20 +426,19 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
     //Define cells / content per section item
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        
         // Configure the cell for each section
         switch Section(rawValue: indexPath.section) {
             
         //Section 0
         case .baseIngredients:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BaseIngredientCell", for: indexPath) as? BaseIngredientCollectionViewCell
-              else {
+            else {
                 preconditionFailure("Invalid cell type")
             }
             
-            //Cell text
+            //Cell Button text
             let ingredient = baseIngredients[indexPath.item]
-            cell.setLabel(text: ingredient)
+            cell.setButton(title: ingredient)
             return cell
         
         //Section 1
@@ -479,10 +485,7 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
                }
             
             }
-            return cell
-            
-            
-            return cell
+        return cell
             
         //Section 2
         case .drinks:

@@ -24,15 +24,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             tabBarController.viewControllers?.append(vc)
         }
         
-        //Home / search tab item
+        //Base Ingredient tab item
         if let tabBarController = window?.rootViewController as? UITabBarController {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "DrinkCollectionViewNavController")
-            vc.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 2)
+            vc.tabBarItem = UITabBarItem(tabBarSystemItem: .recents, tag: 2)
             tabBarController.viewControllers?.append(vc)
         }
-
-
+        
+        //Search tab item
+//        if let tabBarController = window?.rootViewController as? UITabBarController {
+//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            let vc = storyboard.instantiateViewController(withIdentifier: "DrinkCollectionViewNavController")
+//            vc.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 3)
+//            tabBarController.viewControllers?.append(vc)
+//        }
+        
+        
         return true
     }
 

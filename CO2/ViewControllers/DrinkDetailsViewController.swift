@@ -143,11 +143,11 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
             //Fire fetch data depending on sender
             if sender == nil {
                 
-                self.performSelector(inBackground: #selector(self.fireFetchDrinks), with: nil)
+                self.performSelector(inBackground: #selector(self.performFetchDrinks), with: nil)
             }
             
             //Fetch drink image from API server and set
-            self.performSelector(inBackground: #selector(self.fireFetchDrinksImage), with: nil)
+            self.performSelector(inBackground: #selector(self.performFetchDrinksImage), with: nil)
             
             //Get ingredients / meassure
             self.loadIngredientsTableData()
@@ -162,7 +162,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
-    @objc func fireFetchDrinks() {
+    @objc func performFetchDrinks() {
         
         let endpoint = EndPoints.random.rawValue
         
@@ -184,7 +184,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
-    @objc func fireFetchDrinksImage() {
+    @objc func performFetchDrinksImage() {
         
         if let imageURL = drink?.imageURL {
             DrinksController.shared.fetchDrinkImage(with: imageURL) { (image, error) in
@@ -215,7 +215,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         DispatchQueue.main.async {
             let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "Try again?", style: .default, handler: {
-                action in self.fireFetchDrinks()
+                action in self.performFetchDrinks()
             }))
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             self.present(ac, animated: true)

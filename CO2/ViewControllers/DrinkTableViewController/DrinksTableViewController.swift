@@ -29,7 +29,7 @@ class DrinksTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         //Fire fetch data depending in Tab Bar Item selected
-        performSelector(inBackground: #selector(fireFetchDrinks), with: nil)
+        performSelector(inBackground: #selector(performFetchDrinks), with: nil)
     }
     
     override func viewDidLoad() {
@@ -40,7 +40,7 @@ class DrinksTableViewController: UITableViewController {
     //MARK:- Custom Get Data / setup UI methods
     
     //Fire fetch reequest and pass in drinks list paramter, based on tab item selected by user
-    @objc func fireFetchDrinks() {
+    @objc func performFetchDrinks() {
     
         //trigger fetch of JSON data from remote server
         DispatchQueue.main.async {
@@ -89,7 +89,7 @@ class DrinksTableViewController: UITableViewController {
         DispatchQueue.main.async {
             let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "Try again?", style: .default, handler: {
-                action in self.fireFetchDrinks()
+                action in self.performFetchDrinks()
             }))
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             self.present(ac, animated: true)

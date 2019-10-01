@@ -10,32 +10,56 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="DrinkCollectionViewCell" customModule="CO2" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="193" height="161"/>
+            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="193" height="161"/>
+                <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OfK-YH-0Tz">
-                        <rect key="frame" x="48" y="0.0" width="100" height="100"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OfK-YH-0Tz">
+                        <rect key="frame" x="0.0" y="0.0" width="100" height="78"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="viewCornerRadius">
+                                <real key="value" value="15"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tY1-iq-ig0">
-                        <rect key="frame" x="48" y="105" width="100" height="50"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tY1-iq-ig0">
+                        <rect key="frame" x="0.0" y="88" width="100" height="12"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
             </view>
+            <constraints>
+                <constraint firstItem="tY1-iq-ig0" firstAttribute="top" secondItem="OfK-YH-0Tz" secondAttribute="bottom" constant="10" id="6ZM-YT-3AA"/>
+                <constraint firstItem="tY1-iq-ig0" firstAttribute="top" secondItem="OfK-YH-0Tz" secondAttribute="bottom" constant="10" id="DgA-k1-upb"/>
+                <constraint firstAttribute="trailing" secondItem="tY1-iq-ig0" secondAttribute="trailing" id="Gv1-Go-Y59"/>
+                <constraint firstItem="OfK-YH-0Tz" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="LOQ-ca-ATp"/>
+                <constraint firstItem="tY1-iq-ig0" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="cdv-LC-5d6"/>
+                <constraint firstAttribute="trailing" secondItem="OfK-YH-0Tz" secondAttribute="trailing" id="lYC-I1-0uV"/>
+                <constraint firstItem="OfK-YH-0Tz" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="twU-BA-XlA"/>
+                <constraint firstAttribute="bottom" secondItem="tY1-iq-ig0" secondAttribute="bottom" id="zYr-ti-Ws6"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="193" height="161"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="viewCornerRadius">
+                    <real key="value" value="15"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="color" keyPath="viewBorderColor">
+                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="viewBorderWidth">
+                    <real key="value" value="1"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="cellImageView" destination="OfK-YH-0Tz" id="zv5-26-by4"/>
                 <outlet property="cellLabel" destination="tY1-iq-ig0" id="8ME-nF-Dbs"/>
             </connections>
-            <point key="canvasLocation" x="125.36231884057972" y="49.21875"/>
+            <point key="canvasLocation" x="124.6376811594203" y="48.883928571428569"/>
         </collectionViewCell>
     </objects>
 </document>

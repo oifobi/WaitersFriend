@@ -16,37 +16,36 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9hH-K4-762">
-                        <rect key="frame" x="140.5" y="12" width="39.5" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <nil key="highlightedColor"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="zaK-wf-jPd">
+                        <rect key="frame" x="5" y="5" width="310" height="34"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <state key="normal" title="Button">
+                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <state key="selected">
+                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
                         <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="number" keyPath="viewCornerRadius">
-                                <real key="value" value="0.0"/>
-                            </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="number" keyPath="viewBorderWidth">
-                                <real key="value" value="0.0"/>
-                            </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="color" keyPath="viewBorderColor">
-                                <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
-                    </label>
+                    </button>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstAttribute="top" secondItem="9hH-K4-762" secondAttribute="top" constant="-12" id="8vK-Ce-44L"/>
-                <constraint firstItem="9hH-K4-762" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="16" id="A0l-4C-YRh"/>
-                <constraint firstItem="9hH-K4-762" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="Ovz-mA-D8i"/>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="9hH-K4-762" secondAttribute="trailing" constant="16" id="ZHX-Zh-Egu"/>
-                <constraint firstItem="ZTg-uK-7eu" firstAttribute="bottom" secondItem="9hH-K4-762" secondAttribute="bottom" constant="11" id="r1M-yZ-6Ad"/>
+                <constraint firstAttribute="bottom" secondItem="zaK-wf-jPd" secondAttribute="bottom" constant="5" id="0Mq-hh-tcF"/>
+                <constraint firstItem="zaK-wf-jPd" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="3gE-gg-Lfu"/>
+                <constraint firstItem="zaK-wf-jPd" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="5" id="Iu3-dg-fbp"/>
+                <constraint firstAttribute="trailing" secondItem="zaK-wf-jPd" secondAttribute="trailing" constant="5" id="Yus-Ww-fcg"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="176" height="50"/>
             <userDefinedRuntimeAttributes>
                 <userDefinedRuntimeAttribute type="number" keyPath="viewCornerRadius">
-                    <real key="value" value="22"/>
+                    <real key="value" value="15"/>
                 </userDefinedRuntimeAttribute>
                 <userDefinedRuntimeAttribute type="number" keyPath="viewBorderWidth">
                     <real key="value" value="1"/>
@@ -56,7 +55,7 @@
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
             <connections>
-                <outlet property="cellLabel" destination="9hH-K4-762" id="cQt-sp-aQm"/>
+                <outlet property="cellButton" destination="zaK-wf-jPd" id="pyK-hY-Jg4"/>
             </connections>
             <point key="canvasLocation" x="228.98550724637684" y="150.66964285714286"/>
         </collectionViewCell>

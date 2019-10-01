@@ -6,8 +6,7 @@
 //  Copyright © 2019 Yuichi Fujiki. All rights reserved.
 //
 
-import UIKit
-
+//Global UIView attributes
 import UIKit
 
 extension UIView {
