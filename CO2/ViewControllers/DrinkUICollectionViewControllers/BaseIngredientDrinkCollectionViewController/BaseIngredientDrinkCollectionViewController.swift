@@ -11,10 +11,9 @@ import UIKit
 enum Section: Int {
     case baseIngredients
     case baseIngredientDrinks
-    case drinks
 }
 
-class DrinkCollectionViewController: UICollectionViewController, UISearchResultsUpdating, UISearchBarDelegate {
+class BaseIngredientDrinkCollectionViewController: UICollectionViewController {
     
     //IBOutlets
     @IBOutlet weak var headerSectionLabel: UILabel!
@@ -22,7 +21,6 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
     //Properties for storing feteched drink/s data objects
     var baseIngredients = [String]() //Base ingredient
     var baseIngredientDrinks = [List]() //List of drinks made with base ingredient
-    var drinks = [Drink]() //Recent drinks
     var drink: Drink?
     var currentBaseIngredient = String() //for tracking currently selected base ingredient
     
@@ -36,9 +34,6 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
         //Fetch List of Drinks made with Base Ingredient
         performSelector(inBackground: #selector(fetchDrinksList), with: "vodka")
         
-        //Fire fetch Recents Drink
-        performSelector(inBackground: #selector(performFetchRecentDrinks), with: nil)
-        
     }
     
     override func viewDidLoad() {
@@ -51,20 +46,8 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
         //Section 0 cells
         collectionView.register(UINib(nibName: "BaseIngredientCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "BaseIngredientCell")
         
-//        //Section 1 cells
-        collectionView.register(UINib(nibName: "DrinkCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "BaseIngredientDrinkCell")
-
-        //section 2 cells
-        collectionView.register(UINib(nibName: "DrinkCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "RecentDrinkCell")
-        
-
-        //Setup initial UI
-        //Load navigationBar items
-//        self.setUpNavigationBar()
-        
         //set compositionViewLayout
         self.collectionView.collectionViewLayout = self.setUpUICollectionViewCompositionLayout()
-        
     }
     
     //MARK:- UICollectionViewCompositionalLayout setup
@@ -82,9 +65,6 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
             
             case .baseIngredientDrinks:
                 return self?.setUpBaseIngredientDrinksSection()
-            
-            case .drinks:
-                return self?.setUpRecentDrinksSection()
             
             case .none:
                 fatalError("Should not be none ")
@@ -131,39 +111,10 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
     
     //Section 1 setup
     func setUpBaseIngredientDrinksSection() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .fractionalHeight(1.0)))
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
-                                               heightDimension: .absolute(80)),
-            subitem: item,
-            count: 1)
-        let section = NSCollectionLayoutSection(group: group)
-
-        let headerView = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .absolute(44)),
-            elementKind: UICollectionView.elementKindSectionHeader,
-            alignment: .top)
-        headerView.pinToVisibleBounds = true
-        section.boundarySupplementaryItems = [headerView]
-
-        section.contentInsets = NSDirectionalEdgeInsets(top: 16.0,
-                                                        leading: 0.0,
-                                                        bottom: 16.0,
-                                                        trailing: 0.0)
         
-        //Set horizntal scrolling for this section
-        section.orthogonalScrollingBehavior = .groupPaging
-        return section
-    }
-    
-    //Section 2 setup
-    func setUpRecentDrinksSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9),
-                                               heightDimension: .fractionalHeight(0.9))) // This height does not have any effect. Bug?
+        layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9),
+                                           heightDimension: .fractionalHeight(0.9))) // This height does not have any effect. Bug?
         item.edgeSpacing = NSCollectionLayoutEdgeSpacing(
             leading: NSCollectionLayoutSpacing.flexible(0.0),
             top: NSCollectionLayoutSpacing.flexible(0.0),
@@ -175,7 +126,7 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
                                                heightDimension: .fractionalWidth(0.60)),
             subitem: item,
             count: 1)
-        
+
         let section = NSCollectionLayoutSection(group: group)
 
         let headerView = NSCollectionLayoutBoundarySupplementaryItem(
@@ -187,90 +138,26 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
         section.boundarySupplementaryItems = [headerView]
 
         section.interGroupSpacing = 20
-        
+
         section.contentInsets = NSDirectionalEdgeInsets(top: 16.0,
                                                         leading: 0.0,
                                                         bottom: 16.0,
                                                         trailing: 0.0)
-        return section
+    return section
+        
     }
-    
+
 
     //MARK:- Custom Methods
     func updateUI() {
         
         DispatchQueue.main.async {
+            
+            //Set initial title and collectionView data
+            self.title = "Drinks made by Ingredient"
             self.collectionView.reloadData()
         }
     }
-    
-    //UISearch Delegate conformance method
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text else { return }
-        print(text)
-    }
-    
-    func setUpNavigationBar() {
-        
-        DispatchQueue.main.async {
-            self.title = "Search"
-            let search = UISearchController(searchResultsController: nil)
-            search.searchBar.placeholder = "Search by cocktail (e.g. Margarita)"
-            search.obscuresBackgroundDuringPresentation = false
-            search.searchBar.delegate = self
-            search.searchResultsUpdater = self
-            
-            self.navigationItem.searchController = search
-            self.navigationItem.hidesSearchBarWhenScrolling = false
-            self.definesPresentationContext = true
-                //this property ensures any VCs displayed from this viewController can navigate back
-        }
-    }
-    
-    //Fetch Recent Drinks
-    @objc func performFetchRecentDrinks() {
-        
-        //start / display activity spinner
-        DispatchQueue.main.async {
-            self.loadActivitySpinner()
-        }
-        
-        //fire fetch recent drinks list method
-        DrinksController.shared.fetchDrinks(from: EndPoints.recent.rawValue) { (fetchedDrinks, error) in
-        
-            //fire UI update if fetch successful
-            if let drinks = fetchedDrinks {
-                self.drinks = drinks
-                self.updateUI()
-                print("Fetched Recent Drinks. Items: \(drinks.count)\n")
-            }
-            
-            //Stop and remove activity spinnner
-            DispatchQueue.main.async() {
-                ActivitySpinnerViewController.shared.willMove(toParent: nil)
-                ActivitySpinnerViewController.shared.view.removeFromSuperview()
-                ActivitySpinnerViewController.shared.removeFromParent()
-            }
-            
-            //fire error handler if error
-            if let error = error {
-                self.showAlert(with: error)
-            }
-        }
-    }
-    
-    func showAlert(with error: Error, sender: String = #function) {
-           print("Error Alert called by: \(sender)\n")
-           
-           DispatchQueue.main.async {
-               let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
-               ac.addAction(UIAlertAction(title: "Try again?", style: .default, handler: {
-                   action in self.performFetchRecentDrinks()
-               }))
-               ac.addAction(UIAlertAction(title: "OK", style: .default))
-               self.present(ac, animated: true)
-           }
-       }
     
     //Activity indicator / spinner
     func loadActivitySpinner() {
@@ -368,7 +255,7 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
     
     // Define number of sections
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 3
+        return 2
     }
 
     //Define number of items per section
@@ -381,9 +268,6 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
             
         case .baseIngredientDrinks:
             return baseIngredientDrinks.count
-            
-        case .drinks:
-            return drinks.count
             
         case .none:
             fatalError("Section should not be none")
@@ -403,13 +287,10 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
             switch Section(rawValue: indexPath.section) {
             
             case .baseIngredients:
-                sectionHeaderView.setHeaderLabel(text: "Tap a Drink Base")
+                sectionHeaderView.setHeaderLabel(text: "Tap an Ingredient to Select")
             
             case .baseIngredientDrinks:
                 sectionHeaderView.setHeaderLabel(text: "'\(currentBaseIngredient.capitalized)' Drinks")
-            
-            case .drinks:
-                sectionHeaderView.setHeaderLabel(text: "Drinks Trending")
             
             case .none:
                 fatalError("Should not be none")
@@ -438,13 +319,13 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
             
             //Cell Button text
             let ingredient = baseIngredients[indexPath.item]
-            cell.setButton(title: ingredient)
+            cell.setButton(title: ingredient.capitalized)
             return cell
         
         //Section 1
         case .baseIngredientDrinks:
             guard let cell = collectionView.dequeueReusableCell(
-              withReuseIdentifier: "BaseIngredientDrinkCell", for: indexPath) as? DrinkCollectionViewCell
+              withReuseIdentifier: "BaseIngredientDrinkCell", for: indexPath) as? BaseIngredientDrinkCollectionViewCell
               else {
                 preconditionFailure("Invalid cell type")
             }
@@ -486,55 +367,7 @@ class DrinkCollectionViewController: UICollectionViewController, UISearchResults
             
             }
         return cell
-            
-        //Section 2
-        case .drinks:
-            guard let cell = collectionView.dequeueReusableCell(
-              withReuseIdentifier: "RecentDrinkCell", for: indexPath) as? DrinkCollectionViewCell
-              else {
-                preconditionFailure("Invalid cell type")
-            }
-            
-            let drink = drinks[indexPath.item]
-            
-            //Set cell properties
-            //Cell text
-            cell.setLabel(text: drink.name)
-            
-            //cell image
-            //Fetch and set drink image
-            if let imageURL = drink.imageURL {
-               
-               DrinksController.shared.fetchDrinkImage(with: imageURL) { (fetchedImage, error) in
-                   if let drinkImage = fetchedImage {
 
-                       //Update cell image to fecthedImage via main thread
-                       DispatchQueue.main.async {
-
-                           //Ensure wrong image isn't inserted into a recycled cell
-                            if let currentIndexPath = self.collectionView.indexPath(for: cell),
-
-                               //If current cell index and table index don't match, exit fetch image method
-                               currentIndexPath != indexPath {
-                                   return
-                               }
-
-                           //Set cell image
-                           cell.setImage(drinkImage)
-
-                           //Refresh cell to display fetched image
-                           cell.setNeedsLayout()
-                       }
-
-                   //catch any errors fetching image
-                   } else if let error = error {
-                       print("Error fetching image with error \(error.localizedDescription)\n")
-                   }
-               }
-            
-            }
-            return cell
-        
         case .none:
             fatalError("Should not be none")
         }

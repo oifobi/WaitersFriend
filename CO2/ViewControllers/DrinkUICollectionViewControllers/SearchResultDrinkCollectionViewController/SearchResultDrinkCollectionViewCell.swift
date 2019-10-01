@@ -1,14 +1,14 @@
 //
-//  DrinkCollectionViewCell.swift
+//  SearchResultDrinkCollectionViewCell.swift
 //  CO2
 //
-//  Created by Simon Italia on 9/27/19.
+//  Created by Simon Italia on 10/2/19.
 //  Copyright © 2019 SDI Group Inc. All rights reserved.
 //
 
 import UIKit
 
-class DrinkCollectionViewCell: UICollectionViewCell {
+class SearchResultDrinkCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var cellImageView: UIImageView!
     @IBOutlet weak var cellLabel: UILabel!
@@ -20,4 +20,5 @@ class DrinkCollectionViewCell: UICollectionViewCell {
     func setLabel(text: String) {
         cellLabel.text = text
     }
+    
 }

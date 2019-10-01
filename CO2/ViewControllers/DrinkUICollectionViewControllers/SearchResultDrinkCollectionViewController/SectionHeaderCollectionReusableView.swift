@@ -14,7 +14,5 @@ class SectionHeaderCollectionReusableView: UICollectionReusableView {
     
     func setHeaderLabel(text: String) {
         headerLabel.text = text
-        
     }
-        
 }

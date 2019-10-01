@@ -13,7 +13,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         //Random / featured tab item
@@ -27,18 +26,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Base Ingredient tab item
         if let tabBarController = window?.rootViewController as? UITabBarController {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "DrinkCollectionViewNavController")
-            vc.tabBarItem = UITabBarItem(tabBarSystemItem: .recents, tag: 2)
+            let vc = storyboard.instantiateViewController(withIdentifier: "BaseIngredientDrinkCollectionViewNavController")
+            vc.tabBarItem = UITabBarItem(tabBarSystemItem: .more, tag: 2)
             tabBarController.viewControllers?.append(vc)
         }
         
-        //Search tab item
-//        if let tabBarController = window?.rootViewController as? UITabBarController {
-//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//            let vc = storyboard.instantiateViewController(withIdentifier: "DrinkCollectionViewNavController")
-//            vc.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 3)
-//            tabBarController.viewControllers?.append(vc)
-//        }
+        //Search / recents tab item
+        if let tabBarController = window?.rootViewController as? UITabBarController {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "SearchDrinkCollectionViewNavController")
+            vc.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 3)
+            tabBarController.viewControllers?.append(vc)
+        }
         
         
         return true
