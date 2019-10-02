@@ -28,9 +28,6 @@ class SearchResultDrinkCollectionViewController: UICollectionViewController, UIS
         
         // preserve selection between presentations
          self.clearsSelectionOnViewWillAppear = true
-
-        //Register cell class and nib files
-//        collectionView.register(UINib(nibName: "DrinkCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "SearchResultDrinkCell")
         
         self.setUpNavigationBar()
         
@@ -211,12 +208,13 @@ class SearchResultDrinkCollectionViewController: UICollectionViewController, UIS
                            currentIndexPath != indexPath {
                                return
                            }
-
+                    
                        //Set cell image
                        cell.setImage(drinkImage)
 
                        //Refresh cell to display fetched image
                        cell.setNeedsLayout()
+                    
                    }
 
                //Catch any errors fetching image

@@ -16,7 +16,7 @@ enum Section: Int {
 class BaseIngredientDrinkCollectionViewController: UICollectionViewController {
     
     //IBOutlets
-    @IBOutlet weak var headerSectionLabel: UILabel!
+//    @IBOutlet weak var headerSectionLabel: UILabel!
     
     //Properties for storing feteched drink/s data objects
     var baseIngredients = [String]() //Base ingredient
@@ -43,7 +43,10 @@ class BaseIngredientDrinkCollectionViewController: UICollectionViewController {
          self.clearsSelectionOnViewWillAppear = true
 
         // Register cell classes and nibs
-        //Section 0 cells
+        //Section Header (UILabel)
+        collectionView.register(UINib(nibName: "BaseIngredientSectionHeaderReusableView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeaderView")
+        
+        //Section 0 cells (UIButtons)
         collectionView.register(UINib(nibName: "BaseIngredientCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "BaseIngredientCell")
         
         //set compositionViewLayout
@@ -282,7 +285,7 @@ class BaseIngredientDrinkCollectionViewController: UICollectionViewController {
             
             //Instantiate SectionHeaderCollectionReusableView
             let sectionHeaderView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeaderView", for: indexPath)
-            as! SectionHeaderCollectionReusableView
+            as! BaseIngredientSectionHeaderReusableView
             
             switch Section(rawValue: indexPath.section) {
             

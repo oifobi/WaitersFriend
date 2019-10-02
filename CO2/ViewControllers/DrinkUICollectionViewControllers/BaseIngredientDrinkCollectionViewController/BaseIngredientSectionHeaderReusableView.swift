@@ -8,9 +8,14 @@
 
 import UIKit
 
-class SectionHeaderCollectionReusableView: UICollectionReusableView {
+class BaseIngredientSectionHeaderReusableView: UICollectionReusableView {
     
     @IBOutlet weak var headerLabel: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
     
     func setHeaderLabel(text: String) {
         headerLabel.text = text
