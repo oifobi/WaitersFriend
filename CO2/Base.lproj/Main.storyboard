@@ -70,7 +70,7 @@
                                     <outlet property="cellImageView" destination="Wo4-iG-Pfg" id="XTM-ix-5nr"/>
                                     <outlet property="cellSubtitleLabel" destination="UFl-il-9hJ" id="6A5-e7-y5N"/>
                                     <outlet property="cellTitleLabel" destination="1Eh-XZ-dnh" id="4IY-6L-hYs"/>
-                                    <segue destination="rJa-FV-Fid" kind="show" identifier="TableVCToDrinkDetailsVC" id="evS-SR-87Y"/>
+                                    <segue destination="rJa-FV-Fid" kind="show" identifier="DrinksTableVCToDrinkDetailsVC" id="evS-SR-87Y"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -93,7 +93,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <segmentedControl opaque="NO" contentMode="center" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PfA-6z-I4G">
+                            <segmentedControl opaque="NO" contentMode="center" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PfA-6z-I4G">
                                 <rect key="frame" x="5" y="274.5" width="365" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="dhH-5k-f8N"/>
@@ -220,19 +220,19 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2990" y="141"/>
+            <point key="canvasLocation" x="2990" y="919"/>
         </scene>
-        <!--Base Ingredient Drink Collection View Controller-->
+        <!--Drink Ingredient Collection View Controller-->
         <scene sceneID="r7i-DY-XEM">
             <objects>
-                <collectionViewController id="Fon-VD-iqb" customClass="BaseIngredientDrinkCollectionViewController" customModule="CO2" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController id="Fon-VD-iqb" customClass="DrinkIngredientCollectionViewController" customModule="CO2" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="MrE-7i-lYn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <collectionViewLayout key="collectionViewLayout" id="78f-6f-Ge1" customClass="DrinkCollectionViewLayout" customModule="CO2" customModuleProvider="target"/>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="BaseIngredientDrinkCell" id="yjo-DS-ua3" customClass="BaseIngredientDrinkCollectionViewCell" customModule="CO2" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="BaseIngredientDrinkCell" id="yjo-DS-ua3" customClass="DrinksCollectionViewCell" customModule="CO2" customModuleProvider="target">
                                 <rect key="frame" x="87.5" y="0.0" width="200" height="200"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Lyd-qM-Wm2">
@@ -243,17 +243,18 @@
                                             <rect key="frame" x="0.0" y="0.0" width="200" height="150"/>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7gN-7D-W6b">
-                                            <rect key="frame" x="0.0" y="160" width="200" height="40"/>
+                                            <rect key="frame" x="0.0" y="150" width="200" height="50"/>
+                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="40" id="sIv-mj-1Dc"/>
+                                                <constraint firstAttribute="height" constant="50" id="sIv-mj-1Dc"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
+                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="7gN-7D-W6b" firstAttribute="top" secondItem="GuK-vm-9qO" secondAttribute="bottom" constant="10" id="Agx-j9-Vji"/>
+                                        <constraint firstItem="7gN-7D-W6b" firstAttribute="top" secondItem="GuK-vm-9qO" secondAttribute="bottom" id="Agx-j9-Vji"/>
                                         <constraint firstAttribute="trailing" secondItem="GuK-vm-9qO" secondAttribute="trailing" id="FuT-TW-UeB"/>
                                         <constraint firstAttribute="bottom" secondItem="7gN-7D-W6b" secondAttribute="bottom" id="LEl-aj-a5r"/>
                                         <constraint firstItem="7gN-7D-W6b" firstAttribute="leading" secondItem="Lyd-qM-Wm2" secondAttribute="leading" id="OXj-JM-ej5"/>
@@ -266,6 +267,12 @@
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="viewCornerRadius">
                                         <real key="value" value="7"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="viewBorderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="viewBorderColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
@@ -285,17 +292,17 @@
             </objects>
             <point key="canvasLocation" x="3813.5999999999999" y="149.77511244377811"/>
         </scene>
-        <!--Search Result Drink Collection View Controller-->
+        <!--Drink Search Collection View Controller-->
         <scene sceneID="Fpv-rW-8P0">
             <objects>
-                <collectionViewController id="0CO-ID-xmd" customClass="SearchResultDrinkCollectionViewController" customModule="CO2" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController id="0CO-ID-xmd" customClass="DrinkSearchCollectionViewController" customModule="CO2" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="MHe-Xs-MHN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <collectionViewLayout key="collectionViewLayout" id="zFy-xc-nHD" customClass="DrinkCollectionViewLayout" customModule="CO2" customModuleProvider="target"/>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SearchResultDrinkCell" id="Eg8-JA-SVZ" customClass="SearchResultDrinkCollectionViewCell" customModule="CO2" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SearchResultDrinkCell" id="Eg8-JA-SVZ" customClass="DrinkSearchCollectionViewCell" customModule="CO2" customModuleProvider="target">
                                 <rect key="frame" x="87.5" y="0.0" width="200" height="200"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="roi-KZ-BeJ">
@@ -306,12 +313,13 @@
                                             <rect key="frame" x="0.0" y="0.0" width="200" height="150"/>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ee1-RK-aHk">
-                                            <rect key="frame" x="0.0" y="160" width="200" height="40"/>
+                                            <rect key="frame" x="0.0" y="150" width="200" height="50"/>
+                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="40" id="wr4-Eo-0MQ"/>
+                                                <constraint firstAttribute="height" constant="50" id="wr4-Eo-0MQ"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
+                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -322,13 +330,19 @@
                                         <constraint firstAttribute="bottom" secondItem="Ee1-RK-aHk" secondAttribute="bottom" id="GpG-CB-aOb"/>
                                         <constraint firstAttribute="trailing" secondItem="sLj-4H-Uz5" secondAttribute="trailing" id="LLW-qW-FR1"/>
                                         <constraint firstItem="sLj-4H-Uz5" firstAttribute="top" secondItem="roi-KZ-BeJ" secondAttribute="top" id="wL2-fI-Snb"/>
-                                        <constraint firstItem="Ee1-RK-aHk" firstAttribute="top" secondItem="sLj-4H-Uz5" secondAttribute="bottom" constant="10" id="xdE-BL-nhk"/>
+                                        <constraint firstItem="Ee1-RK-aHk" firstAttribute="top" secondItem="sLj-4H-Uz5" secondAttribute="bottom" id="xdE-BL-nhk"/>
                                     </constraints>
                                 </collectionViewCellContentView>
                                 <size key="customSize" width="200" height="200"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="viewCornerRadius">
                                         <real key="value" value="7"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="viewBorderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="viewBorderColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
@@ -346,7 +360,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fas-CX-ORS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4589.6000000000004" y="149.77511244377811"/>
+            <point key="canvasLocation" x="4590" y="150"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="U91-JJ-mg5">
@@ -358,6 +372,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </textAttributes>
                         <textAttributes key="largeTitleTextAttributes">
@@ -400,6 +415,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </textAttributes>
                     </navigationBar>
@@ -421,6 +437,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </textAttributes>
                     </navigationBar>
@@ -441,6 +458,9 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="6nd-Ih-dd8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="17"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -449,7 +469,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eKu-nO-bs8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4591" y="-636"/>
+            <point key="canvasLocation" x="4590" y="-636"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

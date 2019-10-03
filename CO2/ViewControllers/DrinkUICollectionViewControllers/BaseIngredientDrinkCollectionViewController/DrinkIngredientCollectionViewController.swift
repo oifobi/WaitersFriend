@@ -13,10 +13,7 @@ enum Section: Int {
     case baseIngredientDrinks
 }
 
-class BaseIngredientDrinkCollectionViewController: UICollectionViewController {
-    
-    //IBOutlets
-//    @IBOutlet weak var headerSectionLabel: UILabel!
+class DrinkIngredientCollectionViewController: UICollectionViewController {
     
     //Properties for storing feteched drink/s data objects
     var baseIngredients = [String]() //Base ingredient
@@ -44,10 +41,10 @@ class BaseIngredientDrinkCollectionViewController: UICollectionViewController {
 
         // Register cell classes and nibs
         //Section Header (UILabel)
-        collectionView.register(UINib(nibName: "BaseIngredientSectionHeaderReusableView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeaderView")
+        collectionView.register(UINib(nibName: "DrinkIngredientSectionHeaderReusableView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeaderView")
         
         //Section 0 cells (UIButtons)
-        collectionView.register(UINib(nibName: "BaseIngredientCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "BaseIngredientCell")
+        collectionView.register(UINib(nibName: "DrinkIngredientCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "BaseIngredientCell")
         
         //set compositionViewLayout
         self.collectionView.collectionViewLayout = self.setUpUICollectionViewCompositionLayout()
@@ -94,7 +91,8 @@ class BaseIngredientDrinkCollectionViewController: UICollectionViewController {
         
         //Define Section
         let section = NSCollectionLayoutSection(group: group)
-
+        
+        //Define Section header
         let headerView = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                heightDimension: .absolute(44)),
@@ -176,21 +174,21 @@ class BaseIngredientDrinkCollectionViewController: UICollectionViewController {
     }
     
     //MARK:- Data Fetching methods
-    @objc func performFetchDrinksImage() {
-        
-        if let imageURL = drink?.imageURL {
-            DrinksController.shared.fetchDrinkImage(with: imageURL) { (image, error) in
-                if let drinkImage = image {
-                
-//                    self.drinkImage = drinkImage
-                
-                //catch any errors fetching image
-                } else if let error = error {
-                    print("Error fetching image with error \(error.localizedDescription)\n")
-                }
-            }
-        }
-    }
+//    @objc func performFetchDrinksImage() {
+//
+//        if let imageURL = drink?.imageURL {
+//            DrinksController.shared.fetchDrinkImage(with: imageURL) { (image, error) in
+//                if let drinkImage = image {
+//
+////                    self.drinkImage = drinkImage
+//
+//                //catch any errors fetching image
+//                } else if let error = error {
+//                    print("Error fetching image with error \(error.localizedDescription)\n")
+//                }
+//            }
+//        }
+//    }
     
     //Fetch List of Base Ingredients (ie: Vodka, Bitters, etc)
     @objc func fetchBaseIngredientList() {
@@ -285,15 +283,15 @@ class BaseIngredientDrinkCollectionViewController: UICollectionViewController {
             
             //Instantiate SectionHeaderCollectionReusableView
             let sectionHeaderView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeaderView", for: indexPath)
-            as! BaseIngredientSectionHeaderReusableView
+            as! DrinkIngredientSectionHeaderReusableView
             
             switch Section(rawValue: indexPath.section) {
             
             case .baseIngredients:
-                sectionHeaderView.setHeaderLabel(text: "Tap an Ingredient to Select")
+                sectionHeaderView.setHeaderLabel(text: "Base Ingredients")
             
             case .baseIngredientDrinks:
-                sectionHeaderView.setHeaderLabel(text: "'\(currentBaseIngredient.capitalized)' Drinks")
+                sectionHeaderView.setHeaderLabel(text: "\(currentBaseIngredient.capitalized) Drinks")
             
             case .none:
                 fatalError("Should not be none")
@@ -315,7 +313,7 @@ class BaseIngredientDrinkCollectionViewController: UICollectionViewController {
             
         //Section 0
         case .baseIngredients:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BaseIngredientCell", for: indexPath) as? BaseIngredientCollectionViewCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BaseIngredientCell", for: indexPath) as? DrinkIngredientCollectionViewCell
             else {
                 preconditionFailure("Invalid cell type")
             }
@@ -328,7 +326,7 @@ class BaseIngredientDrinkCollectionViewController: UICollectionViewController {
         //Section 1
         case .baseIngredientDrinks:
             guard let cell = collectionView.dequeueReusableCell(
-              withReuseIdentifier: "BaseIngredientDrinkCell", for: indexPath) as? BaseIngredientDrinkCollectionViewCell
+              withReuseIdentifier: "BaseIngredientDrinkCell", for: indexPath) as? DrinksCollectionViewCell
               else {
                 preconditionFailure("Invalid cell type")
             }
@@ -375,45 +373,20 @@ class BaseIngredientDrinkCollectionViewController: UICollectionViewController {
             fatalError("Should not be none")
         }
     }
-
-    // UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
-    
     
     // MARK: - Navigation
-    /*
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
+//    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        
+//        if let vc = storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as? DrinkDetailsViewController {
+//                
+//            vc.drink = drink
+//            vc.sender = "DrinkIngredientCollectionViewController"
+//            navigationController?.pushViewController(vc, animated: true)
+//        }
+//    }
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//
+//    }
+//    
 }

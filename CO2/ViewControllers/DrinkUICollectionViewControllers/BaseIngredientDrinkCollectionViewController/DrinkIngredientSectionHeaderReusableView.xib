@@ -9,21 +9,23 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="U6b-Vx-4bR" customClass="BaseIngredientSectionHeaderReusableView" customModule="CO2" customModuleProvider="target">
+        <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="U6b-Vx-4bR" customClass="DrinkIngredientSectionHeaderReusableView" customModule="CO2" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e8S-Du-YFx">
-                    <rect key="frame" x="16" y="11.5" width="42" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <rect key="frame" x="10" y="10" width="300" height="24"/>
+                    <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="e8S-Du-YFx" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" constant="16" id="Irh-3K-ihc"/>
-                <constraint firstItem="e8S-Du-YFx" firstAttribute="centerY" secondItem="U6b-Vx-4bR" secondAttribute="centerY" id="UE9-DT-Ncw"/>
+                <constraint firstItem="e8S-Du-YFx" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" constant="10" id="Irh-3K-ihc"/>
+                <constraint firstAttribute="trailing" secondItem="e8S-Du-YFx" secondAttribute="trailing" constant="10" id="UyE-iP-yDq"/>
+                <constraint firstItem="VXr-Tz-HHm" firstAttribute="bottom" secondItem="e8S-Du-YFx" secondAttribute="bottom" constant="10" id="aqa-vm-sGy"/>
+                <constraint firstItem="e8S-Du-YFx" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" constant="10" id="ziW-cI-BMo"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>
             <connections>

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BaseIngredientSectionHeaderReusableView: UICollectionReusableView {
+class DrinkIngredientSectionHeaderReusableView: UICollectionReusableView {
     
     @IBOutlet weak var headerLabel: UILabel!
     

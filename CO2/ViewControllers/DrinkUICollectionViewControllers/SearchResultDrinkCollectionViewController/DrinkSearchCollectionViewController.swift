@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SearchResultDrinkCollectionViewController: UICollectionViewController, UISearchResultsUpdating, UISearchBarDelegate {
+class DrinkSearchCollectionViewController: UICollectionViewController, UISearchResultsUpdating, UISearchBarDelegate {
     
     var drinks = [Drink]() //Recent drinks
     var drink: Drink?
@@ -125,22 +125,21 @@ class SearchResultDrinkCollectionViewController: UICollectionViewController, UIS
     }
     
     //MARK:- Data Fetching methods
-    @objc func performFetchDrinksImage() {
-        
-        if let imageURL = drink?.imageURL {
-            DrinksController.shared.fetchDrinkImage(with: imageURL) { (image, error) in
-                if let drinkImage = image {
-                
+//    @objc func performFetchDrinksImage() {
+//
+//        if let imageURL = drink?.imageURL {
+//            DrinksController.shared.fetchDrinkImage(with: imageURL) { (image, error) in
+//                if let drinkImage = image {
+//
 //                    self.drinkImage = drinkImage
-                
-                //catch any errors fetching image
-                } else if let error = error {
-                    print("Error fetching image with error \(error.localizedDescription)\n")
-                }
-            }
-        }
-    }
-    
+//
+//                //catch any errors fetching image
+//                } else if let error = error {
+//                    print("Error fetching image with error \(error.localizedDescription)\n")
+//                }
+//            }
+//        }
+//    }
     
     //Fetch drink details in prep tp pass to DrinkDetailsVC
     @objc func performFetchDrink() {
@@ -179,7 +178,7 @@ class SearchResultDrinkCollectionViewController: UICollectionViewController, UIS
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(
-          withReuseIdentifier: "SearchResultDrinkCell", for: indexPath) as? SearchResultDrinkCollectionViewCell
+          withReuseIdentifier: "SearchResultDrinkCell", for: indexPath) as? DrinkSearchCollectionViewCell
         
         else {
             preconditionFailure("Invalid cell type")
@@ -225,45 +224,19 @@ class SearchResultDrinkCollectionViewController: UICollectionViewController, UIS
         }
         return cell
     }
-
-    // UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
-    
     
     // MARK: - Navigation
-    /*
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if let vc = storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as? DrinkDetailsViewController {
+                
+            vc.drink = drinks[indexPath.item]
+            vc.sender = "SearchCollectionViewController"
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
-    */
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//
+//    }
 }

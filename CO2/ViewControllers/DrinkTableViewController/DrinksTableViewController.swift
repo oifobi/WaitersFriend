@@ -220,7 +220,7 @@ class DrinksTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         // Get the new view controller using segue.destination
-        if segue.identifier == "TableVCToDrinkDetailsVC" {
+        if segue.identifier == "DrinksTableVCToDrinkDetailsVC" {
             let vc = segue.destination as! DrinkDetailsViewController
             
             let sectionIndexOfRowTapped = tableView.indexPathForSelectedRow!.section
