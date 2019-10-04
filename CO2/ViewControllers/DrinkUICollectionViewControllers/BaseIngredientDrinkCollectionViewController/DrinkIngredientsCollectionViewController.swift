@@ -29,7 +29,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         performSelector(inBackground: #selector(fetchIngredientList), with: nil)
         
         //Fetch List of Drinks made with Base Ingredient
-        performSelector(inBackground: #selector(fetchDrinksList), with: "vodka")
+        performSelector(inBackground: #selector(performFetchDrinksList), with: "vodka")
         
     }
     
@@ -37,7 +37,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         super.viewDidLoad()
         
         // preserve selection between presentations
-//         self.clearsSelectionOnViewWillAppear = true
+        self.clearsSelectionOnViewWillAppear = false
 
         // Register cell classes and nibs
         //Section Header (UILabel)
@@ -89,7 +89,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         //Define Group
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: NSCollectionLayoutSize(widthDimension: .estimated(136),
-                                               heightDimension: .absolute(44)),
+                                               heightDimension: .absolute(60)),
             subitem: item,
             count: 1)
         
@@ -188,6 +188,9 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
             //If success, set fetechedList data to baseIngredients property
             if let list = fetchedList {
                 self.ingredients = list.map( { $0.baseIngredient! } )
+                
+                //Sort Ingredients array (ascending order)
+                self.ingredients.sort()
                 self.updateUI()
                 print("Fetched Base ingredient list. Items:  \(self.ingredients.count)\n")
             }
@@ -201,7 +204,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
     
     
     //Fetch Selected Base Ingredient Drinks List (drinks made wih specific Base ingredient)
-    @objc func fetchDrinksList(for ingredient: String) {
+    @objc func performFetchDrinksList(for ingredient: String) {
         
         //start / display activity spinner
         DispatchQueue.main.async {
@@ -329,7 +332,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
             
             //Cell Button text
             let ingredient = ingredients[indexPath.item]
-            cell.setButton(title: ingredient.capitalized)
+            cell.setLabel(text: ingredient.capitalized)
             return cell
         
         //Section 1
@@ -388,9 +391,17 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
     // MARK: - Navigation
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        //Fetch drink details
-        let drink = ingredientDrinks[indexPath.item]
-        performFetchDrink(with: drink.id!)
+        //Fetch drinks with ingredient
+        if indexPath.section == 0 {
+            let ingredient = ingredients[indexPath.item]
+            performFetchDrinksList(for: ingredient)
+        }
+        
+        //Fetch drink details when user taps drink cell
+        if indexPath.section == 1 {
+            let drink = ingredientDrinks[indexPath.item]
+            performFetchDrink(with: drink.id!)
+        }
         
     }
     

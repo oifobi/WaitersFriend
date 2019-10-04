@@ -11,15 +11,14 @@ import UIKit
 
 class DrinkIngredientsCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var cellButton: UIButton!
+    @IBOutlet weak var cellLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
     
-    func setButton(title text: String) {
-        cellButton.setTitle(text, for: .normal)
+    func setLabel(text: String) {
+        cellLabel.text = text
     }
-    
 }
