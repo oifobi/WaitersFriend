@@ -13,7 +13,7 @@ enum Section: Int {
     case baseIngredientDrinks
 }
 
-class DrinkIngredientCollectionViewController: UICollectionViewController {
+class DrinkIngredientsCollectionViewController: UICollectionViewController {
     
     //Properties for storing feteched drink/s data objects
     var baseIngredients = [String]() //Base ingredient
@@ -44,7 +44,11 @@ class DrinkIngredientCollectionViewController: UICollectionViewController {
         collectionView.register(UINib(nibName: "DrinkIngredientSectionHeaderReusableView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeaderView")
         
         //Section 0 cells (UIButtons)
-        collectionView.register(UINib(nibName: "DrinkIngredientCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "BaseIngredientCell")
+        collectionView.register(UINib(nibName: "DrinkIngredientsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "BaseIngredientCell")
+        
+        //Section 1 cells (UIImageView + UILabel)
+        collectionView.register(UINib(nibName: "DrinksCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "DrinksCollectionView")
+        
         
         //set compositionViewLayout
         self.collectionView.collectionViewLayout = self.setUpUICollectionViewCompositionLayout()
@@ -313,7 +317,7 @@ class DrinkIngredientCollectionViewController: UICollectionViewController {
             
         //Section 0
         case .baseIngredients:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BaseIngredientCell", for: indexPath) as? DrinkIngredientCollectionViewCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BaseIngredientCell", for: indexPath) as? DrinkIngredientsCollectionViewCell
             else {
                 preconditionFailure("Invalid cell type")
             }
@@ -326,7 +330,7 @@ class DrinkIngredientCollectionViewController: UICollectionViewController {
         //Section 1
         case .baseIngredientDrinks:
             guard let cell = collectionView.dequeueReusableCell(
-              withReuseIdentifier: "BaseIngredientDrinkCell", for: indexPath) as? DrinksCollectionViewCell
+              withReuseIdentifier: "DrinksCollectionView", for: indexPath) as? DrinksCollectionViewCell
               else {
                 preconditionFailure("Invalid cell type")
             }

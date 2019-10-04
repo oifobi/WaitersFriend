@@ -9,7 +9,7 @@
 
 import UIKit
 
-class DrinkIngredientCollectionViewCell: UICollectionViewCell {
+class DrinkIngredientsCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var cellButton: UIButton!
     

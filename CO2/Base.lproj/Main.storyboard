@@ -4,7 +4,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -220,67 +219,18 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2990" y="919"/>
+            <point key="canvasLocation" x="2990" y="141"/>
         </scene>
-        <!--Drink Ingredient Collection View Controller-->
+        <!--Drink Ingredients Collection View Controller-->
         <scene sceneID="r7i-DY-XEM">
             <objects>
-                <collectionViewController id="Fon-VD-iqb" customClass="DrinkIngredientCollectionViewController" customModule="CO2" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController id="Fon-VD-iqb" customClass="DrinkIngredientsCollectionViewController" customModule="CO2" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="MrE-7i-lYn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <collectionViewLayout key="collectionViewLayout" id="78f-6f-Ge1" customClass="DrinkCollectionViewLayout" customModule="CO2" customModuleProvider="target"/>
-                        <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="BaseIngredientDrinkCell" id="yjo-DS-ua3" customClass="DrinksCollectionViewCell" customModule="CO2" customModuleProvider="target">
-                                <rect key="frame" x="87.5" y="0.0" width="200" height="200"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Lyd-qM-Wm2">
-                                    <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GuK-vm-9qO">
-                                            <rect key="frame" x="0.0" y="0.0" width="200" height="150"/>
-                                        </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7gN-7D-W6b">
-                                            <rect key="frame" x="0.0" y="150" width="200" height="50"/>
-                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="50" id="sIv-mj-1Dc"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="7gN-7D-W6b" firstAttribute="top" secondItem="GuK-vm-9qO" secondAttribute="bottom" id="Agx-j9-Vji"/>
-                                        <constraint firstAttribute="trailing" secondItem="GuK-vm-9qO" secondAttribute="trailing" id="FuT-TW-UeB"/>
-                                        <constraint firstAttribute="bottom" secondItem="7gN-7D-W6b" secondAttribute="bottom" id="LEl-aj-a5r"/>
-                                        <constraint firstItem="7gN-7D-W6b" firstAttribute="leading" secondItem="Lyd-qM-Wm2" secondAttribute="leading" id="OXj-JM-ej5"/>
-                                        <constraint firstItem="GuK-vm-9qO" firstAttribute="leading" secondItem="Lyd-qM-Wm2" secondAttribute="leading" id="SFy-YS-JuS"/>
-                                        <constraint firstItem="GuK-vm-9qO" firstAttribute="top" secondItem="Lyd-qM-Wm2" secondAttribute="top" id="V0t-ys-L7L"/>
-                                        <constraint firstAttribute="trailing" secondItem="7gN-7D-W6b" secondAttribute="trailing" id="qt7-ZI-OUz"/>
-                                    </constraints>
-                                </collectionViewCellContentView>
-                                <size key="customSize" width="200" height="200"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="viewCornerRadius">
-                                        <real key="value" value="7"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="viewBorderWidth">
-                                        <real key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="viewBorderColor">
-                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <outlet property="cellImageView" destination="GuK-vm-9qO" id="gQP-fa-IFe"/>
-                                    <outlet property="cellLabel" destination="7gN-7D-W6b" id="kge-Ov-jfH"/>
-                                </connections>
-                            </collectionViewCell>
-                        </cells>
+                        <cells/>
                         <connections>
                             <outlet property="dataSource" destination="Fon-VD-iqb" id="ghj-iM-Yun"/>
                             <outlet property="delegate" destination="Fon-VD-iqb" id="Wjx-Du-1q4"/>
@@ -301,56 +251,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <collectionViewLayout key="collectionViewLayout" id="zFy-xc-nHD" customClass="DrinkCollectionViewLayout" customModule="CO2" customModuleProvider="target"/>
-                        <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SearchResultDrinkCell" id="Eg8-JA-SVZ" customClass="DrinkSearchCollectionViewCell" customModule="CO2" customModuleProvider="target">
-                                <rect key="frame" x="87.5" y="0.0" width="200" height="200"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="roi-KZ-BeJ">
-                                    <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sLj-4H-Uz5">
-                                            <rect key="frame" x="0.0" y="0.0" width="200" height="150"/>
-                                        </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ee1-RK-aHk">
-                                            <rect key="frame" x="0.0" y="150" width="200" height="50"/>
-                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="50" id="wr4-Eo-0MQ"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="sLj-4H-Uz5" firstAttribute="leading" secondItem="roi-KZ-BeJ" secondAttribute="leading" id="9Pf-lx-kb4"/>
-                                        <constraint firstAttribute="trailing" secondItem="Ee1-RK-aHk" secondAttribute="trailing" id="CRZ-6y-MeG"/>
-                                        <constraint firstItem="Ee1-RK-aHk" firstAttribute="leading" secondItem="roi-KZ-BeJ" secondAttribute="leading" id="DnN-bk-gdP"/>
-                                        <constraint firstAttribute="bottom" secondItem="Ee1-RK-aHk" secondAttribute="bottom" id="GpG-CB-aOb"/>
-                                        <constraint firstAttribute="trailing" secondItem="sLj-4H-Uz5" secondAttribute="trailing" id="LLW-qW-FR1"/>
-                                        <constraint firstItem="sLj-4H-Uz5" firstAttribute="top" secondItem="roi-KZ-BeJ" secondAttribute="top" id="wL2-fI-Snb"/>
-                                        <constraint firstItem="Ee1-RK-aHk" firstAttribute="top" secondItem="sLj-4H-Uz5" secondAttribute="bottom" id="xdE-BL-nhk"/>
-                                    </constraints>
-                                </collectionViewCellContentView>
-                                <size key="customSize" width="200" height="200"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="viewCornerRadius">
-                                        <real key="value" value="7"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="viewBorderWidth">
-                                        <real key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="viewBorderColor">
-                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <outlet property="cellImageView" destination="sLj-4H-Uz5" id="4wy-2M-QQF"/>
-                                    <outlet property="cellLabel" destination="Ee1-RK-aHk" id="uoI-ws-L9s"/>
-                                </connections>
-                            </collectionViewCell>
-                        </cells>
+                        <cells/>
                         <connections>
                             <outlet property="dataSource" destination="0CO-ID-xmd" id="suL-Dz-xlt"/>
                             <outlet property="delegate" destination="0CO-ID-xmd" id="QjI-KF-jw8"/>

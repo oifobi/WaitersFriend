@@ -29,6 +29,10 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
         // preserve selection between presentations
          self.clearsSelectionOnViewWillAppear = true
         
+        //Register cell classes and nibs
+        //Section 1 cells (UIImageView + UILabel)
+        collectionView.register(UINib(nibName: "DrinksCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "DrinksCollectionView")
+        
         self.setUpNavigationBar()
         
     }
@@ -178,7 +182,7 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(
-          withReuseIdentifier: "SearchResultDrinkCell", for: indexPath) as? DrinkSearchCollectionViewCell
+          withReuseIdentifier: "DrinksCollectionView", for: indexPath) as? DrinksCollectionViewCell
         
         else {
             preconditionFailure("Invalid cell type")
