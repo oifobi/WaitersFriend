@@ -27,7 +27,7 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
         super.viewDidLoad()
         
         // preserve selection between presentations
-         self.clearsSelectionOnViewWillAppear = true
+//         self.clearsSelectionOnViewWillAppear = true
         
         //Register cell classes and nibs
         //Section 1 cells (UIImageView + UILabel)
@@ -129,21 +129,6 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
     }
     
     //MARK:- Data Fetching methods
-//    @objc func performFetchDrinksImage() {
-//
-//        if let imageURL = drink?.imageURL {
-//            DrinksController.shared.fetchDrinkImage(with: imageURL) { (image, error) in
-//                if let drinkImage = image {
-//
-//                    self.drinkImage = drinkImage
-//
-//                //catch any errors fetching image
-//                } else if let error = error {
-//                    print("Error fetching image with error \(error.localizedDescription)\n")
-//                }
-//            }
-//        }
-//    }
     
     //Fetch drink details in prep tp pass to DrinkDetailsVC
     @objc func performFetchDrink() {

@@ -16,17 +16,17 @@ enum Section: Int {
 class DrinkIngredientsCollectionViewController: UICollectionViewController {
     
     //Properties for storing feteched drink/s data objects
-    var baseIngredients = [String]() //Base ingredient
-    var baseIngredientDrinks = [List]() //List of drinks made with base ingredient
+    var ingredients = [String]() //Base ingredient
+    var ingredientDrinks = [List]() //List of drinks made with base ingredient
     var drink: Drink?
-    var currentBaseIngredient = String() //for tracking currently selected base ingredient
+    var currentIngredient = String() //for tracking currently selected base ingredient
     
     //MARK:- Built-in CollectionView Life-Cycle handlers
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         //Fire fetch Base Ingrediets list
-        performSelector(inBackground: #selector(fetchBaseIngredientList), with: nil)
+        performSelector(inBackground: #selector(fetchIngredientList), with: nil)
         
         //Fetch List of Drinks made with Base Ingredient
         performSelector(inBackground: #selector(fetchDrinksList), with: "vodka")
@@ -37,7 +37,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         super.viewDidLoad()
         
         // preserve selection between presentations
-         self.clearsSelectionOnViewWillAppear = true
+//         self.clearsSelectionOnViewWillAppear = true
 
         // Register cell classes and nibs
         //Section Header (UILabel)
@@ -178,33 +178,18 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
     }
     
     //MARK:- Data Fetching methods
-//    @objc func performFetchDrinksImage() {
-//
-//        if let imageURL = drink?.imageURL {
-//            DrinksController.shared.fetchDrinkImage(with: imageURL) { (image, error) in
-//                if let drinkImage = image {
-//
-////                    self.drinkImage = drinkImage
-//
-//                //catch any errors fetching image
-//                } else if let error = error {
-//                    print("Error fetching image with error \(error.localizedDescription)\n")
-//                }
-//            }
-//        }
-//    }
     
     //Fetch List of Base Ingredients (ie: Vodka, Bitters, etc)
-    @objc func fetchBaseIngredientList() {
+    @objc func fetchIngredientList() {
         
         //fire fetch drinks list method
         DrinksController.shared.fetchList(from: "/list.php", using: [URLQueryItem(name: "i", value: "list")]) { (fetchedList, error) in
         
             //If success, set fetechedList data to baseIngredients property
             if let list = fetchedList {
-                self.baseIngredients = list.map( { $0.baseIngredient! } )
+                self.ingredients = list.map( { $0.baseIngredient! } )
                 self.updateUI()
-                print("Fetched Base ingredient list. Items:  \(self.baseIngredients.count)\n")
+                print("Fetched Base ingredient list. Items:  \(self.ingredients.count)\n")
             }
             
             //if error, fire error meessage
@@ -216,18 +201,30 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
     
     
     //Fetch Selected Base Ingredient Drinks List (drinks made wih specific Base ingredient)
-    @objc func fetchDrinksList(for baseIngredient: String) {
+    @objc func fetchDrinksList(for ingredient: String) {
+        
+        //start / display activity spinner
+        DispatchQueue.main.async {
+            self.loadActivitySpinner()
+        }
         
         //fire fetch list method
-        DrinksController.shared.fetchList(from: "/filter.php", using: [URLQueryItem(name: "i", value: baseIngredient)]) { (fetchedList, error) in
+        DrinksController.shared.fetchList(from: "/filter.php", using: [URLQueryItem(name: "i", value: ingredient)]) { (fetchedList, error) in
        
            //If success, set fetechedList data to drinksList property
            if let list = fetchedList {
-                self.baseIngredientDrinks = list
-                self.currentBaseIngredient = baseIngredient
+                self.ingredientDrinks = list
+                self.currentIngredient = ingredient
                 self.updateUI()
-                print("Fetched drink list made with Base ingredient. Items: \(self.baseIngredientDrinks.count)\n")
+                print("Fetched drink list made with Base ingredient. Items: \(self.ingredientDrinks.count)\n")
            }
+            
+            //Stop and remove activity spinnner
+            DispatchQueue.main.async() {
+                ActivitySpinnerViewController.shared.willMove(toParent: nil)
+                ActivitySpinnerViewController.shared.view.removeFromSuperview()
+                ActivitySpinnerViewController.shared.removeFromParent()
+            }
            
            //if error, fire error meessage
            if let error = error {
@@ -237,15 +234,25 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
     }
     
     //Fetch drink details in prep tp pass to DrinkDetailsVC
-    @objc func performFetchDrink() {
+    @objc func performFetchDrink(with id: String) {
         
         //fire fetch drink method
-         DrinksController.shared.fetchDrink(from: "/lookup.php", using: [URLQueryItem(name: "i", value: "14282")]) { (fetchedDrink, error) in
+         DrinksController.shared.fetchDrink(from: "/lookup.php", using: [URLQueryItem(name: "i", value: id)]) { (fetchedDrink, error) in
         
             //If success,
             if let drink = fetchedDrink {
                 self.drink = drink
                 print("Fetched drink: \(String(describing: self.drink))\n")
+                
+                //perform segue to detailsVC
+                DispatchQueue.main.async {
+                
+                    if let vc = self.storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as? DrinkDetailsViewController {
+                        vc.drink = drink
+                        vc.sender = "DrinkIngredientCollectionViewController"
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    }
+                }
             }
             
             //if error, fire error meessage
@@ -255,9 +262,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
          }
     }
     
-    
     //MARK:- CollectionView Data Source / Delegate methods
-    
     // Define number of sections
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
@@ -269,10 +274,10 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         switch Section(rawValue: section) {
         
         case .baseIngredients:
-            return baseIngredients.count
+            return ingredients.count
             
         case .baseIngredientDrinks:
-            return baseIngredientDrinks.count
+            return ingredientDrinks.count
             
         case .none:
             fatalError("Section should not be none")
@@ -295,7 +300,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
                 sectionHeaderView.setHeaderLabel(text: "Base Ingredients")
             
             case .baseIngredientDrinks:
-                sectionHeaderView.setHeaderLabel(text: "\(currentBaseIngredient.capitalized) Drinks")
+                sectionHeaderView.setHeaderLabel(text: "\(currentIngredient.capitalized) Drinks")
             
             case .none:
                 fatalError("Should not be none")
@@ -323,7 +328,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
             }
             
             //Cell Button text
-            let ingredient = baseIngredients[indexPath.item]
+            let ingredient = ingredients[indexPath.item]
             cell.setButton(title: ingredient.capitalized)
             return cell
         
@@ -336,7 +341,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
             }
             
             //Cell text
-            let drink = baseIngredientDrinks[indexPath.item]
+            let drink = ingredientDrinks[indexPath.item]
             cell.setLabel(text: drink.name!)
             
             //cell image
@@ -376,21 +381,21 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         case .none:
             fatalError("Should not be none")
         }
+        
+        
     }
     
     // MARK: - Navigation
-//    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        
-//        if let vc = storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as? DrinkDetailsViewController {
-//                
-//            vc.drink = drink
-//            vc.sender = "DrinkIngredientCollectionViewController"
-//            navigationController?.pushViewController(vc, animated: true)
-//        }
-//    }
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        //Fetch drink details
+        let drink = ingredientDrinks[indexPath.item]
+        performFetchDrink(with: drink.id!)
+        
+    }
     
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 //
 //    }
-//    
+    
 }
