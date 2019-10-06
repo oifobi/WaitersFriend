@@ -12,7 +12,7 @@
             <objects>
                 <tableViewController id="2j6-AA-q3l" customClass="DrinksTableViewController" customModule="CO2" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="8ky-0K-fwW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="574"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
@@ -82,7 +82,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kee-sB-3DZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2140" y="141"/>
+            <point key="canvasLocation" x="1185" y="188"/>
         </scene>
         <!--Drink Details View Controller-->
         <scene sceneID="fcU-Rd-M4A">
@@ -231,7 +231,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2990" y="141"/>
+            <point key="canvasLocation" x="1969" y="189"/>
         </scene>
         <!--Drink Ingredients Collection View Controller-->
         <scene sceneID="r7i-DY-XEM">
@@ -252,7 +252,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PeD-3E-75i" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3813.5999999999999" y="149.77511244377811"/>
+            <point key="canvasLocation" x="3361" y="189"/>
         </scene>
         <!--Drink Search Collection View Controller-->
         <scene sceneID="Fpv-rW-8P0">
@@ -273,13 +273,13 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fas-CX-ORS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4590" y="150"/>
+            <point key="canvasLocation" x="4265" y="190"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Top Rated-->
         <scene sceneID="U91-JJ-mg5">
             <objects>
                 <navigationController storyboardIdentifier="TableViewNavController" automaticallyAdjustsScrollViewInsets="NO" id="lu1-p8-h7M" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="topRated" id="DPM-VO-zwy"/>
+                    <tabBarItem key="tabBarItem" title="Top Rated" image="hand.thumbsup.fill" catalog="system" id="DPM-VO-zwy"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="M82-aM-3mp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -299,31 +299,36 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="faB-tM-ZXE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2141" y="-636"/>
+            <point key="canvasLocation" x="1185" y="-604"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="b2B-hn-AFs">
             <objects>
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="9Cy-lF-j3c" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Mq9-wT-k9E">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="Mq9-wT-k9E">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
                         <segue destination="lu1-p8-h7M" kind="relationship" relationship="viewControllers" id="ECm-mC-Dde"/>
+                        <segue destination="kZf-cQ-RDk" kind="relationship" relationship="viewControllers" id="Ydh-4i-hN8"/>
+                        <segue destination="PaC-z6-Dyc" kind="relationship" relationship="viewControllers" id="PAU-Co-29L"/>
+                        <segue destination="efI-NQ-Zbe" kind="relationship" relationship="viewControllers" id="3So-uS-pKt"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s0a-0P-xI6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2140" y="-1365"/>
+            <point key="canvasLocation" x="2638" y="-1366"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ZrE-Dt-Lhb">
             <objects>
-                <navigationController storyboardIdentifier="DrinkDetailsViewNavController" automaticallyAdjustsScrollViewInsets="NO" id="kZf-cQ-RDk" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="kZf-cQ-RDk" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" systemItem="featured" id="KNH-oZ-nmZ"/>
                     <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="tYQ-JU-dz9">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -339,13 +344,15 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3GV-5L-tp3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2990" y="-636"/>
+            <point key="canvasLocation" x="1969" y="-555"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Filter-->
         <scene sceneID="2De-bt-nko">
             <objects>
-                <navigationController storyboardIdentifier="BaseIngredientDrinkCollectionViewNavController" automaticallyAdjustsScrollViewInsets="NO" id="PaC-z6-Dyc" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="PaC-z6-Dyc" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Filter" image="line.horizontal.3.decrease.circle.fill" catalog="system" id="ood-ue-TIk"/>
                     <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="SIM-tG-BZV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -361,13 +368,15 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ywL-Se-w7I" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3814" y="-636"/>
+            <point key="canvasLocation" x="3362" y="-555"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="lzs-Yp-408">
             <objects>
-                <navigationController storyboardIdentifier="SearchDrinkCollectionViewNavController" automaticallyAdjustsScrollViewInsets="NO" id="efI-NQ-Zbe" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="efI-NQ-Zbe" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" systemItem="search" id="czB-Aa-muf"/>
                     <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="6nd-Ih-dd8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -382,10 +391,14 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eKu-nO-bs8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4590" y="-636"/>
+            <point key="canvasLocation" x="4265" y="-604"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="hand.thumbsup.fill" catalog="system" width="64" height="64"/>
+        <image name="line.horizontal.3.decrease.circle.fill" catalog="system" width="64" height="62"/>
+    </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="evS-SR-87Y"/>
+        <segue reference="hFO-AD-XNe"/>
     </inferredMetricsTieBreakers>
 </document>
