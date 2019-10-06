@@ -186,9 +186,14 @@
                                     <constraint firstAttribute="trailing" secondItem="NiU-RU-wQK" secondAttribute="trailing" id="xv4-7Y-jmF"/>
                                 </constraints>
                             </view>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="sax-aY-yVa">
+                                <rect key="frame" x="169" y="119" width="37" height="37"/>
+                                <color key="color" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="sax-aY-yVa" firstAttribute="centerY" secondItem="Mq7-4N-WKi" secondAttribute="centerY" id="BaA-7v-rYJ"/>
                             <constraint firstItem="7pf-wm-6Mg" firstAttribute="trailing" secondItem="PfA-6z-I4G" secondAttribute="trailing" constant="5" id="HGt-Hc-pw4"/>
                             <constraint firstItem="903-Mt-1ph" firstAttribute="leading" secondItem="7pf-wm-6Mg" secondAttribute="leading" constant="5" id="LdR-Jm-oio"/>
                             <constraint firstItem="7pf-wm-6Mg" firstAttribute="bottom" secondItem="903-Mt-1ph" secondAttribute="bottom" id="P1N-5J-gFO"/>
@@ -200,11 +205,18 @@
                             <constraint firstItem="903-Mt-1ph" firstAttribute="top" secondItem="PfA-6z-I4G" secondAttribute="bottom" constant="5" id="frS-DA-7R2"/>
                             <constraint firstItem="PfA-6z-I4G" firstAttribute="top" secondItem="Mq7-4N-WKi" secondAttribute="bottom" constant="5" id="hGq-p5-UZ7"/>
                             <constraint firstItem="7pf-wm-6Mg" firstAttribute="trailing" secondItem="903-Mt-1ph" secondAttribute="trailing" constant="5" id="q7K-Dh-85z"/>
+                            <constraint firstItem="sax-aY-yVa" firstAttribute="centerX" secondItem="Mq7-4N-WKi" secondAttribute="centerX" id="ywt-Lk-24a"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="7pf-wm-6Mg"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="sax-aY-yVa"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="esw-8U-X4f"/>
                     <connections>
+                        <outlet property="activityIndicatorView" destination="sax-aY-yVa" id="dkG-Mh-5hH"/>
                         <outlet property="drinkDetailsImageView" destination="Mq7-4N-WKi" id="eP9-QR-wfI"/>
                         <outlet property="ingredientsTableView" destination="NiU-RU-wQK" id="6IN-3d-x5U"/>
                         <outlet property="instructionsLabel" destination="o7G-Mg-f49" id="2Xa-PN-2kc"/>

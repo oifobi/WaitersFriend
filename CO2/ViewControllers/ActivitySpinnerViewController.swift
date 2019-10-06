@@ -13,7 +13,7 @@ class ActivitySpinnerViewController: UIViewController {
     static var shared = ActivitySpinnerViewController()
     
     var spinner = UIActivityIndicatorView(style: .large)
-
+    
     override func loadView() {
         
         //create parent / superview to host spinner indicator

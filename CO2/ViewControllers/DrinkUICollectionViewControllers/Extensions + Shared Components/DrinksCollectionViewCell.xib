@@ -29,16 +29,24 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="nzj-ns-gt9">
+                        <rect key="frame" x="90" y="65" width="20" height="20"/>
+                        <color key="color" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </activityIndicatorView>
                 </subviews>
             </view>
             <constraints>
+                <constraint firstItem="nE8-ju-Bx5" firstAttribute="top" secondItem="nzj-ns-gt9" secondAttribute="bottom" constant="65" id="1nu-Uw-8aE"/>
                 <constraint firstItem="nE8-ju-Bx5" firstAttribute="top" secondItem="GRa-S5-D8Z" secondAttribute="bottom" id="6Pn-2B-g8K"/>
                 <constraint firstItem="nE8-ju-Bx5" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="7fn-MP-r5v"/>
+                <constraint firstAttribute="trailing" secondItem="nzj-ns-gt9" secondAttribute="trailing" constant="90" id="8dr-fV-mEb"/>
                 <constraint firstItem="GRa-S5-D8Z" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="IR1-Wx-xc4"/>
                 <constraint firstAttribute="bottom" secondItem="nE8-ju-Bx5" secondAttribute="bottom" id="JzA-gF-9nq"/>
+                <constraint firstItem="nzj-ns-gt9" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="90" id="LZ0-KO-A4h"/>
                 <constraint firstAttribute="trailing" secondItem="nE8-ju-Bx5" secondAttribute="trailing" id="M7b-KV-Gem"/>
                 <constraint firstAttribute="trailing" secondItem="GRa-S5-D8Z" secondAttribute="trailing" id="QxJ-Yu-hQ9"/>
                 <constraint firstItem="GRa-S5-D8Z" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="dbX-gj-dEh"/>
+                <constraint firstItem="nzj-ns-gt9" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="65" id="wot-iG-BXf"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <userDefinedRuntimeAttributes>
@@ -53,6 +61,7 @@
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
             <connections>
+                <outlet property="cellActivityIndicatorView" destination="nzj-ns-gt9" id="GFh-yy-ufR"/>
                 <outlet property="cellImageView" destination="GRa-S5-D8Z" id="pPd-iG-TpV"/>
                 <outlet property="cellLabel" destination="nE8-ju-Bx5" id="4eS-Dj-yVI"/>
             </connections>

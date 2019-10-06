@@ -30,16 +30,15 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         
         //Fetch List of Drinks made with Base Ingredient
         performSelector(inBackground: #selector(performFetchDrinksList), with: "vodka")
-        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // preserve selection between presentations
+        //Preserve selection between presentations
         self.clearsSelectionOnViewWillAppear = false
 
-        // Register cell classes and nibs
+        //Register cell classes and nibs
         //Section Header (UILabel)
         collectionView.register(UINib(nibName: "DrinkIngredientSectionHeaderReusableView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeaderView")
         
@@ -48,7 +47,6 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         
         //Section 1 cells (UIImageView + UILabel)
         collectionView.register(UINib(nibName: "DrinksCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "DrinksCollectionView")
-        
         
         //set compositionViewLayout
         self.collectionView.collectionViewLayout = self.setUpUICollectionViewCompositionLayout()
@@ -159,22 +157,25 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         DispatchQueue.main.async {
             
             //Set initial title and collectionView data
-            self.title = "Drinks made by Ingredient"
+            self.title = "Drinks by Ingredient"
             self.collectionView.reloadData()
         }
     }
     
     //Activity indicator / spinner
-    func loadActivitySpinner() {
+    func startActivitySpinner() {
     
         //Add to relevant view
         addChild(ActivitySpinnerViewController.shared)
-        
-        //Add spinner view to view controller
         ActivitySpinnerViewController.shared.view.frame = view.bounds
-
         view.addSubview(ActivitySpinnerViewController.shared.view)
         ActivitySpinnerViewController.shared.didMove(toParent: self)
+    }
+    
+    func stopActivitySpinner() {
+        ActivitySpinnerViewController.shared.willMove(toParent: nil)
+        ActivitySpinnerViewController.shared.view.removeFromSuperview()
+        ActivitySpinnerViewController.shared.removeFromParent()
     }
     
     //MARK:- Data Fetching methods
@@ -202,13 +203,12 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         }
     }
     
-    
     //Fetch Selected Base Ingredient Drinks List (drinks made wih specific Base ingredient)
     @objc func performFetchDrinksList(for ingredient: String) {
         
         //start / display activity spinner
         DispatchQueue.main.async {
-            self.loadActivitySpinner()
+            self.startActivitySpinner()
         }
         
         //fire fetch list method
@@ -224,9 +224,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
             
             //Stop and remove activity spinnner
             DispatchQueue.main.async() {
-                ActivitySpinnerViewController.shared.willMove(toParent: nil)
-                ActivitySpinnerViewController.shared.view.removeFromSuperview()
-                ActivitySpinnerViewController.shared.removeFromParent()
+                self.stopActivitySpinner()
             }
            
            //if error, fire error meessage
@@ -238,6 +236,11 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
     
     //Fetch drink details in prep tp pass to DrinkDetailsVC
     @objc func performFetchDrink(with id: String) {
+        
+        //start / display activity spinner
+        DispatchQueue.main.async {
+            self.startActivitySpinner()
+        }
         
         //fire fetch drink method
          DrinksController.shared.fetchDrink(from: "/lookup.php", using: [URLQueryItem(name: "i", value: id)]) { (fetchedDrink, error) in
@@ -256,6 +259,11 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
                         self.navigationController?.pushViewController(vc, animated: true)
                     }
                 }
+            }
+            
+            //Stop and remove activity spinnner
+            DispatchQueue.main.async() {
+                self.stopActivitySpinner()
             }
             
             //if error, fire error meessage
@@ -325,12 +333,13 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
             
         //Section 0
         case .baseIngredients:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BaseIngredientCell", for: indexPath) as? DrinkIngredientsCollectionViewCell
-            else {
-                preconditionFailure("Invalid cell type")
-            }
+            guard indexPath.item < ingredients.count
+            else { preconditionFailure("index out of range") }
             
-            //Cell Button text
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BaseIngredientCell", for: indexPath) as? DrinkIngredientsCollectionViewCell
+            else { preconditionFailure("Invalid cell type") }
+            
+            //Cell label text
             let ingredient = ingredients[indexPath.item]
             cell.setLabel(text: ingredient.capitalized)
             return cell
@@ -350,8 +359,11 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
             //cell image
             //Fetch and set drink image
             if let imageURL = drink.imageURL {
+                
+                //Show and start cell activity indicator animation
+                cell.startActivityIndicator()
                
-               DrinksController.shared.fetchDrinkImage(with: imageURL) { (fetchedImage, error) in
+                DrinksController.shared.fetchDrinkImage(with: imageURL) { (fetchedImage, error) in
                    if let drinkImage = fetchedImage {
 
                        //Update cell image to fecthedImage via main thread
@@ -365,11 +377,14 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
                                    return
                                }
 
-                           //Set cell image
-                           cell.setImage(drinkImage)
+                            //Set cell image
+                            cell.setImage(drinkImage)
+                        
+                            //Stop acell activity indicator animation and hide
+                            cell.stopActivityIndicator()
 
-                           //Refresh cell to display fetched image
-                           cell.setNeedsLayout()
+                            //Refresh cell to display fetched image
+                            cell.setNeedsLayout()
                        }
 
                    //catch any errors fetching image
@@ -384,8 +399,6 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         case .none:
             fatalError("Should not be none")
         }
-        
-        
     }
     
     // MARK: - Navigation
@@ -402,7 +415,6 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
             let drink = ingredientDrinks[indexPath.item]
             performFetchDrink(with: drink.id!)
         }
-        
     }
     
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

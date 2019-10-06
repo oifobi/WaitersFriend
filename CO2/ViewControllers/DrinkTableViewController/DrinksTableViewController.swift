@@ -8,14 +8,6 @@
 
 import UIKit
 
-//MARK:- Custom tableView cell definition
-//class DrinkTableViewCell: UITableViewCell {
-//    
-//    @IBOutlet weak var titleLabel: UILabel!
-//    @IBOutlet weak var subtitleLabel: UILabel!
-//    @IBOutlet weak var drinkImageView: UIImageView!
-//}
-
 //MARK:- Class Definition
 class DrinksTableViewController: UITableViewController {
     
@@ -46,7 +38,7 @@ class DrinksTableViewController: UITableViewController {
         DispatchQueue.main.async {
             
             //start / display activity spinner
-            self.loadActivitySpinner()
+            self.startActivitySpinner()
 
             //fire fetch drinks list method
             DrinksController.shared.fetchDrinks(from: EndPoints.popular.rawValue) { (fetchedDrinks, error) in
@@ -60,9 +52,7 @@ class DrinksTableViewController: UITableViewController {
                 
                 //Stop and remove activity spinnner
                 DispatchQueue.main.async() {
-                    ActivitySpinnerViewController.shared.willMove(toParent: nil)
-                    ActivitySpinnerViewController.shared.view.removeFromSuperview()
-                    ActivitySpinnerViewController.shared.removeFromParent()
+                    self.stopActivitySpinner()
                 }
                 
                 //fire error handler if error
@@ -74,7 +64,6 @@ class DrinksTableViewController: UITableViewController {
     }
     
     func updateUI() {
-        
         DispatchQueue.main.async {
             self.title = "Top Rated Drinks"
             self.createTableSectionsIndex()
@@ -83,9 +72,7 @@ class DrinksTableViewController: UITableViewController {
     }
     
     func showAlert(with error: Error, sender: String = #function) {
-        
         print("Error Alert called by: \(sender)\n")
-        
         DispatchQueue.main.async {
             let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "Try again?", style: .default, handler: {
@@ -97,16 +84,21 @@ class DrinksTableViewController: UITableViewController {
     }
     
     //Activity indicator / spinner
-    func loadActivitySpinner() {
-    
+    func startActivitySpinner() {
+
         //Add to relevant view
         addChild(ActivitySpinnerViewController.shared)
-        
+
         //Add spinner view to view controller
         ActivitySpinnerViewController.shared.view.frame = view.bounds
-
         view.addSubview(ActivitySpinnerViewController.shared.view)
         ActivitySpinnerViewController.shared.didMove(toParent: self)
+    }
+
+    func stopActivitySpinner() {
+        ActivitySpinnerViewController.shared.willMove(toParent: nil)
+        ActivitySpinnerViewController.shared.view.removeFromSuperview()
+        ActivitySpinnerViewController.shared.removeFromParent()
     }
     
     //setup tableViewIndex
@@ -175,15 +167,15 @@ class DrinksTableViewController: UITableViewController {
             
             let drink = drinks[indexPath.row]
             
-            //set cell lables text
-            cell.setTitleLabel(text: drink.name)
-            cell.setSubtitleLabel(text: drink.ingredient1 ?? "")
-                
+                //set cell lables text
+                cell.setTitleLabel(text: drink.name)
+                cell.setSubtitleLabel(text: drink.ingredient1 ?? "")
+                    
                 //Fetch and set drink image
                 if let imageURL = drink.imageURL {
                     
                     DrinksController.shared.fetchDrinkImage(with:imageURL) { (fetchedImage, error) in
-                        if let drinkImage = fetchedImage {
+                    if let drinkImage = fetchedImage {
 
                             //Update cell image to fecthedImage via main thread
                             DispatchQueue.main.async {

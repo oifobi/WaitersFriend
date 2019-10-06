@@ -10,6 +10,7 @@ import UIKit
 
 class DrinksCollectionViewCell: UICollectionViewCell {
     
+    @IBOutlet weak var cellActivityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var cellImageView: UIImageView!
     @IBOutlet weak var cellLabel: UILabel!
     
@@ -19,5 +20,15 @@ class DrinksCollectionViewCell: UICollectionViewCell {
     
     func setLabel(text: String) {
         cellLabel.text = text
+    }
+    
+    func startActivityIndicator() {
+        cellActivityIndicatorView.isHidden = false
+        cellActivityIndicatorView.startAnimating()
+    }
+    
+    func stopActivityIndicator() {
+        cellActivityIndicatorView.isHidden = true
+        cellActivityIndicatorView.stopAnimating()
     }
 }

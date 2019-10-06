@@ -35,6 +35,8 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     //Stackview outlets
     //ImageView
     @IBOutlet weak var drinkDetailsImageView: UIImageView!
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
+    
     
     //Detect and take action with Long press on UIViewImage
     @IBAction func drinkDetailsImageViewGesture(recognizer: UILongPressGestureRecognizer) {
@@ -137,9 +139,6 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         
         DispatchQueue.main.async {
             
-            //display activity spinner
-            self.loadActivitySpinner()
-            
             //Fire fetch data depending on sender
             if sender == nil {
                 
@@ -162,6 +161,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
+    //Fetch drink details
     @objc func performFetchDrinks() {
         
         let endpoint = EndPoints.random.rawValue
@@ -174,34 +174,38 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
                 self.drink = drinks[0]
                 self.updateUI(sender: "TabBarItem")
 //                print("Fetched Drinks: \(drinks)\n")
+            }
+            
+            //fire error handler if error
+            if let error = error {
+                self.showAlert(with: error)
                 
-                //fire error handler if error
-            } else {
-                if let error = error {
-                    self.showAlert(with: error)
-                }
             }
         }
     }
     
     @objc func performFetchDrinksImage() {
         
+        //Show and start activity indicator animation
+        DispatchQueue.main.async {
+            self.startActivitySpinner()
+        }
+        
         if let imageURL = drink?.imageURL {
             DrinksController.shared.fetchDrinkImage(with: imageURL) { (image, error) in
+                
                 if let drinkImage = image {
-                
                     self.drinkImage = drinkImage
-                
-                //catch any errors fetching image
-                } else if let error = error {
-                    print("Error fetching image with error \(error.localizedDescription)\n")
                 }
                 
-                //Stop and remove activity spinnner
-                 DispatchQueue.main.async() {
-                    ActivitySpinnerViewController.shared.willMove(toParent: nil)
-                    ActivitySpinnerViewController.shared.view.removeFromSuperview()
-                    ActivitySpinnerViewController.shared.removeFromParent()
+            //Stop and hide activity indicator animation
+            DispatchQueue.main.async {
+                self.stopActivitySpinner()
+            }
+                
+                //catch any errors fetching image
+                if let error = error {
+                    print("Error fetching image with error \(error.localizedDescription)\n")
                 }
             }
         }
@@ -223,7 +227,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     //Activity indicator / spinner
-    func loadActivitySpinner() {
+    func startActivitySpinner() {
     
         //Add to relevant view
         addChild(ActivitySpinnerViewController.shared)
@@ -234,6 +238,15 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         view.addSubview(ActivitySpinnerViewController.shared.view)
         ActivitySpinnerViewController.shared.didMove(toParent: self)
     }
+    
+    func stopActivitySpinner() {
+        
+        ActivitySpinnerViewController.shared.willMove(toParent: nil)
+        ActivitySpinnerViewController.shared.view.removeFromSuperview()
+        ActivitySpinnerViewController.shared.removeFromParent()
+    }
+    
+    
     
     //MARK:- TableView data prep method/s (TO BE REFACTORED!)
     func loadIngredientsTableData() {

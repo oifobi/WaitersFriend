@@ -75,7 +75,7 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
         
         //start / display activity spinner
         DispatchQueue.main.async {
-            self.loadActivitySpinner()
+            self.startActivitySpinner()
         }
         
         //fire fetch recent drinks list method
@@ -90,9 +90,7 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
             
             //Stop and remove activity spinnner
             DispatchQueue.main.async() {
-                ActivitySpinnerViewController.shared.willMove(toParent: nil)
-                ActivitySpinnerViewController.shared.view.removeFromSuperview()
-                ActivitySpinnerViewController.shared.removeFromParent()
+                self.stopActivitySpinner()
             }
             
             //fire error handler if error
@@ -116,20 +114,20 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
        }
     
     //Activity indicator / spinner
-    func loadActivitySpinner() {
-    
-        //Add to relevant view
+    func startActivitySpinner() {
         addChild(ActivitySpinnerViewController.shared)
-        
-        //Add spinner view to view controller
         ActivitySpinnerViewController.shared.view.frame = view.bounds
-
         view.addSubview(ActivitySpinnerViewController.shared.view)
         ActivitySpinnerViewController.shared.didMove(toParent: self)
     }
     
-    //MARK:- Data Fetching methods
+    func stopActivitySpinner() {
+        ActivitySpinnerViewController.shared.willMove(toParent: nil)
+        ActivitySpinnerViewController.shared.view.removeFromSuperview()
+        ActivitySpinnerViewController.shared.removeFromParent()
+    }
     
+    //MARK:- Data Fetching methods
     //Fetch drink details in prep tp pass to DrinkDetailsVC
     @objc func performFetchDrink() {
         
@@ -148,7 +146,6 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
             }
          }
     }
-    
     
     //MARK:- CollectionView Data Source / Delegate methods
     
@@ -182,8 +179,11 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
         //Cell image
         //Fetch and set drink image
         if let imageURL = drink.imageURL {
-           
-           DrinksController.shared.fetchDrinkImage(with: imageURL) { (fetchedImage, error) in
+            
+            //Show and start cell activity indicator animation
+            cell.startActivityIndicator()
+            
+            DrinksController.shared.fetchDrinkImage(with: imageURL) { (fetchedImage, error) in
                if let drinkImage = fetchedImage {
 
                    //Update cell image to fecthedImage via main thread
@@ -197,11 +197,14 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
                                return
                            }
                     
-                       //Set cell image
-                       cell.setImage(drinkImage)
+                        //Set cell image
+                        cell.setImage(drinkImage)
+                    
+                        //Stop acell activity indicator animation and hide
+                        cell.stopActivityIndicator()
 
-                       //Refresh cell to display fetched image
-                       cell.setNeedsLayout()
+                        //Refresh cell to display fetched image
+                        cell.setNeedsLayout()
                     
                    }
 

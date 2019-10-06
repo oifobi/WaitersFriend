@@ -122,7 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				2AE939ED2344D1EC0039AAE2 /* Extensions + Shared Components */,
-				2AE939E92343AF970039AAE2 /* BaseIngredientDrinkCollectionViewController */,
+				2AE939E92343AF970039AAE2 /* DrinkIngredientsCollectionViewController */,
 				2AE939EA2343AFE60039AAE2 /* SearchResultDrinkCollectionViewController */,
 			);
 			path = DrinkUICollectionViewControllers;
@@ -200,7 +200,7 @@
 			path = CO2UITests;
 			sourceTree = "<group>";
 		};
-		2AE939E92343AF970039AAE2 /* BaseIngredientDrinkCollectionViewController */ = {
+		2AE939E92343AF970039AAE2 /* DrinkIngredientsCollectionViewController */ = {
 			isa = PBXGroup;
 			children = (
 				2A3A19A8233904BA0029DD59 /* DrinkIngredientsCollectionViewController.swift */,
@@ -209,7 +209,7 @@
 				2A768EE9233CDCD400D694C7 /* DrinkIngredientSectionHeaderReusableView.swift */,
 				2AE939F02344D7100039AAE2 /* DrinkIngredientSectionHeaderReusableView.xib */,
 			);
-			path = BaseIngredientDrinkCollectionViewController;
+			path = DrinkIngredientsCollectionViewController;
 			sourceTree = "<group>";
 		};
 		2AE939EA2343AFE60039AAE2 /* SearchResultDrinkCollectionViewController */ = {
