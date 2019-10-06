@@ -10,7 +10,7 @@ import UIKit
 
 class DrinkSearchCollectionViewController: UICollectionViewController, UISearchResultsUpdating, UISearchBarDelegate {
     
-    var drinks = [Drink]() //Recent drinks
+    var drinks: [Drink]? //Recent drinks
     var drink: Drink?
     var currentBaseIngredient = String() //for tracking currently selected base ingredient
     
@@ -19,12 +19,17 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
         super.viewWillAppear(animated)
         
         //Fire fetch Recents Drink
-        performSelector(inBackground: #selector(performFetchRecentDrinks), with: nil)
+        if drinks == nil {
+            performSelector(inBackground: #selector(performFetchRecentDrinks), with: nil)
+        }
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Set initial title and collectionView data
+        self.title = "Recent Drinks"
         
         // preserve selection between presentations
 //         self.clearsSelectionOnViewWillAppear = true
@@ -41,9 +46,6 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
     func updateUI() {
         
         DispatchQueue.main.async {
-            
-            //Set initial title and collectionView data
-            self.title = "Recent Drinks"
             self.collectionView.reloadData()
         }
     }
@@ -156,7 +158,9 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
 
     //Define number of items per section
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return drinks.count
+        guard drinks != nil else { return 0 }
+        
+        return drinks!.count
         
     }
     
@@ -170,7 +174,9 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
             preconditionFailure("Invalid cell type")
         }
         
-        let drink = drinks[indexPath.item]
+        guard drinks != nil else {preconditionFailure("Drinks property is nil") }
+        
+        let drink = drinks![indexPath.item]
         
         //Set cell properties
         //Cell text
@@ -220,9 +226,11 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
     // MARK: - Navigation
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        guard drinks != nil else { return }
+        
         if let vc = storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as? DrinkDetailsViewController {
                 
-            vc.drink = drinks[indexPath.item]
+            vc.drink = drinks![indexPath.item]
             vc.sender = "SearchCollectionViewController"
             navigationController?.pushViewController(vc, animated: true)
         }

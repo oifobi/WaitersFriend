@@ -17,7 +17,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
     
     //Properties for storing feteched drink/s data objects
     var ingredients = [String]() //Base ingredient
-    var ingredientDrinks = [List]() //List of drinks made with base ingredient
+    var ingredientDrinks: [List]? //List of drinks made with base ingredient
     var drink: Drink?
     var currentIngredient = String() //for tracking currently selected base ingredient
     
@@ -26,14 +26,21 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         super.viewWillAppear(animated)
         
         //Fire fetch Base Ingrediets list
-        performSelector(inBackground: #selector(fetchIngredientList), with: nil)
+        if ingredients == [] {
+            performSelector(inBackground: #selector(fetchIngredientList), with: nil)
+        }
         
         //Fetch List of Drinks made with Base Ingredient
-        performSelector(inBackground: #selector(performFetchDrinksList), with: "vodka")
+        if ingredientDrinks == nil {
+            performSelector(inBackground: #selector(performFetchDrinksList), with: "vodka")
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Set initial title and collectionView data
+        self.title = "Drinks by Ingredient"
         
         //Preserve selection between presentations
         self.clearsSelectionOnViewWillAppear = false
@@ -81,13 +88,13 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         //Define Item
         let item = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .fractionalHeight(1.0)))
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0.0, leading: 8.0, bottom: 0.0, trailing: 8.0)
+                heightDimension: .fractionalHeight(1.0)))
+            item.contentInsets = NSDirectionalEdgeInsets(top: 0.0, leading: 8.0, bottom: 0.0, trailing: 8.0)
         
         //Define Group
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: NSCollectionLayoutSize(widthDimension: .estimated(136),
-                                               heightDimension: .absolute(60)),
+            heightDimension: .absolute(50)),
             subitem: item,
             count: 1)
         
@@ -96,18 +103,16 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         
         //Define Section header
         let headerView = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .absolute(44)),
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),heightDimension: .absolute(44)),
             elementKind: UICollectionView.elementKindSectionHeader,
             alignment: .top)
+        
         headerView.pinToVisibleBounds = true
         section.boundarySupplementaryItems = [headerView]
-
         section.contentInsets = NSDirectionalEdgeInsets(top: 16.0,
                                                         leading: 0.0,
                                                         bottom: 16.0,
                                                         trailing: 0.0)
-
         section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
         return section
     }
@@ -116,8 +121,8 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
     func setUpBaseIngredientDrinksSection() -> NSCollectionLayoutSection {
         
         let item = NSCollectionLayoutItem(
-        layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9),
-                                           heightDimension: .fractionalHeight(0.9))) // This height does not have any effect. Bug?
+        layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .fractionalHeight(0.9))) // This height does not have any effect. Bug?
+        
         item.edgeSpacing = NSCollectionLayoutEdgeSpacing(
             leading: NSCollectionLayoutSpacing.flexible(0.0),
             top: NSCollectionLayoutSpacing.flexible(0.0),
@@ -126,7 +131,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
 
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .fractionalWidth(0.60)),
+            heightDimension: .fractionalWidth(0.6)),
             subitem: item,
             count: 1)
 
@@ -134,14 +139,13 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
 
         let headerView = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .absolute(44)),
+            heightDimension: .absolute(44)),
             elementKind: UICollectionView.elementKindSectionHeader,
             alignment: .top)
+        
         headerView.pinToVisibleBounds = true
         section.boundarySupplementaryItems = [headerView]
-
         section.interGroupSpacing = 20
-
         section.contentInsets = NSDirectionalEdgeInsets(top: 16.0,
                                                         leading: 0.0,
                                                         bottom: 16.0,
@@ -152,13 +156,10 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
 
 
     //MARK:- Custom Methods
-    func updateUI() {
+    func updateUI(for section: Int) {
         
         DispatchQueue.main.async {
-            
-            //Set initial title and collectionView data
-            self.title = "Drinks by Ingredient"
-            self.collectionView.reloadData()
+            self.collectionView.reloadSections(IndexSet(integer: section))
         }
     }
     
@@ -192,7 +193,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
                 
                 //Sort Ingredients array (ascending order)
                 self.ingredients.sort()
-                self.updateUI()
+                self.updateUI(for: Section.baseIngredients.rawValue)
                 print("Fetched Base ingredient list. Items:  \(self.ingredients.count)\n")
             }
             
@@ -218,8 +219,8 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
            if let list = fetchedList {
                 self.ingredientDrinks = list
                 self.currentIngredient = ingredient
-                self.updateUI()
-                print("Fetched drink list made with Base ingredient. Items: \(self.ingredientDrinks.count)\n")
+                self.updateUI(for: Section.baseIngredientDrinks.rawValue)
+            print("Fetched drink list made with Base ingredient. Items: \(self.ingredientDrinks!.count)\n")
            }
             
             //Stop and remove activity spinnner
@@ -288,7 +289,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
             return ingredients.count
             
         case .baseIngredientDrinks:
-            return ingredientDrinks.count
+            return ingredientDrinks?.count ?? 0
             
         case .none:
             fatalError("Section should not be none")
@@ -334,7 +335,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         //Section 0
         case .baseIngredients:
             guard indexPath.item < ingredients.count
-            else { preconditionFailure("index out of range") }
+            else { preconditionFailure("Index out of range") }
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BaseIngredientCell", for: indexPath) as? DrinkIngredientsCollectionViewCell
             else { preconditionFailure("Invalid cell type") }
@@ -353,7 +354,9 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
             }
             
             //Cell text
-            let drink = ingredientDrinks[indexPath.item]
+            guard ingredientDrinks != nil else { preconditionFailure("ingredientDrinks is nil") }
+            
+            let drink = ingredientDrinks![indexPath.item]
             cell.setLabel(text: drink.name!)
             
             //cell image
@@ -405,14 +408,15 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         //Fetch drinks with ingredient
-        if indexPath.section == 0 {
+        if indexPath.section == Section.baseIngredients.rawValue {
             let ingredient = ingredients[indexPath.item]
             performFetchDrinksList(for: ingredient)
         }
         
         //Fetch drink details when user taps drink cell
-        if indexPath.section == 1 {
-            let drink = ingredientDrinks[indexPath.item]
+        if indexPath.section == Section.baseIngredientDrinks.rawValue {
+            guard ingredientDrinks != nil else { return }
+            let drink = ingredientDrinks![indexPath.item]
             performFetchDrink(with: drink.id!)
         }
     }

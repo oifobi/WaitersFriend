@@ -21,7 +21,9 @@ class DrinksTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         //Fire fetch data depending in Tab Bar Item selected
-        performSelector(inBackground: #selector(performFetchDrinks), with: nil)
+        if drinks == nil {
+            performSelector(inBackground: #selector(performFetchDrinks), with: nil)
+        }
     }
     
     override func viewDidLoad() {
