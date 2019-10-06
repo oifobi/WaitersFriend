@@ -67,7 +67,7 @@ class DrinksTableViewController: UITableViewController {
     
     func updateUI() {
         DispatchQueue.main.async {
-            self.title = "Top Rated Drinks"
+            self.title = "Top Rated"
             self.createTableSectionsIndex()
             self.tableView.reloadData()
         }

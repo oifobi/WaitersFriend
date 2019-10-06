@@ -40,7 +40,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         super.viewDidLoad()
         
         //Set initial title and collectionView data
-        self.title = "Drinks by Ingredient"
+        self.title = "Filter"
         
         //Preserve selection between presentations
         self.clearsSelectionOnViewWillAppear = false
