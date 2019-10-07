@@ -164,10 +164,10 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     //Fetch drink details
     @objc func performFetchDrinks() {
         
-        let endpoint = EndPoints.random.rawValue
+        let endpoint = EndPoint.random.rawValue
         
         //fire fetch drinks list method
-        DrinksController.shared.fetchDrinks(from: endpoint) { (drinks, error) in
+        DrinksController.shared.fetchDrinks(from: endpoint, using: nil) { (drinks, error) in
             
             //fire UI update if fetch successful
             if let drinks = drinks {

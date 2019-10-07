@@ -32,7 +32,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         
         //Fetch List of Drinks made with Base Ingredient
         if ingredientDrinks == nil {
-            performSelector(inBackground: #selector(performFetchDrinksList), with: "vodka")
+            performSelector(inBackground: #selector(performFetchDrinksList), with: "151 Proof Rum")
         }
     }
     
@@ -94,7 +94,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         //Define Group
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: NSCollectionLayoutSize(widthDimension: .estimated(136),
-            heightDimension: .absolute(50)),
+            heightDimension: .absolute(60)),
             subitem: item,
             count: 1)
         
@@ -244,7 +244,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         }
         
         //fire fetch drink method
-         DrinksController.shared.fetchDrink(from: "/lookup.php", using: [URLQueryItem(name: "i", value: id)]) { (fetchedDrink, error) in
+        DrinksController.shared.fetchDrink(from: EndPoint.lookup.rawValue, using: [URLQueryItem(name: QueryType.ingredient.rawValue, value: id)]) { (fetchedDrink, error) in
         
             //If success,
             if let drink = fetchedDrink {

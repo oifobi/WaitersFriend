@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 //API end points and Url struturing
-enum EndPoints: String {
+enum EndPoint: String {
     
     //Absolute endpoints
     case random = "/random.php"
@@ -22,6 +22,15 @@ enum EndPoints: String {
     case lookup = "/lookup.php"
     case filter = "/filter.php"
     case list = "/list.php"
+}
+
+enum QueryType: String {
+    
+    case drinkName = "s"
+    case firstLetter = "f"
+    case ingredient = "i"
+    case category = "c"
+    case glass = "g"
 }
 
 public class DrinksController {
@@ -45,12 +54,22 @@ public class DrinksController {
     }
     
     //Fetch Drink Details
-    func fetchDrinks(from endpoint: String, _ completion: @escaping ([Drink]?, Error?) -> Void)  {
+    func fetchDrinks(from endpoint: String, using queryItems: [URLQueryItem]?, _ completion: @escaping ([Drink]?, Error?) -> Void)  {
         guard endpoint != "" else { return }
         
         //Create URL object and append endpoint
-        let components = constructURLComponents()
-        let url = components.url!.appendingPathComponent(endpoint)
+        var components = constructURLComponents()
+        let url: URL
+        
+        switch queryItems {
+        case nil:
+            url = components.url!.appendingPathComponent(endpoint)
+            
+        default:
+            components.queryItems = queryItems
+            url = components.url!.appendingPathComponent(endpoint)
+        }
+        
         
         print("API endpoint: \(String(describing: url))\n")
         

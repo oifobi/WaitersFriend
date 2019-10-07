@@ -31,9 +31,6 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
         //Set initial title and collectionView data
         self.title = "Recent Drinks"
         
-        // preserve selection between presentations
-//         self.clearsSelectionOnViewWillAppear = true
-        
         //Register cell classes and nibs
         //Section 1 cells (UIImageView + UILabel)
         collectionView.register(UINib(nibName: "DrinksCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "DrinksCollectionView")
@@ -48,12 +45,6 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
-    }
-    
-    //UISearch Delegate conformance method
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text else { return }
-        print(text)
     }
     
     func setUpNavigationBar() {
@@ -71,49 +62,8 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
                 //this property ensures any VCs displayed from this viewController can navigate back
         }
     }
+
     
-    //Fetch Recent Drinks
-    @objc func performFetchRecentDrinks() {
-        
-        //start / display activity spinner
-        DispatchQueue.main.async {
-            self.startActivitySpinner()
-        }
-        
-        //fire fetch recent drinks list method
-        DrinksController.shared.fetchDrinks(from: EndPoints.recent.rawValue) { (fetchedDrinks, error) in
-        
-            //fire UI update if fetch successful
-            if let drinks = fetchedDrinks {
-                self.drinks = drinks
-                self.updateUI()
-                print("Fetched Recent Drinks. Items: \(drinks.count)\n")
-            }
-            
-            //Stop and remove activity spinnner
-            DispatchQueue.main.async() {
-                self.stopActivitySpinner()
-            }
-            
-            //fire error handler if error
-            if let error = error {
-                self.showAlert(with: error)
-            }
-        }
-    }
-    
-    func showAlert(with error: Error, sender: String = #function) {
-           print("Error Alert called by: \(sender)\n")
-           
-           DispatchQueue.main.async {
-               let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
-               ac.addAction(UIAlertAction(title: "Try again?", style: .default, handler: {
-                   action in self.performFetchRecentDrinks()
-               }))
-               ac.addAction(UIAlertAction(title: "OK", style: .default))
-               self.present(ac, animated: true)
-           }
-       }
     
     //Activity indicator / spinner
     func startActivitySpinner() {
@@ -130,11 +80,42 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
     }
     
     //MARK:- Data Fetching methods
+    //Fetch Recent Drinks
+    @objc func performFetchRecentDrinks() {
+        
+        //start / display activity spinner
+        DispatchQueue.main.async {
+            self.startActivitySpinner()
+        }
+        
+        //fire fetch recent drinks list method
+        DrinksController.shared.fetchDrinks(from: EndPoint.recent.rawValue, using: nil) { (fetchedDrinks, error) in
+        
+            //fire UI update if fetch successful
+            if let drinks = fetchedDrinks {
+                self.drinks = drinks
+                self.drinks?.sort(by: {$0.name < $1.name} )
+                self.updateUI()
+                print("Fetched Recent Drinks. Items: \(drinks.count)\n")
+            }
+            
+            //Stop and remove activity spinnner
+            DispatchQueue.main.async() {
+                self.stopActivitySpinner()
+            }
+            
+            //fire error handler if error
+            if let error = error {
+                self.showAlert(with: error)
+            }
+        }
+    }
+    
     //Fetch drink details in prep tp pass to DrinkDetailsVC
-    @objc func performFetchDrink() {
+    @objc func performFetchDrink(from endpoint: String, queryName: String, queryValue: String) {
         
         //fire fetch drink method
-         DrinksController.shared.fetchDrink(from: "/lookup.php", using: [URLQueryItem(name: "i", value: "14282")]) { (fetchedDrink, error) in
+         DrinksController.shared.fetchDrink(from: endpoint, using: [URLQueryItem(name: queryName, value: queryValue)]) { (fetchedDrink, error) in
         
             //If success,
             if let drink = fetchedDrink {
@@ -149,8 +130,49 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
          }
     }
     
-    //MARK:- CollectionView Data Source / Delegate methods
+    //Fetch drink names from user's search query
+    func performSearchForDrinks(from endpoint: String, queryName: String, queryValue: String) {
+        
+        DrinksController.shared.fetchDrinks(from: endpoint, using: [URLQueryItem(name: queryName, value: queryValue)]) { (fetchedDrinks, error) in
+                
+            //fire UI update if fetch successful
+            if let drinks = fetchedDrinks {
+                self.drinks = drinks
+                self.drinks?.sort(by: {$0.name < $1.name} )
+                self.updateUI()
+//                print("Fetched Drinks: \(drinks)\n")
+            }
+            
+            //fire error handler if error
+            if let error = error {
+                self.showAlert(with: error)
+            }
+        }
+    }
     
+    //UISearch Delegate conformance method
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text, !text.isEmpty else { return }
+        print("Search text: \(text)")
+
+        //fetch drink name
+        performSearchForDrinks(from: EndPoint.search.rawValue, queryName: QueryType.drinkName.rawValue, queryValue: text)
+    }
+    
+    func showAlert(with error: Error, sender: String = #function) {
+           print("Error Alert called by: \(sender)\n")
+           
+           DispatchQueue.main.async {
+               let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
+               ac.addAction(UIAlertAction(title: "Try again?", style: .default, handler: {
+                   action in self.performFetchRecentDrinks()
+               }))
+               ac.addAction(UIAlertAction(title: "OK", style: .default))
+               self.present(ac, animated: true)
+           }
+       }
+    
+    //MARK:- CollectionView Data Source / Delegate methods
     // Define number of sections
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -235,8 +257,4 @@ class DrinkSearchCollectionViewController: UICollectionViewController, UISearchR
             navigationController?.pushViewController(vc, animated: true)
         }
     }
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//
-//    }
 }

@@ -43,7 +43,7 @@ class DrinksTableViewController: UITableViewController {
             self.startActivitySpinner()
 
             //fire fetch drinks list method
-            DrinksController.shared.fetchDrinks(from: EndPoints.popular.rawValue) { (fetchedDrinks, error) in
+            DrinksController.shared.fetchDrinks(from: EndPoint.popular.rawValue, using: nil) { (fetchedDrinks, error) in
             
                 //fire UI update if fetch successful
                 if let drinks = fetchedDrinks {
