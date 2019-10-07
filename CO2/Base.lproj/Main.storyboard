@@ -16,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DrinkCell" id="pzF-bP-cYq" customClass="DrinkTableViewCell" customModule="CO2" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="DrinkCell" id="pzF-bP-cYq" customClass="DrinkTableViewCell" customModule="CO2" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pzF-bP-cYq" id="x5n-Xq-Xf7">
@@ -54,18 +54,27 @@
                                                 <constraint firstItem="1Eh-XZ-dnh" firstAttribute="height" secondItem="UFl-il-9hJ" secondAttribute="height" id="Ohk-Re-q5o"/>
                                             </constraints>
                                         </stackView>
+                                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Qwe-OX-CSA">
+                                            <rect key="frame" x="327.5" y="30" width="20" height="20"/>
+                                            <color key="color" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </activityIndicatorView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="Qwe-OX-CSA" firstAttribute="leading" secondItem="CfQ-0S-K5W" secondAttribute="trailing" constant="27.5" id="3Qn-Dt-4tO"/>
                                         <constraint firstAttribute="bottom" secondItem="CfQ-0S-K5W" secondAttribute="bottom" constant="5" id="6lZ-HH-ywb"/>
                                         <constraint firstItem="CfQ-0S-K5W" firstAttribute="leading" secondItem="x5n-Xq-Xf7" secondAttribute="leading" constant="10" id="Kb3-yW-Lf9"/>
+                                        <constraint firstItem="Qwe-OX-CSA" firstAttribute="top" secondItem="x5n-Xq-Xf7" secondAttribute="top" constant="30" id="Pe3-jA-gtn"/>
                                         <constraint firstItem="Wo4-iG-Pfg" firstAttribute="top" secondItem="x5n-Xq-Xf7" secondAttribute="top" id="QrQ-WG-NmZ"/>
                                         <constraint firstAttribute="bottom" secondItem="Wo4-iG-Pfg" secondAttribute="bottom" id="eCO-cV-tVk"/>
                                         <constraint firstItem="CfQ-0S-K5W" firstAttribute="top" secondItem="x5n-Xq-Xf7" secondAttribute="top" id="mzK-DK-Bas"/>
+                                        <constraint firstAttribute="bottom" secondItem="Qwe-OX-CSA" secondAttribute="bottom" constant="30" id="nG0-Rr-jyN"/>
                                         <constraint firstAttribute="trailing" secondItem="Wo4-iG-Pfg" secondAttribute="trailing" id="pw6-5G-1C4"/>
                                         <constraint firstItem="Wo4-iG-Pfg" firstAttribute="leading" secondItem="CfQ-0S-K5W" secondAttribute="trailing" id="sVf-yS-W7o"/>
+                                        <constraint firstAttribute="trailing" secondItem="Qwe-OX-CSA" secondAttribute="trailing" constant="27.5" id="vQd-qb-sNC"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="cellActivityIndicatorView" destination="Qwe-OX-CSA" id="vzb-V5-TlM"/>
                                     <outlet property="cellImageView" destination="Wo4-iG-Pfg" id="XTM-ix-5nr"/>
                                     <outlet property="cellSubtitleLabel" destination="UFl-il-9hJ" id="6A5-e7-y5N"/>
                                     <outlet property="cellTitleLabel" destination="1Eh-XZ-dnh" id="4IY-6L-hYs"/>
@@ -89,7 +98,7 @@
             <objects>
                 <viewController storyboardIdentifier="DrinkDetailsVC" automaticallyAdjustsScrollViewInsets="NO" id="rJa-FV-Fid" customClass="DrinkDetailsViewController" customModule="CO2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pMF-p5-Pqd">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="574"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="center" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PfA-6z-I4G">
@@ -157,7 +166,7 @@
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" enabled="NO" adjustsFontSizeToFit="NO" id="vfk-Lo-D2N">
+                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" enabled="NO" adjustsFontSizeToFit="NO" id="vfk-Lo-D2N">
                                                             <rect key="frame" x="15" y="31.5" width="44" height="14.5"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -399,6 +408,6 @@
         <image name="line.horizontal.3.decrease.circle.fill" catalog="system" width="64" height="62"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="hFO-AD-XNe"/>
+        <segue reference="evS-SR-87Y"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -176,6 +176,9 @@ class DrinksTableViewController: UITableViewController {
                 //Fetch and set drink image
                 if let imageURL = drink.imageURL {
                     
+                    //Start cell activity indicator
+                    cell.startActivityIndicator()
+                    
                     DrinksController.shared.fetchDrinkImage(with:imageURL) { (fetchedImage, error) in
                     if let drinkImage = fetchedImage {
 
@@ -192,6 +195,9 @@ class DrinksTableViewController: UITableViewController {
 
                                 //Set cell image
                                 cell.setImage(drinkImage)
+                                
+                                //Stop cell activity indicator
+                                cell.stopActivityIndicator()
 
                                 //Refresh cell to display fetched image
                                 cell.setNeedsLayout()

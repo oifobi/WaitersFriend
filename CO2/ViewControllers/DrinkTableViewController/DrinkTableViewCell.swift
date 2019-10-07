@@ -14,6 +14,8 @@ class DrinkTableViewCell: UITableViewCell {
     @IBOutlet weak var cellTitleLabel: UILabel!
     @IBOutlet weak var cellSubtitleLabel: UILabel!
     @IBOutlet weak var cellImageView: UIImageView!
+    @IBOutlet weak var cellActivityIndicatorView: UIActivityIndicatorView!
+    
     
     func setTitleLabel(text: String) {
         cellTitleLabel.text = text
@@ -26,5 +28,16 @@ class DrinkTableViewCell: UITableViewCell {
     func setImage(_ image: UIImage) {
         cellImageView.image = image
     }
+    
+    func startActivityIndicator() {
+        cellActivityIndicatorView.isHidden = false
+        cellActivityIndicatorView.startAnimating()
+    }
+    
+    func stopActivityIndicator() {
+        cellActivityIndicatorView.isHidden = true
+        cellActivityIndicatorView.stopAnimating()
+    }
+    
     
 }
