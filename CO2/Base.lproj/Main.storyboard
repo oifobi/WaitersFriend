@@ -98,7 +98,7 @@
             <objects>
                 <viewController storyboardIdentifier="DrinkDetailsVC" automaticallyAdjustsScrollViewInsets="NO" id="rJa-FV-Fid" customClass="DrinkDetailsViewController" customModule="CO2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pMF-p5-Pqd">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="574"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="center" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PfA-6z-I4G">
@@ -223,7 +223,9 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="esw-8U-X4f"/>
+                    <navigationItem key="navigationItem" id="esw-8U-X4f">
+                        <barButtonItem key="rightBarButtonItem" image="heart" catalog="system" id="FA2-sy-NiE"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="activityIndicatorView" destination="sax-aY-yVa" id="dkG-Mh-5hH"/>
                         <outlet property="drinkDetailsImageView" destination="Mq7-4N-WKi" id="eP9-QR-wfI"/>
@@ -405,9 +407,10 @@
     </scenes>
     <resources>
         <image name="hand.thumbsup.fill" catalog="system" width="64" height="64"/>
+        <image name="heart" catalog="system" width="64" height="58"/>
         <image name="line.horizontal.3.decrease.circle.fill" catalog="system" width="64" height="62"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="evS-SR-87Y"/>
+        <segue reference="hFO-AD-XNe"/>
     </inferredMetricsTieBreakers>
 </document>
