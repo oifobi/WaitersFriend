@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct ListType: Codable {
-    var type: [List]
+struct DrinkListType: Codable {
+    var type: [DrinkList]
     
     enum CodingKeys: String, CodingKey {
         case type = "drinks"
@@ -17,12 +17,12 @@ struct ListType: Codable {
 }
 
 //Generic Collection of different list types (ie: base ingredients, drink types, glass types etc)
-struct List: Codable  {
+struct DrinkList: Codable  {
     
-    //Base ingredient properties
+    //Base Ingredient List properties
     let baseIngredient: String?
     
-    //Base Ingredient Drinks properties
+    //Base Ingredient Drinks List properties
     let id: String?
     let name: String?
     let imageURL: String?

@@ -27,6 +27,33 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     //MARK:- Inteface Builder outlets and Actions
+    //Favorites on NavigationBarItem
+    @IBOutlet weak var favoritesButton: UIBarButtonItem!
+    @IBAction func favoritesButtonTapped(_ sender: UIBarButtonItem) {
+        
+        //If drink already saved, remove from favorites
+        if FileManagerController.drinkIDs.contains(drink!.id) {
+            
+            let index = FileManagerController.drinkIDs.firstIndex(of: drink!.id)
+            FileManagerController.drinkIDs.remove(at: index!)
+            FileManagerController.drinks?.remove(at: index!)
+            
+            favoritesButton.image = UIImage(systemName: "heart")
+            showSave(title: "✗ Drink Removed", message: "Drink removed from Favorites")
+
+        //If drink not already saved, save to favorites
+        } else {
+        FileManagerController.drinkIDs.append(drink!.id)
+        FileManagerController.drinks?.append(drink!)
+            
+        favoritesButton.image = UIImage(systemName: "heart.fill")
+        showSave(title: "✔︎ Drink Saved", message: "Drink saved to Favorites")
+        }
+    }
+    
+    func showSave(title: String, message: String) {
+        print(title, message)
+    }
     
     //Scrollview outlets
     @IBOutlet weak var instructionsScrollView: UIScrollView!
@@ -36,7 +63,6 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     //ImageView
     @IBOutlet weak var drinkDetailsImageView: UIImageView!
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
-    
     
     //Detect and take action with Long press on UIViewImage
     @IBAction func drinkDetailsImageViewGesture(recognizer: UILongPressGestureRecognizer) {
@@ -57,7 +83,6 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
           
           //set transforms
           recognizer.view?.transform = CGAffineTransform(scaleX: 2.5, y: 2.5).translatedBy(x: 0, y: 50)
-
       }
       
       //stop transform, reset to pre-transform state
@@ -83,7 +108,6 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     //tableView outlets
     @IBOutlet weak var ingredientsTableView: UITableView!
 
-    
     //MARK:- View / Class properties
     
     //Properties to receive drink object data from sender VC/s
@@ -104,7 +128,6 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     var ingredients: [(key: String, value: String)]?
     var measures: [(key: String, value: String)]?
     
-    
     //MARK:- Built-in View managemenet
     //Prepare Drink data content
     override func viewWillAppear(_ animated: Bool) {
@@ -117,7 +140,6 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -142,7 +164,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
             //Fire fetch data depending on sender
             if sender == nil {
                 
-                self.performSelector(inBackground: #selector(self.performFetchDrinks), with: nil)
+                self.performSelector(inBackground: #selector(self.performFetchDrink), with: nil)
             }
             
             //Fetch drink image from API server and set
@@ -158,28 +180,29 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
             
             //Set navigation items
             self.title = self.drink?.name
+            if FileManagerController.drinkIDs.contains(self.drink!.id) {
+                self.favoritesButton.image = UIImage(systemName: "heart.fill")
+            }
+            
         }
     }
     
-    //Fetch drink details
-    @objc func performFetchDrinks() {
-        
+    @objc func performFetchDrink() {
         let endpoint = EndPoint.random.rawValue
+        DrinksController.shared.fetchDrink(from: endpoint, using: nil) { (fetchedDrink, error) in
         
-        //fire fetch drinks list method
-        DrinksController.shared.fetchDrinks(from: endpoint, using: nil) { (drinks, error) in
-            
-            //fire UI update if fetch successful
-            if let drinks = drinks {
-                self.drink = drinks[0]
+            //fire fetch drinks method
+            //If success,
+            if let drink = fetchedDrink {
                 self.updateUI(sender: "TabBarItem")
-//                print("Fetched Drinks: \(drinks)\n")
+                self.drink = drink
+                print("Fetched drink: \(String(describing: self.drink))\n")
             }
             
-            //fire error handler if error
+            //if error, fire error meessage
             if let error = error {
                 self.showAlert(with: error)
-                
+                print("Error fetching drink with error: \(error.localizedDescription)\n")
             }
         }
     }
@@ -192,10 +215,10 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         }
         
         if let imageURL = drink?.imageURL {
-            DrinksController.shared.fetchDrinkImage(with: imageURL) { (image, error) in
+            DrinksController.shared.fetchDrinkImage(with: imageURL) { (fetchedImage, error) in
                 
-                if let drinkImage = image {
-                    self.drinkImage = drinkImage
+                if let image = fetchedImage {
+                    self.drinkImage = image
                 }
                 
             //Stop and hide activity indicator animation
@@ -219,7 +242,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         DispatchQueue.main.async {
             let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "Try again?", style: .default, handler: {
-                action in self.performFetchDrinks()
+                action in self.performFetchDrink()
             }))
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             self.present(ac, animated: true)
@@ -246,15 +269,12 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         ActivitySpinnerViewController.shared.removeFromParent()
     }
     
-    
-    
     //MARK:- TableView data prep method/s (TO BE REFACTORED!)
     func loadIngredientsTableData() {
     
         ingredients = getIngredients()
         measures = getMeasures()
         ingredientsTableView.reloadData()
-    
     }
     
     func getIngredients() -> [(key: String, value: String)] {
@@ -275,7 +295,6 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
             dict["ingredient13"] = drink?.ingredient13
             dict["ingredient14"] = drink?.ingredient14
             dict["ingredient15"] = drink?.ingredient15
-        
         
         //sort by key and transform into array of key/value pairs
         let sorted = dict.sorted(by: { $0.key < $1.key } )
@@ -313,15 +332,12 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     
     //MARK:- TableView methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    
-       
         return ingredients?.count ?? 0
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell", for: indexPath)
-        
         
         //set cell ingredient text
         if  indexPath.row < ingredients!.count {
@@ -339,7 +355,6 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         
         return cell
     }
-
     
 }
 

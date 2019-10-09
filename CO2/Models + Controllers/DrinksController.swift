@@ -70,7 +70,6 @@ public class DrinksController {
             url = components.url!.appendingPathComponent(endpoint)
         }
         
-        
         print("API endpoint: \(String(describing: url))\n")
         
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -116,13 +115,12 @@ public class DrinksController {
                     completion(nil, error)
                 }
             }
-            
             task.resume()
         }
     }
     
     //Fetch List type (generic method to fetch any list type)
-    func fetchList(from path: String, using queryItems: [URLQueryItem], completion: @escaping ([List]?, Error?) -> Void) {
+    func fetchList(from path: String, using queryItems: [URLQueryItem], completion: @escaping ([DrinkList]?, Error?) -> Void) {
         
         //Create URL object with querry item/s and append endpoint
         var components = constructURLComponents()
@@ -136,7 +134,7 @@ public class DrinksController {
             let jsonDecoder = JSONDecoder()
             if let data = data,
                 
-                let list = try? jsonDecoder.decode(ListType.self, from: data) {
+                let list = try? jsonDecoder.decode(DrinkListType.self, from: data) {
                 completion(list.type, nil)
                 
             } else {
@@ -151,13 +149,22 @@ public class DrinksController {
     }
     
     //Fetch drink details by drink id lookup
-    func fetchDrink(from path: String, using queryItems: [URLQueryItem], completion: @escaping (Drink?, Error?) -> Void) {
+    func fetchDrink(from path: String, using queryItems: [URLQueryItem]?, completion: @escaping (Drink?, Error?) -> Void) {
         
-        //Create URL object with querry item/s and append endpoint
+        //Create URL object and append endpoint as needed
         var components = constructURLComponents()
-        components.queryItems = queryItems
+        let url: URL
         
-        let url = components.url!.appendingPathComponent(path)
+        switch queryItems {
+        case nil:
+            url = components.url!.appendingPathComponent(path)
+            
+        default:
+            components.queryItems = queryItems
+            url = components.url!.appendingPathComponent(path)
+        }
+        
+        print("API endpoint: \(String(describing: url))\n")
         
         let task = URLSession.shared.dataTask(with: url) {
             (data, response, error) in
@@ -166,7 +173,8 @@ public class DrinksController {
             if let data = data,
                 
                 let drinks = try? jsonDecoder.decode(Drinks.self, from: data) {
-                completion(drinks.drinks![0], nil)
+                let drink = drinks.drinks?.first
+                completion(drink, nil)
                 
             } else {
                 if let error = error {
@@ -175,7 +183,6 @@ public class DrinksController {
                 }
             }
         }
-        
         task.resume()
     }
 }

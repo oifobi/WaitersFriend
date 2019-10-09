@@ -8,11 +8,16 @@
 
 import UIKit
 
+enum TabBarItem: Int {
+    case TopRated = 0
+    case Favorites = 4
+}
+
 //MARK:- Class Definition
 class DrinksTableViewController: UITableViewController {
     
-    //Property to store fetched data when called
-    var drinks: [Drink]? 
+    //For drinks fetched from Top Rated API
+    var drinks: [Drink]?
     
     //Property to store Table section index
     var tableSectionsIndex: [(key: Substring, value: [Drink])]?
@@ -20,9 +25,21 @@ class DrinksTableViewController: UITableViewController {
     //MARK:- Built in view management methods
     override func viewWillAppear(_ animated: Bool) {
         
-        //Fire fetch data depending in Tab Bar Item selected
-        if drinks == nil {
-            performSelector(inBackground: #selector(performFetchDrinks), with: nil)
+        switch navigationController?.tabBarItem.tag {
+        
+        //Fetch Top Rated data
+        case TabBarItem.TopRated.rawValue:
+            self.title = "Top Rated"
+            if drinks == nil {
+                performSelector(inBackground: #selector(performFetchDrinks), with: nil)
+            }
+            
+        //Load + Display favorite drinks data
+        case TabBarItem.Favorites.rawValue:
+            self.title = "Favorites"
+            
+        default:
+            break
         }
     }
     
@@ -43,7 +60,8 @@ class DrinksTableViewController: UITableViewController {
             self.startActivitySpinner()
 
             //fire fetch drinks list method
-            DrinksController.shared.fetchDrinks(from: EndPoint.popular.rawValue, using: nil) { (fetchedDrinks, error) in
+            let endpoint = EndPoint.popular.rawValue
+            DrinksController.shared.fetchDrinks(from: endpoint, using: nil) { (fetchedDrinks, error) in
             
                 //fire UI update if fetch successful
                 if let drinks = fetchedDrinks {
@@ -67,7 +85,6 @@ class DrinksTableViewController: UITableViewController {
     
     func updateUI() {
         DispatchQueue.main.async {
-            self.title = "Top Rated"
             self.createTableSectionsIndex()
             self.tableView.reloadData()
         }
@@ -87,11 +104,7 @@ class DrinksTableViewController: UITableViewController {
     
     //Activity indicator / spinner
     func startActivitySpinner() {
-
-        //Add to relevant view
         addChild(ActivitySpinnerViewController.shared)
-
-        //Add spinner view to view controller
         ActivitySpinnerViewController.shared.view.frame = view.bounds
         view.addSubview(ActivitySpinnerViewController.shared.view)
         ActivitySpinnerViewController.shared.didMove(toParent: self)
@@ -114,7 +127,7 @@ class DrinksTableViewController: UITableViewController {
         tableSectionsIndex = dict.sorted(by: {$0.key < $1.key})
     }
 
-    // MARK: - Table view data source
+    //MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         guard tableSectionsIndex != nil else { return 0 }
         
@@ -231,3 +244,5 @@ class DrinksTableViewController: UITableViewController {
         }
     }
 }
+
+

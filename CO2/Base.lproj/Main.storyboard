@@ -91,14 +91,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kee-sB-3DZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1185" y="188"/>
+            <point key="canvasLocation" x="1486" y="189"/>
         </scene>
         <!--Drink Details View Controller-->
         <scene sceneID="fcU-Rd-M4A">
             <objects>
                 <viewController storyboardIdentifier="DrinkDetailsVC" automaticallyAdjustsScrollViewInsets="NO" id="rJa-FV-Fid" customClass="DrinkDetailsViewController" customModule="CO2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pMF-p5-Pqd">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="574"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="center" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PfA-6z-I4G">
@@ -224,11 +224,16 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="esw-8U-X4f">
-                        <barButtonItem key="rightBarButtonItem" image="heart" catalog="system" id="FA2-sy-NiE"/>
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="heart" catalog="system" id="FA2-sy-NiE">
+                            <connections>
+                                <action selector="favoritesButtonTapped:" destination="rJa-FV-Fid" id="5wv-ui-bnG"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="activityIndicatorView" destination="sax-aY-yVa" id="dkG-Mh-5hH"/>
                         <outlet property="drinkDetailsImageView" destination="Mq7-4N-WKi" id="eP9-QR-wfI"/>
+                        <outlet property="favoritesButton" destination="FA2-sy-NiE" id="XLb-nh-wFU"/>
                         <outlet property="ingredientsTableView" destination="NiU-RU-wQK" id="6IN-3d-x5U"/>
                         <outlet property="instructionsLabel" destination="o7G-Mg-f49" id="2Xa-PN-2kc"/>
                         <outlet property="instructionsScrollView" destination="qiF-tW-WQI" id="J9u-Ez-NZM"/>
@@ -242,7 +247,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1969" y="189"/>
+            <point key="canvasLocation" x="2268" y="188"/>
         </scene>
         <!--Drink Ingredients Collection View Controller-->
         <scene sceneID="r7i-DY-XEM">
@@ -263,7 +268,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PeD-3E-75i" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3361" y="189"/>
+            <point key="canvasLocation" x="3089" y="188"/>
         </scene>
         <!--Drink Search Collection View Controller-->
         <scene sceneID="Fpv-rW-8P0">
@@ -284,7 +289,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fas-CX-ORS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4265" y="190"/>
+            <point key="canvasLocation" x="3918" y="188"/>
         </scene>
         <!--Top Rated-->
         <scene sceneID="U91-JJ-mg5">
@@ -310,7 +315,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="faB-tM-ZXE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1185" y="-604"/>
+            <point key="canvasLocation" x="1486" y="-582"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="b2B-hn-AFs">
@@ -355,7 +360,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3GV-5L-tp3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1969" y="-555"/>
+            <point key="canvasLocation" x="2268" y="-582"/>
         </scene>
         <!--Filter-->
         <scene sceneID="2De-bt-nko">
@@ -379,7 +384,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ywL-Se-w7I" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3362" y="-555"/>
+            <point key="canvasLocation" x="3090" y="-582"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="lzs-Yp-408">
@@ -402,7 +407,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eKu-nO-bs8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4265" y="-604"/>
+            <point key="canvasLocation" x="3919" y="-582"/>
         </scene>
     </scenes>
     <resources>
@@ -411,6 +416,6 @@
         <image name="line.horizontal.3.decrease.circle.fill" catalog="system" width="64" height="62"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="hFO-AD-XNe"/>
+        <segue reference="evS-SR-87Y"/>
     </inferredMetricsTieBreakers>
 </document>

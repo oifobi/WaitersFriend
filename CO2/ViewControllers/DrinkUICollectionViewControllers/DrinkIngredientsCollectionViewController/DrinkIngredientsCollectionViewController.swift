@@ -17,7 +17,7 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
     
     //Properties for storing feteched drink/s data objects
     var ingredients = [String]() //Base ingredient
-    var ingredientDrinks: [List]? //List of drinks made with base ingredient
+    var ingredientDrinks: [DrinkList]? //List of drinks made with base ingredient
     var drink: Drink?
     var currentIngredient = String() //for tracking currently selected base ingredient
     
@@ -244,7 +244,8 @@ class DrinkIngredientsCollectionViewController: UICollectionViewController {
         }
         
         //fire fetch drink method
-        DrinksController.shared.fetchDrink(from: EndPoint.lookup.rawValue, using: [URLQueryItem(name: QueryType.ingredient.rawValue, value: id)]) { (fetchedDrink, error) in
+        let endpoint = EndPoint.lookup.rawValue
+        DrinksController.shared.fetchDrink(from: endpoint, using: [URLQueryItem(name: QueryType.ingredient.rawValue, value: id)]) { (fetchedDrink, error) in
         
             //If success,
             if let drink = fetchedDrink {
