@@ -30,29 +30,29 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     //Favorites on NavigationBarItem
     @IBOutlet weak var favoritesButton: UIBarButtonItem!
     @IBAction func favoritesButtonTapped(_ sender: UIBarButtonItem) {
+        updateFavorites()
+    }
+    
+    func updateFavorites() {
         
         //If drink already saved, remove from favorites
         if FileManagerController.drinkIDs.contains(drink!.id) {
             
             let index = FileManagerController.drinkIDs.firstIndex(of: drink!.id)
             FileManagerController.drinkIDs.remove(at: index!)
-            FileManagerController.drinks?.remove(at: index!)
+            FileManagerController.drinks.remove(at: index!)
             
             favoritesButton.image = UIImage(systemName: "heart")
-            showSave(title: "✗ Drink Removed", message: "Drink removed from Favorites")
+            showAddToFavoritesAlert(title: "❌ Drink Removed", message: "\(drink!.name) removed from Favorites")
 
         //If drink not already saved, save to favorites
         } else {
         FileManagerController.drinkIDs.append(drink!.id)
-        FileManagerController.drinks?.append(drink!)
+        FileManagerController.drinks.append(drink!)
             
         favoritesButton.image = UIImage(systemName: "heart.fill")
-        showSave(title: "✔︎ Drink Saved", message: "Drink saved to Favorites")
+        showAddToFavoritesAlert(title: "❤️ Drink Saved", message: "\(drink!.name) saved to Favorites")
         }
-    }
-    
-    func showSave(title: String, message: String) {
-        print(title, message)
     }
     
     //Scrollview outlets
@@ -180,8 +180,10 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
             
             //Set navigation items
             self.title = self.drink?.name
-            if FileManagerController.drinkIDs.contains(self.drink!.id) {
-                self.favoritesButton.image = UIImage(systemName: "heart.fill")
+            if let id = self.drink?.id {
+                if FileManagerController.drinkIDs.contains(id) {
+                    self.favoritesButton.image = UIImage(systemName: "heart.fill")
+                }
             }
             
         }
@@ -201,7 +203,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
             
             //if error, fire error meessage
             if let error = error {
-                self.showAlert(with: error)
+                self.showErrorAlert(with: error)
                 print("Error fetching drink with error: \(error.localizedDescription)\n")
             }
         }
@@ -221,31 +223,15 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
                     self.drinkImage = image
                 }
                 
-            //Stop and hide activity indicator animation
-            DispatchQueue.main.async {
-                self.stopActivitySpinner()
-            }
-                
+                //Stop and hide activity indicator animation
+                DispatchQueue.main.async {
+                    self.stopActivitySpinner()
+                }
                 //catch any errors fetching image
                 if let error = error {
                     print("Error fetching image with error \(error.localizedDescription)\n")
                 }
             }
-        }
-    }
-    
-    //Error alert handeler for data / image etc fetching issues
-    func showAlert(with error: Error, sender: String = #function) {
-        
-        print("Error Alert called by: \(sender)\n")
-        
-        DispatchQueue.main.async {
-            let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "Try again?", style: .default, handler: {
-                action in self.performFetchDrink()
-            }))
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            self.present(ac, animated: true)
         }
     }
     
@@ -356,5 +342,31 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         return cell
     }
     
+    //MARK:- Alert Controllers
+    
+    //Error alert handeler for data / image etc fetching issues
+    func showErrorAlert(with error: Error, sender: String = #function) {
+        
+        print("Error Alert called by: \(sender)\n")
+        
+        DispatchQueue.main.async {
+            let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Try again?", style: .default, handler: {
+                action in self.performFetchDrink()
+            }))
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(ac, animated: true)
+        }
+    }
+    
+    //Save to Favorites Alert confirmation
+    func showAddToFavoritesAlert(title: String, message: String) {
+//        print(title, message)
+        DispatchQueue.main.async {
+            let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(ac, animated: true)
+        }
+    }
 }
 

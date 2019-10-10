@@ -15,43 +15,46 @@ struct FileManagerController: Codable {
     
     //Properties to track favorited drinks
     static var drinkIDs = [String]()
-    static var drinks: [Drink]? {
-        
+    static var drinks = [Drink]() {
         
         //When drinks object is modified, trigger save of drinks data object to disk
         didSet {
-            print("Favorite drink saved")
-//            saveDrinks()
+//            print("Favorite drink saved")
+            FileManagerController.shared.save() { (message, error) in
+                if let message = message {
+                    print(message)
+                    
+                } else {
+                    if let error = error {
+                        print("Failed! drinks object failed to save with error: \(error.localizedDescription)\n")
+                    }
+                }
+            }
+            
+            print("Drinks object count \(drinks.count)\n")
         }
-
     }
     
-    func saveDrinks(_ completion: @escaping (String?, Error?) -> Void) {
-        guard FileManagerController.drinks != nil else { return }
+    func save(_ completion: @escaping (String?, Error?) -> Void) {
 
         do {
-            let favorites = try NSKeyedArchiver.archivedData(withRootObject: FileManagerController.drinks!,
-            requiringSecureCoding: false)
-                
-                //Save Data object to UserDefaults
-                let defaults = UserDefaults.standard
-                defaults.set(favorites, forKey: "favorites")
-                
-                completion("Successfully saved drinks data", nil)
+            let encoder = JSONEncoder()
+            let favorites = try encoder.encode(FileManagerController.drinks)
+                    
+            //Save Data object to UserDefaults
+            let defaults = UserDefaults.standard
+            defaults.set(favorites, forKey: "favorites")
+            completion("Success! drinks object succeesfully saved\n", nil)
         
-        //If save failed handle error 
+        //If save failed handle error
         } catch {
             completion(nil, error)
         }
     }
     
+    
     func loadDrinks() {
         
     }
-    
-    
-    
-    
-    
-    
+
 }
