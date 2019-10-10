@@ -12,9 +12,27 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        
+        //Load Favorite drinks data (if any) from user default
+        FileManagerController.shared.loadDrinks() { (message, error) in
+            if let message = message {
+                print(message)
+                
+            } else {
+                if let error = error {
+                    print("Failed! drinks object failed to load from user defaults with error: \(error.localizedDescription)\n")
+                }
+            }
+        }
+        
+        return true
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        //Setup favorites tab bar item
         if let tabBarController = window?.rootViewController as? UITabBarController {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "TableViewNavController")
@@ -22,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             vc.tabBarItem = UITabBarItem.init(title: "Favorites", image: image, tag: 4)
             tabBarController.viewControllers?.append(vc)
         }
-
+        
         return true
     }
 
@@ -34,6 +52,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        
+        //Save Favorite drinks data to user defaults
+        FileManagerController.shared.saveDrinks() { (message, error) in
+            if let message = message {
+                print(message)
+                
+            } else {
+                if let error = error {
+                    print("Failed! drinks object failed to save with error: \(error.localizedDescription)\n")
+                }
+            }
+        }
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {

@@ -16,7 +16,7 @@ enum TabBarItem: Int {
 //MARK:- Class Definition
 class DrinksTableViewController: UITableViewController {
     
-    //For drinks fetched from Top Rated API
+    //For drinks fetched from Top Rated API and for storing Favorite drinks
     var drinks: [Drink]?
     
     //Property to store Table section index
@@ -37,6 +37,12 @@ class DrinksTableViewController: UITableViewController {
         //Load + Display favorite drinks data
         case TabBarItem.Favorites.rawValue:
             self.title = "Favorites"
+            drinks = FileManagerController.drinks
+            updateUI()
+            
+            if FileManagerController.drinks.count == 0 {
+                showFavoritesAlert(title: ":/ Favorites is lonely", message: "You have no favorite drinks.\n To add drinks to Favorites, tap on ❤️ in drink details")
+            }
             
         default:
             break
@@ -49,7 +55,6 @@ class DrinksTableViewController: UITableViewController {
     }
     
     //MARK:- Custom Get Data / setup UI methods
-    
     //Fire fetch reequest and pass in drinks list paramter, based on tab item selected by user
     @objc func performFetchDrinks() {
     
@@ -77,7 +82,7 @@ class DrinksTableViewController: UITableViewController {
                 
                 //fire error handler if error
                 if let error = error {
-                    self.showAlert(with: error)
+                    self.showErrorAlert(with: error)
                 }
             }
         }
@@ -87,18 +92,6 @@ class DrinksTableViewController: UITableViewController {
         DispatchQueue.main.async {
             self.createTableSectionsIndex()
             self.tableView.reloadData()
-        }
-    }
-    
-    func showAlert(with error: Error, sender: String = #function) {
-        print("Error Alert called by: \(sender)\n")
-        DispatchQueue.main.async {
-            let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "Try again?", style: .default, handler: {
-                action in self.performFetchDrinks()
-            }))
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            self.present(ac, animated: true)
         }
     }
     
@@ -227,6 +220,20 @@ class DrinksTableViewController: UITableViewController {
         
         return cell
     }
+    
+    //Enable deletion of table row/s
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        // Return false if you do not want the specified item to be editable.
+        
+        //Enable deletion of favorties
+//        if navigationController?.tabBarItem.tag == TabBarItem.Favorites.rawValue {
+//            
+//            return true
+//        }
+        
+        return false
+        
+    }
 
     // MARK: - Navigation
     //Set and push selected cell data to DetailVC
@@ -241,6 +248,27 @@ class DrinksTableViewController: UITableViewController {
             let indexItem = tableSectionsIndex?[sectionIndexOfRowTapped]
             vc.drink = indexItem?.value[indexOfRowTapped]
             vc.sender = "DrinksTableViewController"
+        }
+    }
+    
+    //MARK:- Alert Controllers
+    func showErrorAlert(with error: Error, sender: String = #function) {
+        print("Error Alert called by: \(sender)\n")
+        DispatchQueue.main.async {
+            let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Try again?", style: .default, handler: {
+                action in self.performFetchDrinks()
+            }))
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(ac, animated: true)
+        }
+    }
+    
+    func showFavoritesAlert(title: String, message: String) {
+        DispatchQueue.main.async {
+            let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(ac, animated: true)
         }
     }
 }

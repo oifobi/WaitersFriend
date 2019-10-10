@@ -33,28 +33,6 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         updateFavorites()
     }
     
-    func updateFavorites() {
-        
-        //If drink already saved, remove from favorites
-        if FileManagerController.drinkIDs.contains(drink!.id) {
-            
-            let index = FileManagerController.drinkIDs.firstIndex(of: drink!.id)
-            FileManagerController.drinkIDs.remove(at: index!)
-            FileManagerController.drinks.remove(at: index!)
-            
-            favoritesButton.image = UIImage(systemName: "heart")
-            showAddToFavoritesAlert(title: "❌ Drink Removed", message: "\(drink!.name) removed from Favorites")
-
-        //If drink not already saved, save to favorites
-        } else {
-        FileManagerController.drinkIDs.append(drink!.id)
-        FileManagerController.drinks.append(drink!)
-            
-        favoritesButton.image = UIImage(systemName: "heart.fill")
-        showAddToFavoritesAlert(title: "❤️ Drink Saved", message: "\(drink!.name) saved to Favorites")
-        }
-    }
-    
     //Scrollview outlets
     @IBOutlet weak var instructionsScrollView: UIScrollView!
     @IBOutlet weak var instructionsLabel: UILabel!
@@ -72,7 +50,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
 
       //trigger transform
       if recognizer.state == .began {
-          print("Long Press started")
+//          print("Long Press started")
           self.becomeFirstResponder()
           
           //move recognizer view to front of all other views
@@ -87,7 +65,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
       
       //stop transform, reset to pre-transform state
       if recognizer.state == .ended {
-          print("Long press ended")
+//          print("Long press ended")
           self.resignFirstResponder()
           
           //reset new image scaling
@@ -172,7 +150,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
             
             //Get ingredients / meassure
             self.loadIngredientsTableData()
-            print("Drink: \(String(describing: self.drink?.name))\n ID: \(String(describing: self.drink?.id))\n")
+//            print("Drink: \(String(describing: self.drink?.name))\n ID: \(String(describing: self.drink?.id))\n")
             
             //Set up How to prepare text
             self.instructionsLabel.text = self.drink?.instructions
@@ -180,12 +158,16 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
             
             //Set navigation items
             self.title = self.drink?.name
+            
+            //Set Favorites icon state
             if let id = self.drink?.id {
-                if FileManagerController.drinkIDs.contains(id) {
-                    self.favoritesButton.image = UIImage(systemName: "heart.fill")
+                if let _ = FileManagerController.shared.getDrinkIndex(for: id) {
+                        self.favoritesButton.image = UIImage(systemName: "heart.fill")
+                    
+                } else {
+                    self.favoritesButton.image = UIImage(systemName: "heart")
                 }
             }
-            
         }
     }
     
@@ -198,7 +180,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
             if let drink = fetchedDrink {
                 self.updateUI(sender: "TabBarItem")
                 self.drink = drink
-                print("Fetched drink: \(String(describing: self.drink))\n")
+//                print("Fetched drink: \(String(describing: self.drink))\n")
             }
             
             //if error, fire error meessage
@@ -313,6 +295,22 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         
         //filter empty properties and return result
         return sorted.filter({$0.value != "" || $0.value != " "})
+    }
+    
+    func updateFavorites() {
+        
+        //If drink already saved, remove from favorites
+        if let index = FileManagerController.shared.getDrinkIndex(for: drink!.id) {
+            FileManagerController.drinks.remove(at: index)
+            favoritesButton.image = UIImage(systemName: "heart")
+            showAddToFavoritesAlert(title: "❌ Drink Removed", message: "\(drink!.name) removed from Favorites")
+
+        //If drink not already saved, save to favorites
+        } else {
+            FileManagerController.drinks.append(drink!)
+            favoritesButton.image = UIImage(systemName: "heart.fill")
+            showAddToFavoritesAlert(title: "❤️ Drink Saved", message: "\(drink!.name) saved to Favorites")
+        }
     }
 
     

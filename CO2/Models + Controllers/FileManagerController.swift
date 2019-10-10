@@ -10,32 +10,31 @@ import Foundation
 
 struct FileManagerController: Codable {
     
-    //Propeerty to access this classes properties globally
+    //Propeerty to access this struct's properties globally
     static var shared = FileManagerController()
     
     //Properties to track favorited drinks
-    static var drinkIDs = [String]()
+//    static var drinkIDs = [String]()
     static var drinks = [Drink]() {
         
-        //When drinks object is modified, trigger save of drinks data object to disk
+        //Detect when drinks object is modified
         didSet {
-//            print("Favorite drink saved")
-            FileManagerController.shared.save() { (message, error) in
-                if let message = message {
-                    print(message)
-                    
-                } else {
-                    if let error = error {
-                        print("Failed! drinks object failed to save with error: \(error.localizedDescription)\n")
-                    }
-                }
-            }
-            
             print("Drinks object count \(drinks.count)\n")
         }
     }
     
-    func save(_ completion: @escaping (String?, Error?) -> Void) {
+    func getDrinkIndex(for drinkID: String) -> Int? {
+        guard FileManagerController.drinks.count > 0 else { return nil }
+        
+        for (index, drink) in FileManagerController.drinks.enumerated() {
+            if drinkID == drink.id {
+                return index
+            }
+        }
+        return nil
+    }
+    
+    func saveDrinks(_ completion: @escaping (String?, Error?) -> Void) {
 
         do {
             let encoder = JSONEncoder()
@@ -52,9 +51,20 @@ struct FileManagerController: Codable {
         }
     }
     
-    
-    func loadDrinks() {
+    func loadDrinks(_ completion: @escaping (String?, Error?) -> Void) {
         
+        let defaults = UserDefaults.standard
+        if let favorites = defaults.object(forKey: "favorites") as? Data {
+            let encoder = JSONDecoder()
+            
+            do {
+                FileManagerController.drinks = try encoder.decode([Drink].self, from: favorites)
+                completion("Success! drinks object succeesfully loaded from user defaults\n", nil)
+                
+            } catch {
+//                print("Failed! drinks object failed to load from user defualts with error: \(error.localizedDescription)")
+                completion(nil, error)
+            }
+        }
     }
-
 }
