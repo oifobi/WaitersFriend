@@ -37,10 +37,10 @@ class DrinksTableViewController: UITableViewController {
         //Load + Display favorite drinks data
         case TabBarItem.Favorites.rawValue:
             self.title = "Favorites"
-            drinks = FileManagerController.drinks
+            drinks = FavoritesController.drinks
             updateUI()
             
-            if FileManagerController.drinks.count == 0 {
+            if FavoritesController.drinks.count == 0 {
                 showFavoritesAlert(title: ":/ Favorites is lonely", message: "You have no favorite drinks.\n To add drinks to Favorites, tap on ❤️ in drink details")
             }
             

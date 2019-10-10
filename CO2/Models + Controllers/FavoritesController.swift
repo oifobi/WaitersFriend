@@ -8,13 +8,12 @@
 
 import Foundation
 
-struct FileManagerController: Codable {
+struct FavoritesController: Codable {
     
     //Propeerty to access this struct's properties globally
-    static var shared = FileManagerController()
+    static var shared = FavoritesController()
     
     //Properties to track favorited drinks
-//    static var drinkIDs = [String]()
     static var drinks = [Drink]() {
         
         //Detect when drinks object is modified
@@ -24,9 +23,9 @@ struct FileManagerController: Codable {
     }
     
     func getDrinkIndex(for drinkID: String) -> Int? {
-        guard FileManagerController.drinks.count > 0 else { return nil }
+        guard FavoritesController.drinks.count > 0 else { return nil }
         
-        for (index, drink) in FileManagerController.drinks.enumerated() {
+        for (index, drink) in FavoritesController.drinks.enumerated() {
             if drinkID == drink.id {
                 return index
             }
@@ -35,10 +34,9 @@ struct FileManagerController: Codable {
     }
     
     func saveDrinks(_ completion: @escaping (String?, Error?) -> Void) {
-
         do {
             let encoder = JSONEncoder()
-            let favorites = try encoder.encode(FileManagerController.drinks)
+            let favorites = try encoder.encode(FavoritesController.drinks)
                     
             //Save Data object to UserDefaults
             let defaults = UserDefaults.standard
@@ -52,13 +50,12 @@ struct FileManagerController: Codable {
     }
     
     func loadDrinks(_ completion: @escaping (String?, Error?) -> Void) {
-        
         let defaults = UserDefaults.standard
         if let favorites = defaults.object(forKey: "favorites") as? Data {
             let encoder = JSONDecoder()
             
             do {
-                FileManagerController.drinks = try encoder.decode([Drink].self, from: favorites)
+                FavoritesController.drinks = try encoder.decode([Drink].self, from: favorites)
                 completion("Success! drinks object succeesfully loaded from user defaults\n", nil)
                 
             } catch {

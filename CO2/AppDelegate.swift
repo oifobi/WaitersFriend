@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         
         //Load Favorite drinks data (if any) from user default
-        FileManagerController.shared.loadDrinks() { (message, error) in
+        FavoritesController.shared.loadDrinks() { (message, error) in
             if let message = message {
                 print(message)
                 
@@ -54,7 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         
         //Save Favorite drinks data to user defaults
-        FileManagerController.shared.saveDrinks() { (message, error) in
+        FavoritesController.shared.saveDrinks() { (message, error) in
             if let message = message {
                 print(message)
                 

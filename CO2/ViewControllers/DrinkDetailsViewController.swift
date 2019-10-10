@@ -161,7 +161,7 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
             
             //Set Favorites icon state
             if let id = self.drink?.id {
-                if let _ = FileManagerController.shared.getDrinkIndex(for: id) {
+                if let _ = FavoritesController.shared.getDrinkIndex(for: id) {
                         self.favoritesButton.image = UIImage(systemName: "heart.fill")
                     
                 } else {
@@ -300,14 +300,14 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
     func updateFavorites() {
         
         //If drink already saved, remove from favorites
-        if let index = FileManagerController.shared.getDrinkIndex(for: drink!.id) {
-            FileManagerController.drinks.remove(at: index)
+        if let index = FavoritesController.shared.getDrinkIndex(for: drink!.id) {
+            FavoritesController.drinks.remove(at: index)
             favoritesButton.image = UIImage(systemName: "heart")
             showAddToFavoritesAlert(title: "❌ Drink Removed", message: "\(drink!.name) removed from Favorites")
 
         //If drink not already saved, save to favorites
         } else {
-            FileManagerController.drinks.append(drink!)
+            FavoritesController.drinks.append(drink!)
             favoritesButton.image = UIImage(systemName: "heart.fill")
             showAddToFavoritesAlert(title: "❤️ Drink Saved", message: "\(drink!.name) saved to Favorites")
         }
