@@ -14,6 +14,7 @@
 		2A448107233F568500BE602D /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A448106233F568500BE602D /* UIView+Extensions.swift */; };
 		2A53D2E22337302400506AFD /* ActivitySpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A53D2E12337302400506AFD /* ActivitySpinnerViewController.swift */; };
 		2A5B0FF12339F03D007C977B /* DrinkList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5B0FF02339F03D007C977B /* DrinkList.swift */; };
+		2A75D366234FF19200FC2FB2 /* Extension + DrinksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A75D365234FF19200FC2FB2 /* Extension + DrinksTableViewController.swift */; };
 		2A768EEA233CDCD400D694C7 /* DrinkIngredientSectionHeaderReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A768EE9233CDCD400D694C7 /* DrinkIngredientSectionHeaderReusableView.swift */; };
 		2A768EEC233D02EF00D694C7 /* DrinkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A768EEB233D02EF00D694C7 /* DrinkTableViewCell.swift */; };
 		2AA67067232632B9006534F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA67066232632B9006534F0 /* AppDelegate.swift */; };
@@ -59,6 +60,7 @@
 		2A448106233F568500BE602D /* UIView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		2A53D2E12337302400506AFD /* ActivitySpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySpinnerViewController.swift; sourceTree = "<group>"; };
 		2A5B0FF02339F03D007C977B /* DrinkList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkList.swift; sourceTree = "<group>"; };
+		2A75D365234FF19200FC2FB2 /* Extension + DrinksTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + DrinksTableViewController.swift"; sourceTree = "<group>"; };
 		2A768EE9233CDCD400D694C7 /* DrinkIngredientSectionHeaderReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkIngredientSectionHeaderReusableView.swift; sourceTree = "<group>"; };
 		2A768EEB233D02EF00D694C7 /* DrinkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTableViewCell.swift; sourceTree = "<group>"; };
 		2AA67063232632B9006534F0 /* CO2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CO2.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,14 +139,31 @@
 				2A53D2E12337302400506AFD /* ActivitySpinnerViewController.swift */,
 				2A768EED233D035B00D694C7 /* DrinkTableViewController */,
 				2A5B0FF5233C8DB6007C977B /* DrinkUICollectionViewControllers */,
-				2AA6709423263CD4006534F0 /* DrinkDetailsViewController.swift */,
+				2A75D364234FF15900FC2FB2 /* DrinkDetailsViewController */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		2A75D364234FF15900FC2FB2 /* DrinkDetailsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2AA6709423263CD4006534F0 /* DrinkDetailsViewController.swift */,
+			);
+			path = DrinkDetailsViewController;
+			sourceTree = "<group>";
+		};
+		2A75D367234FF1F500FC2FB2 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2A75D365234FF19200FC2FB2 /* Extension + DrinksTableViewController.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		2A768EED233D035B00D694C7 /* DrinkTableViewController */ = {
 			isa = PBXGroup;
 			children = (
+				2A75D367234FF1F500FC2FB2 /* Extensions */,
 				2AA670AC2327ABFC006534F0 /* DrinksTableViewController.swift */,
 				2A768EEB233D02EF00D694C7 /* DrinkTableViewCell.swift */,
 			);
@@ -385,6 +404,7 @@
 				2AE939EC2344C21D0039AAE2 /* DrinkCollectionViewLayout.swift in Sources */,
 				2AA670AD2327ABFC006534F0 /* DrinksTableViewController.swift in Sources */,
 				2AA6709723263EF9006534F0 /* Drink.swift in Sources */,
+				2A75D366234FF19200FC2FB2 /* Extension + DrinksTableViewController.swift in Sources */,
 				2A53D2E22337302400506AFD /* ActivitySpinnerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

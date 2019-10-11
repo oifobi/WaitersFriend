@@ -301,13 +301,13 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         
         //If drink already saved, remove from favorites
         if let index = FavoritesController.shared.getDrinkIndex(for: drink!.id) {
-            FavoritesController.drinks.remove(at: index)
+            FavoritesController.favorites.remove(at: index)
             favoritesButton.image = UIImage(systemName: "heart")
             showAddToFavoritesAlert(title: "❌ Drink Removed", message: "\(drink!.name) removed from Favorites")
 
         //If drink not already saved, save to favorites
         } else {
-            FavoritesController.drinks.append(drink!)
+            FavoritesController.favorites.append(drink!)
             favoritesButton.image = UIImage(systemName: "heart.fill")
             showAddToFavoritesAlert(title: "❤️ Drink Saved", message: "\(drink!.name) saved to Favorites")
         }

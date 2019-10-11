@@ -8,24 +8,30 @@
 
 import Foundation
 
-struct FavoritesController: Codable {
+protocol FavoriteDrinksDelegate {
+    func updateDrinks(with favorites: [Drink])
+}
+
+class FavoritesController {
     
-    //Propeerty to access this struct's properties globally
+    //Property to access this struct's methods globally
     static var shared = FavoritesController()
     
-    //Properties to track favorited drinks
-    static var drinks = [Drink]() {
+    //Properties to track favorite drinks and update other VCs when favorites are modified
+    var delegate: FavoriteDrinksDelegate?
+    static var favorites = [Drink]() {
         
         //Detect when drinks object is modified
         didSet {
-            print("Drinks object count \(drinks.count)\n")
+            self.shared.delegate?.updateDrinks(with: favorites)
+            print("Drinks object modified. Count is: \(favorites.count)\n")
         }
     }
     
     func getDrinkIndex(for drinkID: String) -> Int? {
-        guard FavoritesController.drinks.count > 0 else { return nil }
+        guard FavoritesController.favorites.count > 0 else { return nil }
         
-        for (index, drink) in FavoritesController.drinks.enumerated() {
+        for (index, drink) in FavoritesController.favorites.enumerated() {
             if drinkID == drink.id {
                 return index
             }
@@ -33,10 +39,10 @@ struct FavoritesController: Codable {
         return nil
     }
     
-    func saveDrinks(_ completion: @escaping (String?, Error?) -> Void) {
+    func saveFavorites(_ completion: @escaping (String?, Error?) -> Void) {
         do {
             let encoder = JSONEncoder()
-            let favorites = try encoder.encode(FavoritesController.drinks)
+            let favorites = try encoder.encode(FavoritesController.favorites)
                     
             //Save Data object to UserDefaults
             let defaults = UserDefaults.standard
@@ -49,13 +55,13 @@ struct FavoritesController: Codable {
         }
     }
     
-    func loadDrinks(_ completion: @escaping (String?, Error?) -> Void) {
+    func loadFavorites(_ completion: @escaping (String?, Error?) -> Void) {
         let defaults = UserDefaults.standard
         if let favorites = defaults.object(forKey: "favorites") as? Data {
             let encoder = JSONDecoder()
             
             do {
-                FavoritesController.drinks = try encoder.decode([Drink].self, from: favorites)
+                FavoritesController.favorites = try encoder.decode([Drink].self, from: favorites)
                 completion("Success! drinks object succeesfully loaded from user defaults\n", nil)
                 
             } catch {

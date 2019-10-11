@@ -37,10 +37,10 @@ class DrinksTableViewController: UITableViewController {
         //Load + Display favorite drinks data
         case TabBarItem.Favorites.rawValue:
             self.title = "Favorites"
-            drinks = FavoritesController.drinks
+            drinks = FavoritesController.favorites
             updateUI()
             
-            if FavoritesController.drinks.count == 0 {
+            if FavoritesController.favorites.count == 0 {
                 showFavoritesAlert(title: ":/ Favorites is lonely", message: "You have no favorite drinks.\n To add drinks to Favorites, tap on ❤️ in drink details")
             }
             
@@ -52,6 +52,9 @@ class DrinksTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Set self as delegate for when favorites are modified
+        FavoritesController.shared.delegate = self
+
     }
     
     //MARK:- Custom Get Data / setup UI methods
@@ -221,19 +224,26 @@ class DrinksTableViewController: UITableViewController {
         return cell
     }
     
-    //Enable deletion of table row/s
+    //Enable table row delete when an Action is triggered (swipe to delete or Edit Button)
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        
-        //Enable deletion of favorties
-//        if navigationController?.tabBarItem.tag == TabBarItem.Favorites.rawValue {
-//            
-//            return true
-//        }
-        
-        return false
-        
+
+        //Enable row delete only for favorites
+        guard navigationController?.tabBarItem.tag == TabBarItem.Favorites.rawValue else { return false }
+        return true
     }
+    
+    //Enable swipe to delete on table row for Favorites
+     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        guard navigationController?.tabBarItem.tag == TabBarItem.Favorites.rawValue else { return }
+            if editingStyle == .delete {
+                
+                // Delete the drink object from respective data sources (Favorites and current VC)
+                FavoritesController.favorites.remove(at: indexPath.row)
+            }
+        }
+    
+    
 
     // MARK: - Navigation
     //Set and push selected cell data to DetailVC
