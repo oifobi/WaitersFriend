@@ -220,7 +220,6 @@ class DrinksTableViewController: UITableViewController {
                 }
             }
         }
-        
         return cell
     }
     
@@ -244,7 +243,6 @@ class DrinksTableViewController: UITableViewController {
         }
     
     
-
     // MARK: - Navigation
     //Set and push selected cell data to DetailVC
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

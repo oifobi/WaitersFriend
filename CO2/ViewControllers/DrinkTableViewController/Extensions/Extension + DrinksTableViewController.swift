@@ -13,6 +13,6 @@ extension DrinksTableViewController: FavoriteDrinksDelegate {
     func updateDrinks(with favorites: [Drink]) {
         self.drinks = favorites
         updateUI()
-        print("FavoriteDrinksController delegate pattern executed")
+//        print("FavoriteDrinksController delegate pattern executed")
     }
 }
