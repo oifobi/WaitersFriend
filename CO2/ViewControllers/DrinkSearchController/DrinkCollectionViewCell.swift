@@ -1,32 +1,30 @@
 //
-//  File.swift
+//  DrinkCollectionViewCell.swift
 //  CO2
 //
 //  Created by Simon Italia on 9/27/19.
 //  Copyright © 2019 SDI Group Inc. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
-class DrinkTableViewCell: UITableViewCell {
+class DrinkCollectionViewCell: UICollectionViewCell {
     
+    @IBOutlet weak var cellActivityIndicatorView: UIActivityIndicatorView!
+    @IBOutlet weak var cellImageView: UIImageView!
     @IBOutlet weak var cellTitleLabel: UILabel!
     @IBOutlet weak var cellSubtitleLabel: UILabel!
-    @IBOutlet weak var cellImageView: UIImageView!
-    @IBOutlet weak var cellActivityIndicatorView: UIActivityIndicatorView!
     
+    func setImage(_ image: UIImage) {
+        cellImageView.image = image
+    }
     
     func setTitleLabel(text: String) {
         cellTitleLabel.text = text
     }
-        
+    
     func setSubtitleLabel(text: String) {
         cellSubtitleLabel.text = text
-    }
-    
-    func setImage(_ image: UIImage) {
-        cellImageView.image = image
     }
     
     func startActivityIndicator() {
@@ -38,6 +36,4 @@ class DrinkTableViewCell: UITableViewCell {
         cellActivityIndicatorView.isHidden = true
         cellActivityIndicatorView.stopAnimating()
     }
-    
-    
 }

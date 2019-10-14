@@ -31,28 +31,34 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        //CollectionView methods
+        //CollectionView setup
         //Fire fetch Recents Drink
         if trendingDrinks == nil {
             performSelector(inBackground: #selector(performFetchRecentDrinks), with: nil)
         }
         
-        //TableView methods
+        //TableView setup
         //Fire fetch Base Ingrediets list
         if ingredients == [] {
-            performSelector(inBackground: #selector(fetchIngredientList), with: nil)
+            performSelector(inBackground: #selector(performFetchIngredientList), with: nil)
         }
         
         //Fetch List of Drinks made with Base Ingredient
-        if ingredientDrinks == nil {
-            performSelector(inBackground: #selector(performFetchDrinksList), with: "151 Proof Rum")
+//        if ingredientDrinks == nil {
+//            performSelector(inBackground: #selector(performFetchDrinksList), with: "151 Proof Rum")
+//        }
+        
+        //fetch drink name
+        if drinks == nil {
+            performSearchForDrinks(from: EndPoint.search.rawValue, queryName: QueryType.drinkName.rawValue, queryValue: "Margarita")
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Set NavigationBar title
+        //Set NavigationBar items
+        self.setUpNavigationBar()
         self.title = "Search"
         
         //CollectionView
@@ -61,9 +67,6 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
         
         //Set compositionViewLayout
         trendingDrinksCollectionView.collectionViewLayout = self.setUpUICollectionViewCompositionLayout()
-        
-        //TableView
-        self.setUpNavigationBar()
     }
     
     //MARK:- UICollectionView Section methods (Trending Drinks)
@@ -80,12 +83,12 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                     heightDimension: .fractionalHeight(1.0)))
-                item.contentInsets = NSDirectionalEdgeInsets(top: 0.0, leading: 8.0, bottom: 0.0, trailing: 8.0)
+                item.contentInsets = NSDirectionalEdgeInsets(top: 0.0, leading: 5.0, bottom: 0.0, trailing: 5.0)
             
             //Define Group
             let group = NSCollectionLayoutGroup.horizontal(
-                layoutSize: NSCollectionLayoutSize(widthDimension: .estimated(200),
-                heightDimension: .absolute(200)),
+                layoutSize: NSCollectionLayoutSize(widthDimension: .estimated(250),
+                heightDimension: .absolute(170)),
                 subitem: item,
                 count: 1)
             
@@ -94,13 +97,13 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
             
             //Define Section header
             let headerView = NSCollectionLayoutBoundarySupplementaryItem(
-                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),heightDimension: .absolute(44)),
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),heightDimension: .absolute(1.0)),
                 elementKind: UICollectionView.elementKindSectionHeader,
                 alignment: .top)
             
             headerView.pinToVisibleBounds = true
             section.boundarySupplementaryItems = [headerView]
-            section.contentInsets = NSDirectionalEdgeInsets(top: 16.0,
+            section.contentInsets = NSDirectionalEdgeInsets(top: 5.0,
                                                             leading: 0.0,
                                                             bottom: 16.0,
                                                             trailing: 0.0)
@@ -152,10 +155,8 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
 
     //Define number of items per section
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         guard trendingDrinks != nil else { return 0 }
         return trendingDrinks!.count
-        
     }
         
     //Define cells / content per section item
@@ -169,12 +170,12 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
         }
         
         guard trendingDrinks != nil else { preconditionFailure("Drinks property is nil") }
-        
         let drink = trendingDrinks![indexPath.item]
         
         //Set cell properties
         //Cell text
-        cell.setLabel(text: drink.name)
+        cell.setTitleLabel(text: drink.name)
+        cell.setSubtitleLabel(text: drink.ingredient1 ?? "")
         
         //Cell image
         //Fetch and set drink image
@@ -205,7 +206,6 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
 
                         //Refresh cell to display fetched image
                         cell.setNeedsLayout()
-                    
                    }
 
                //Catch any errors fetching image
@@ -231,7 +231,6 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
     
     //MARK:- TableView Section methods (Search Results)
     func setUpNavigationBar() {
-        
         DispatchQueue.main.async {
             self.title = "Search"
             let search = UISearchController(searchResultsController: nil)
@@ -258,7 +257,7 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
     
     //MARK:- TableView Data Fetching methods
     //Fetch List of Base Ingredients (ie: Vodka, Bitters, etc)
-    @objc func fetchIngredientList() {
+    @objc func performFetchIngredientList() {
         
         //fire fetch drinks list method
         DrinksController.shared.fetchList(from: "/list.php", using: [URLQueryItem(name: "i", value: "list")]) { (fetchedList, error) in
@@ -338,6 +337,7 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         guard drinks != nil else { return 0 }
         return drinks!.count
     }
@@ -347,10 +347,10 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
         //point cellForRowAt method to custom cell class by down casting to custom class
         let cell = tableView.dequeueReusableCell(withIdentifier: "DrinkTableViewCell", for: indexPath) as! DrinkTableViewCell
         
-        //get reference to the section (being shown
+        //Get reference to row
         if indexPath.row < drinks!.count {
         
-            //get drinks for the section to be shown
+            //Get drinkk
             if let drink = drinks?[indexPath.row] {
             
                 //set cell lables text

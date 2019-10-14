@@ -232,7 +232,7 @@ class DrinksTableViewController: UITableViewController {
     }
     
     //Enable swipe to delete on table row for Favorites
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         guard navigationController?.tabBarItem.tag == TabBarItem.Favorites.rawValue else { return }
             if editingStyle == .delete {
@@ -240,8 +240,7 @@ class DrinksTableViewController: UITableViewController {
                 // Delete the drink object from respective data sources (Favorites and current VC)
                 FavoritesController.favorites.remove(at: indexPath.row)
             }
-        }
-    
+    }
     
     // MARK: - Navigation
     //Set and push selected cell data to DetailVC

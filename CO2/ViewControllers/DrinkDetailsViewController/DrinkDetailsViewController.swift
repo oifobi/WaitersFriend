@@ -148,9 +148,14 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
             //Fetch drink image from API server and set
             self.performSelector(inBackground: #selector(self.performFetchDrinksImage), with: nil)
             
+            //Setup tableView
+            //Hide footer section
+            self.ingredientsTableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+            
             //Get ingredients / meassure
             self.loadIngredientsTableData()
 //            print("Drink: \(String(describing: self.drink?.name))\n ID: \(String(describing: self.drink?.id))\n")
+            
             
             //Set up How to prepare text
             self.instructionsLabel.text = self.drink?.instructions
