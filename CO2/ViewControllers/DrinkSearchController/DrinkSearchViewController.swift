@@ -28,6 +28,7 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
     var drink: Drink?
     
     //MARK:- Built-in UIView Life-Cycle handlers
+    //Start fetch of data
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -54,12 +55,12 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
+    //Setup interface
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //Set NavigationBar items
         self.setUpNavigationBar()
-        self.title = "Search"
         
         //CollectionView
         //Register cell classes and nibs
@@ -70,7 +71,6 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     //MARK:- UICollectionView Section methods (Trending Drinks)
-    
     //Layout setup (UICollectionViewCompositionalLayout)
     //Define / configure and create UICollectionView compositional layout
     func setUpUICollectionViewCompositionLayout() -> UICollectionViewCompositionalLayout {
@@ -232,7 +232,9 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
     //MARK:- TableView Section methods (Search Results)
     func setUpNavigationBar() {
         DispatchQueue.main.async {
-            self.title = "Search"
+//            self.title = "Search"
+            
+            //Search Controller
             let search = UISearchController(searchResultsController: nil)
             search.searchBar.placeholder = "Search by cocktail (e.g. Margarita)"
             search.obscuresBackgroundDuringPresentation = false
@@ -243,6 +245,11 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
             self.definesPresentationContext = true
                 //this property ensures any VCs displayed from this viewController can navigate back
         }
+    }
+    
+    @objc func refineButtonTapped() {
+        
+        
     }
     
     //UISearch Delegate conformance method

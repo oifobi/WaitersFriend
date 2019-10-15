@@ -341,7 +341,6 @@
                                                         <constraint firstItem="KV3-NL-9vl" firstAttribute="top" secondItem="1sA-BQ-Oqj" secondAttribute="top" constant="10" id="YD3-BW-Qhz"/>
                                                         <constraint firstAttribute="trailing" secondItem="ZCc-6W-g3y" secondAttribute="trailing" id="cKf-0S-ZKX"/>
                                                         <constraint firstItem="KV3-NL-9vl" firstAttribute="leading" secondItem="6Cq-Fo-Xze" secondAttribute="trailing" constant="5" id="cR7-z5-NBN"/>
-                                                        <constraint firstAttribute="bottom" secondItem="6Cq-Fo-Xze" secondAttribute="bottom" id="eHS-0q-ypb"/>
                                                         <constraint firstAttribute="bottom" secondItem="ZCc-6W-g3y" secondAttribute="bottom" constant="10" id="iTZ-9A-YA1"/>
                                                         <constraint firstAttribute="trailing" secondItem="KV3-NL-9vl" secondAttribute="trailing" id="ljt-nw-704"/>
                                                         <constraint firstItem="A6B-41-Q15" firstAttribute="centerX" secondItem="6Cq-Fo-Xze" secondAttribute="centerX" id="qZB-DE-UxH"/>
@@ -398,7 +397,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ZF4-Wr-IN3"/>
                     </view>
-                    <navigationItem key="navigationItem" id="5aQ-lG-mSO"/>
+                    <navigationItem key="navigationItem" id="5aQ-lG-mSO">
+                        <barButtonItem key="rightBarButtonItem" title="Filter" image="line.horizontal.3.decrease" catalog="system" id="qbU-lQ-ufd"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="searchDrinksTableView" destination="yhD-gX-rDW" id="5Za-Ht-C64"/>
                         <outlet property="trendingDrinksCollectionView" destination="1LI-sX-9XO" id="8hj-ou-3ZY"/>
@@ -505,6 +506,7 @@
     <resources>
         <image name="hand.thumbsup.fill" catalog="system" width="64" height="64"/>
         <image name="heart" catalog="system" width="64" height="58"/>
+        <image name="line.horizontal.3.decrease" catalog="system" width="64" height="36"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="hFO-AD-XNe"/>
