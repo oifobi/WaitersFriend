@@ -33,6 +33,8 @@ The app utilizes APIs to:
 
 - MVC
 
+- CGAffineTransform
+
 - Network Controller (file for manaing the fetching and parsing of JSON Data)
 
 - UIActivityIndicator
