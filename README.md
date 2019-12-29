@@ -27,7 +27,7 @@ The app utilizes APIs to:
 # Demo
 ![Demo](Demo_06122019.gif)
 
-# Topics / milestones
+# Technologies
 
 - UIKit
 
