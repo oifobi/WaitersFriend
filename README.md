@@ -57,7 +57,7 @@ The app utilizes APIs to:
 
 - URLComponents
 
-- @escaping funcions
+- @escaping functions
 
 - queryItems
 
