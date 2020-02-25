@@ -46,7 +46,7 @@
 		2A75D36D2351831600FC2FB2 /* DrinkSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkSearchViewController.swift; sourceTree = "<group>"; };
 		2A768EE9233CDCD400D694C7 /* DrinkIngredientSectionHeaderReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkIngredientSectionHeaderReusableView.swift; sourceTree = "<group>"; };
 		2A768EEB233D02EF00D694C7 /* DrinkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTableViewCell.swift; sourceTree = "<group>"; };
-		2AA67063232632B9006534F0 /* CO2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CO2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2AA67063232632B9006534F0 /* WaitersFriend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaitersFriend.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AA67066232632B9006534F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2AA6706B232632B9006534F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2AA6706D232632BA006534F0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -154,7 +154,7 @@
 		2AA67064232632B9006534F0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2AA67063232632B9006534F0 /* CO2.app */,
+				2AA67063232632B9006534F0 /* WaitersFriend.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -215,9 +215,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2AA67062232632B9006534F0 /* CO2 */ = {
+		2AA67062232632B9006534F0 /* WaitersFriend */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2AA6708B232632BA006534F0 /* Build configuration list for PBXNativeTarget "CO2" */;
+			buildConfigurationList = 2AA6708B232632BA006534F0 /* Build configuration list for PBXNativeTarget "WaitersFriend" */;
 			buildPhases = (
 				2AA6705F232632B9006534F0 /* Sources */,
 				2AA67060232632B9006534F0 /* Frameworks */,
@@ -227,9 +227,9 @@
 			);
 			dependencies = (
 			);
-			name = CO2;
+			name = WaitersFriend;
 			productName = CO2;
-			productReference = 2AA67063232632B9006534F0 /* CO2.app */;
+			productReference = 2AA67063232632B9006534F0 /* WaitersFriend.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -247,7 +247,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 2AA6705E232632B9006534F0 /* Build configuration list for PBXProject "CO2" */;
+			buildConfigurationList = 2AA6705E232632B9006534F0 /* Build configuration list for PBXProject "WaitersFriend" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -260,7 +260,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2AA67062232632B9006534F0 /* CO2 */,
+				2AA67062232632B9006534F0 /* WaitersFriend */,
 			);
 		};
 /* End PBXProject section */
@@ -452,7 +452,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3KZZ5Z37DJ;
-				INFOPLIST_FILE = CO2/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/CO2/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -471,7 +471,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3KZZ5Z37DJ;
-				INFOPLIST_FILE = CO2/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/CO2/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -487,7 +487,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2AA6705E232632B9006534F0 /* Build configuration list for PBXProject "CO2" */ = {
+		2AA6705E232632B9006534F0 /* Build configuration list for PBXProject "WaitersFriend" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2AA67089232632BA006534F0 /* Debug */,
@@ -496,7 +496,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2AA6708B232632BA006534F0 /* Build configuration list for PBXNativeTarget "CO2" */ = {
+		2AA6708B232632BA006534F0 /* Build configuration list for PBXNativeTarget "WaitersFriend" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2AA6708C232632BA006534F0 /* Debug */,
