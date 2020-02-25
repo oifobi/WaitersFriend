@@ -22,8 +22,6 @@
 		2AA6706C232632B9006534F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2AA6706A232632B9006534F0 /* Main.storyboard */; };
 		2AA6706E232632BA006534F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2AA6706D232632BA006534F0 /* Assets.xcassets */; };
 		2AA67071232632BA006534F0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2AA6706F232632BA006534F0 /* LaunchScreen.storyboard */; };
-		2AA6707C232632BA006534F0 /* CO2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA6707B232632BA006534F0 /* CO2Tests.swift */; };
-		2AA67087232632BA006534F0 /* CO2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA67086232632BA006534F0 /* CO2UITests.swift */; };
 		2AA6709523263CD4006534F0 /* DrinkDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA6709423263CD4006534F0 /* DrinkDetailsViewController.swift */; };
 		2AA6709723263EF9006534F0 /* Drink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA6709623263EF9006534F0 /* Drink.swift */; };
 		2AA670AB2327A3D4006534F0 /* DrinksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA670AA2327A3D4006534F0 /* DrinksController.swift */; };
@@ -35,23 +33,6 @@
 		2AE939F12344D7100039AAE2 /* DrinkIngredientSectionHeaderReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AE939F02344D7100039AAE2 /* DrinkIngredientSectionHeaderReusableView.xib */; };
 		2AF1704D2346D3CC00DD206A /* DrinkCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AF1704B2346D3CC00DD206A /* DrinkCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		2AA67078232632BA006534F0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2AA6705B232632B9006534F0 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2AA67062232632B9006534F0;
-			remoteInfo = CO2;
-		};
-		2AA67083232632BA006534F0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2AA6705B232632B9006534F0 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2AA67062232632B9006534F0;
-			remoteInfo = CO2;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		2A0119C4233D108000C5C0A6 /* DrinkCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -71,12 +52,6 @@
 		2AA6706D232632BA006534F0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2AA67070232632BA006534F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2AA67072232632BA006534F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2AA67077232632BA006534F0 /* CO2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CO2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2AA6707B232632BA006534F0 /* CO2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CO2Tests.swift; sourceTree = "<group>"; };
-		2AA6707D232632BA006534F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2AA67082232632BA006534F0 /* CO2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CO2UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2AA67086232632BA006534F0 /* CO2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CO2UITests.swift; sourceTree = "<group>"; };
-		2AA67088232632BA006534F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2AA6709423263CD4006534F0 /* DrinkDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkDetailsViewController.swift; sourceTree = "<group>"; };
 		2AA6709623263EF9006534F0 /* Drink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drink.swift; sourceTree = "<group>"; };
 		2AA670AA2327A3D4006534F0 /* DrinksController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksController.swift; sourceTree = "<group>"; };
@@ -91,20 +66,6 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		2AA67060232632B9006534F0 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2AA67074232632BA006534F0 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2AA6707F232632BA006534F0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -186,8 +147,6 @@
 			isa = PBXGroup;
 			children = (
 				2AA67065232632B9006534F0 /* CO2 */,
-				2AA6707A232632BA006534F0 /* CO2Tests */,
-				2AA67085232632BA006534F0 /* CO2UITests */,
 				2AA67064232632B9006534F0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -196,8 +155,6 @@
 			isa = PBXGroup;
 			children = (
 				2AA67063232632B9006534F0 /* CO2.app */,
-				2AA67077232632BA006534F0 /* CO2Tests.xctest */,
-				2AA67082232632BA006534F0 /* CO2UITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -215,24 +172,6 @@
 				2AA67072232632BA006534F0 /* Info.plist */,
 			);
 			path = CO2;
-			sourceTree = "<group>";
-		};
-		2AA6707A232632BA006534F0 /* CO2Tests */ = {
-			isa = PBXGroup;
-			children = (
-				2AA6707B232632BA006534F0 /* CO2Tests.swift */,
-				2AA6707D232632BA006534F0 /* Info.plist */,
-			);
-			path = CO2Tests;
-			sourceTree = "<group>";
-		};
-		2AA67085232632BA006534F0 /* CO2UITests */ = {
-			isa = PBXGroup;
-			children = (
-				2AA67086232632BA006534F0 /* CO2UITests.swift */,
-				2AA67088232632BA006534F0 /* Info.plist */,
-			);
-			path = CO2UITests;
 			sourceTree = "<group>";
 		};
 		2ABFE2692353371200CBDDAD /* Archive */ = {
@@ -293,42 +232,6 @@
 			productReference = 2AA67063232632B9006534F0 /* CO2.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2AA67076232632BA006534F0 /* CO2Tests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2AA6708E232632BA006534F0 /* Build configuration list for PBXNativeTarget "CO2Tests" */;
-			buildPhases = (
-				2AA67073232632BA006534F0 /* Sources */,
-				2AA67074232632BA006534F0 /* Frameworks */,
-				2AA67075232632BA006534F0 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				2AA67079232632BA006534F0 /* PBXTargetDependency */,
-			);
-			name = CO2Tests;
-			productName = CO2Tests;
-			productReference = 2AA67077232632BA006534F0 /* CO2Tests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		2AA67081232632BA006534F0 /* CO2UITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2AA67091232632BA006534F0 /* Build configuration list for PBXNativeTarget "CO2UITests" */;
-			buildPhases = (
-				2AA6707E232632BA006534F0 /* Sources */,
-				2AA6707F232632BA006534F0 /* Frameworks */,
-				2AA67080232632BA006534F0 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				2AA67084232632BA006534F0 /* PBXTargetDependency */,
-			);
-			name = CO2UITests;
-			productName = CO2UITests;
-			productReference = 2AA67082232632BA006534F0 /* CO2UITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -341,14 +244,6 @@
 				TargetAttributes = {
 					2AA67062232632B9006534F0 = {
 						CreatedOnToolsVersion = 10.3;
-					};
-					2AA67076232632BA006534F0 = {
-						CreatedOnToolsVersion = 10.3;
-						TestTargetID = 2AA67062232632B9006534F0;
-					};
-					2AA67081232632BA006534F0 = {
-						CreatedOnToolsVersion = 10.3;
-						TestTargetID = 2AA67062232632B9006534F0;
 					};
 				};
 			};
@@ -366,8 +261,6 @@
 			projectRoot = "";
 			targets = (
 				2AA67062232632B9006534F0 /* CO2 */,
-				2AA67076232632BA006534F0 /* CO2Tests */,
-				2AA67081232632BA006534F0 /* CO2UITests */,
 			);
 		};
 /* End PBXProject section */
@@ -383,20 +276,6 @@
 				2AA6706E232632BA006534F0 /* Assets.xcassets in Resources */,
 				2AA6706C232632B9006534F0 /* Main.storyboard in Resources */,
 				2A4480F6233DF07B00BE602D /* DrinkIngredientsCollectionViewCell.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2AA67075232632BA006534F0 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2AA67080232632BA006534F0 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,36 +308,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2AA67073232632BA006534F0 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2AA6707C232632BA006534F0 /* CO2Tests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2AA6707E232632BA006534F0 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2AA67087232632BA006534F0 /* CO2UITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		2AA67079232632BA006534F0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2AA67062232632B9006534F0 /* CO2 */;
-			targetProxy = 2AA67078232632BA006534F0 /* PBXContainerItemProxy */;
-		};
-		2AA67084232632BA006534F0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2AA67062232632B9006534F0 /* CO2 */;
-			targetProxy = 2AA67083232632BA006534F0 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		2AA6706A232632B9006534F0 /* Main.storyboard */ = {
@@ -601,7 +451,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4879TTCN72;
+				DEVELOPMENT_TEAM = 3KZZ5Z37DJ;
 				INFOPLIST_FILE = CO2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -620,7 +470,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4879TTCN72;
+				DEVELOPMENT_TEAM = 3KZZ5Z37DJ;
 				INFOPLIST_FILE = CO2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -631,88 +481,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		2AA6708F232632BA006534F0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4879TTCN72;
-				INFOPLIST_FILE = CO2Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.magicaltomato.CO2Tests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CO2.app/CO2";
-			};
-			name = Debug;
-		};
-		2AA67090232632BA006534F0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4879TTCN72;
-				INFOPLIST_FILE = CO2Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.magicaltomato.CO2Tests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CO2.app/CO2";
-			};
-			name = Release;
-		};
-		2AA67092232632BA006534F0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4879TTCN72;
-				INFOPLIST_FILE = CO2UITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.magicaltomato.CO2UITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = CO2;
-			};
-			name = Debug;
-		};
-		2AA67093232632BA006534F0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4879TTCN72;
-				INFOPLIST_FILE = CO2UITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.magicaltomato.CO2UITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = CO2;
 			};
 			name = Release;
 		};
@@ -733,24 +501,6 @@
 			buildConfigurations = (
 				2AA6708C232632BA006534F0 /* Debug */,
 				2AA6708D232632BA006534F0 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		2AA6708E232632BA006534F0 /* Build configuration list for PBXNativeTarget "CO2Tests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2AA6708F232632BA006534F0 /* Debug */,
-				2AA67090232632BA006534F0 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		2AA67091232632BA006534F0 /* Build configuration list for PBXNativeTarget "CO2UITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2AA67092232632BA006534F0 /* Debug */,
-				2AA67093232632BA006534F0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
