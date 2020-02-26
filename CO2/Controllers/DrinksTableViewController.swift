@@ -41,7 +41,7 @@ class DrinksTableViewController: UITableViewController {
             updateUI()
             
             if FavoritesController.favorites.count == 0 {
-                showFavoritesAlert(title: ":/ Favorites is lonely", message: "You have no favorite drinks.\n To add drinks to Favorites, tap on ❤️ in drink details")
+                presentAlertViewController(title: ":/ Favorites is lonely", message: "You have no favorite drinks.\n To add drinks to Favorites, tap on ❤️ in drink details", buttonText: "OK")
             }
             
         default:
@@ -271,13 +271,4 @@ class DrinksTableViewController: UITableViewController {
         }
     }
     
-    func showFavoritesAlert(title: String, message: String) {
-        DispatchQueue.main.async {
-            let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            self.present(ac, animated: true)
-        }
-    }
 }
-
-

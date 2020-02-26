@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UISearchResultsUpdating, UISearchBarDelegate {
+class DrinkSearchViewController: UIViewController {
     
     //IBOutles
     @IBOutlet weak var trendingDrinksCollectionView: UICollectionView!
@@ -147,88 +147,6 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     
-    //MARK:- CollectionView Data Source / Delegate methods
-    // Define number of sections
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-
-    //Define number of items per section
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard trendingDrinks != nil else { return 0 }
-        return trendingDrinks!.count
-    }
-        
-    //Define cells / content per section item
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        guard let cell = collectionView.dequeueReusableCell(
-          withReuseIdentifier: "DrinkCollectionViewCell", for: indexPath) as? DrinkCollectionViewCell
-        
-        else {
-            preconditionFailure("Invalid cell type")
-        }
-        
-        guard trendingDrinks != nil else { preconditionFailure("Drinks property is nil") }
-        let drink = trendingDrinks![indexPath.item]
-        
-        //Set cell properties
-        //Cell text
-        cell.setTitleLabel(text: drink.name)
-        cell.setSubtitleLabel(text: drink.ingredient1 ?? "")
-        
-        //Cell image
-        //Fetch and set drink image
-        if let imageURL = drink.imageURL {
-            
-            //Show and start cell activity indicator animation
-            cell.startActivityIndicator()
-            
-            DrinksController.shared.fetchDrinkImage(with: imageURL) { (fetchedImage, error) in
-               if let drinkImage = fetchedImage {
-
-                   //Update cell image to fecthedImage via main thread
-                   DispatchQueue.main.async {
-
-                       //Ensure wrong image isn't inserted into a recycled cell
-                        if let currentIndexPath = self.trendingDrinksCollectionView.indexPath(for: cell),
-
-                           //If current cell index and table index don't match, exit fetch image method
-                           currentIndexPath != indexPath {
-                               return
-                           }
-                    
-                        //Set cell image
-                        cell.setImage(drinkImage)
-                    
-                        //Stop acell activity indicator animation and hide
-                        cell.stopActivityIndicator()
-
-                        //Refresh cell to display fetched image
-                        cell.setNeedsLayout()
-                   }
-
-               //Catch any errors fetching image
-               } else if let error = error {
-                   print("Error fetching image with error \(error.localizedDescription)\n")
-               }
-           }
-        }
-        return cell
-    }
-    
-    //Send to DrinkDetailsVC when cell tapped
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard trendingDrinks != nil else { return }
-
-        if let vc = storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as? DrinkDetailsViewController {
-               
-           vc.drink = trendingDrinks![indexPath.item]
-           vc.sender = "DrinkSearchViewController"
-           navigationController?.pushViewController(vc, animated: true)
-        }
-    }
-    
     //MARK:- TableView Section methods (Search Results)
     func setUpNavigationBar() {
         DispatchQueue.main.async {
@@ -245,20 +163,6 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
             self.definesPresentationContext = true
                 //this property ensures any VCs displayed from this viewController can navigate back
         }
-    }
-    
-    @objc func refineButtonTapped() {
-        
-        
-    }
-    
-    //UISearch Delegate conformance method
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text, !text.isEmpty else { return }
-        print("Search text: \(text)")
-
-        //fetch drink name
-        performSearchForDrinks(from: EndPoint.search.rawValue, queryName: QueryType.drinkName.rawValue, queryValue: text)
     }
 
     
@@ -337,85 +241,6 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
-    //MARK:- TableView Data Source / Delegate methods
-    //TableViewDelegate Methods
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        guard drinks != nil else { return 0 }
-        return drinks!.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        //point cellForRowAt method to custom cell class by down casting to custom class
-        let cell = tableView.dequeueReusableCell(withIdentifier: "DrinkTableViewCell", for: indexPath) as! DrinkTableViewCell
-        
-        //Get reference to row
-        if indexPath.row < drinks!.count {
-        
-            //Get drinkk
-            if let drink = drinks?[indexPath.row] {
-            
-                //set cell lables text
-                cell.setTitleLabel(text: drink.name)
-                cell.setSubtitleLabel(text: drink.ingredient1 ?? "")
-                    
-                //Fetch and set drink image
-                if let imageURL = drink.imageURL {
-                    
-                    //Start cell activity indicator
-                    cell.startActivityIndicator()
-                    
-                    DrinksController.shared.fetchDrinkImage(with:imageURL) { (fetchedImage, error) in
-                    if let drinkImage = fetchedImage {
-
-                            //Update cell image to fecthedImage via main thread
-                            DispatchQueue.main.async {
-
-                                //Ensure wrong image isn't inserted into a recycled cell
-                                if let currentIndexPath = self.searchDrinksTableView.indexPath(for: cell),
-
-                                    //If current cell index and table index don't match, exit fetch image method
-                                    currentIndexPath != indexPath {
-                                        return
-                                    }
-
-                                //Set cell image
-                                cell.setImage(drinkImage)
-                                
-                                //Stop cell activity indicator
-                                cell.stopActivityIndicator()
-
-                                //Refresh cell to display fetched image
-                                cell.setNeedsLayout()
-                            }
-
-                        //catch any errors fetching image
-                        } else if let error = error {
-                            print("Error fetching image with error \(error.localizedDescription)\n")
-                        }
-                    }
-                }
-            }
-        }
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard drinks != nil else { return }
-
-        if let vc = storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as? DrinkDetailsViewController {
-               
-           vc.drink = drinks![indexPath.item]
-           vc.sender = "DrinkSearchViewController"
-           navigationController?.pushViewController(vc, animated: true)
-        }
-    }
     
     //MARK:- Custom Shared methods
     func updateUI(for view: String) {
@@ -500,3 +325,188 @@ class DrinkSearchViewController: UIViewController, UITableViewDataSource, UITabl
          }
     }
 }
+
+//MARK:- TableView Data Source / Delegate
+extension DrinkSearchViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    //TableViewDelegate Methods
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        guard drinks != nil else { return 0 }
+        return drinks!.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        //point cellForRowAt method to custom cell class by down casting to custom class
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DrinkTableViewCell", for: indexPath) as! DrinkTableViewCell
+        
+        //Get reference to row
+        if indexPath.row < drinks!.count {
+        
+            //Get drinkk
+            if let drink = drinks?[indexPath.row] {
+            
+                //set cell lables text
+                cell.setTitleLabel(text: drink.name)
+                cell.setSubtitleLabel(text: drink.ingredient1 ?? "")
+                    
+                //Fetch and set drink image
+                if let imageURL = drink.imageURL {
+                    
+                    //Start cell activity indicator
+                    cell.startActivityIndicator()
+                    
+                    DrinksController.shared.fetchDrinkImage(with:imageURL) { (fetchedImage, error) in
+                    if let drinkImage = fetchedImage {
+
+                            //Update cell image to fecthedImage via main thread
+                            DispatchQueue.main.async {
+
+                                //Ensure wrong image isn't inserted into a recycled cell
+                                if let currentIndexPath = self.searchDrinksTableView.indexPath(for: cell),
+
+                                    //If current cell index and table index don't match, exit fetch image method
+                                    currentIndexPath != indexPath {
+                                        return
+                                    }
+
+                                //Set cell image
+                                cell.setImage(drinkImage)
+                                
+                                //Stop cell activity indicator
+                                cell.stopActivityIndicator()
+
+                                //Refresh cell to display fetched image
+                                cell.setNeedsLayout()
+                            }
+
+                        //catch any errors fetching image
+                        } else if let error = error {
+                            print("Error fetching image with error \(error.localizedDescription)\n")
+                        }
+                    }
+                }
+            }
+        }
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard drinks != nil else { return }
+
+        if let vc = storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as? DrinkDetailsViewController {
+               
+           vc.drink = drinks![indexPath.item]
+           vc.sender = "DrinkSearchViewController"
+           navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
+
+
+//MARK:- CollectionView Data Source / Delegate
+extension DrinkSearchViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    
+    // Define number of sections
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+
+    //Define number of items per section
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard trendingDrinks != nil else { return 0 }
+        return trendingDrinks!.count
+    }
+        
+    //Define cells / content per section item
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        guard let cell = collectionView.dequeueReusableCell(
+          withReuseIdentifier: "DrinkCollectionViewCell", for: indexPath) as? DrinkCollectionViewCell
+        
+        else {
+            preconditionFailure("Invalid cell type")
+        }
+        
+        guard trendingDrinks != nil else { preconditionFailure("Drinks property is nil") }
+        let drink = trendingDrinks![indexPath.item]
+        
+        //Set cell properties
+        //Cell text
+        cell.setTitleLabel(text: drink.name)
+        cell.setSubtitleLabel(text: drink.ingredient1 ?? "")
+        
+        //Cell image
+        //Fetch and set drink image
+        if let imageURL = drink.imageURL {
+            
+            //Show and start cell activity indicator animation
+            cell.startActivityIndicator()
+            
+            DrinksController.shared.fetchDrinkImage(with: imageURL) { (fetchedImage, error) in
+               if let drinkImage = fetchedImage {
+
+                   //Update cell image to fecthedImage via main thread
+                   DispatchQueue.main.async {
+
+                       //Ensure wrong image isn't inserted into a recycled cell
+                        if let currentIndexPath = self.trendingDrinksCollectionView.indexPath(for: cell),
+
+                           //If current cell index and table index don't match, exit fetch image method
+                           currentIndexPath != indexPath {
+                               return
+                           }
+                    
+                        //Set cell image
+                        cell.setImage(drinkImage)
+                    
+                        //Stop acell activity indicator animation and hide
+                        cell.stopActivityIndicator()
+
+                        //Refresh cell to display fetched image
+                        cell.setNeedsLayout()
+                   }
+
+               //Catch any errors fetching image
+               } else if let error = error {
+                   print("Error fetching image with error \(error.localizedDescription)\n")
+               }
+           }
+        }
+        return cell
+    }
+    
+    //Send to DrinkDetailsVC when cell tapped
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard trendingDrinks != nil else { return }
+
+        if let vc = storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as? DrinkDetailsViewController {
+               
+           vc.drink = trendingDrinks![indexPath.item]
+           vc.sender = "DrinkSearchViewController"
+           navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
+
+//MARK:- UISearch Results / Delegate
+extension DrinkSearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text, !text.isEmpty else { return }
+        print("Search text: \(text)")
+
+        //fetch drink name
+        performSearchForDrinks(from: EndPoint.search.rawValue, queryName: QueryType.drinkName.rawValue, queryValue: text)
+    }
+}
+
+
+
+

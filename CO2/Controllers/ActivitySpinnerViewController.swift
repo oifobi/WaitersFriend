@@ -9,7 +9,6 @@
 import UIKit
 
 class ActivitySpinnerViewController: UIViewController {
-    
     static var shared = ActivitySpinnerViewController()
     
     var spinner = UIActivityIndicatorView(style: .large)

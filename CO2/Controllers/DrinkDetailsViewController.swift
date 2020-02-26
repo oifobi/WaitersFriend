@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class DrinkDetailsViewController: UIViewController {
     
     //Handle switching between segments
     var segmentControlIndex = 0 {
@@ -308,18 +308,38 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         if let index = FavoritesController.shared.getDrinkIndex(for: drink!.id) {
             FavoritesController.favorites.remove(at: index)
             favoritesButton.image = UIImage(systemName: "heart")
-            showAddToFavoritesAlert(title: "❌ Drink Removed", message: "\(drink!.name) removed from Favorites")
+            presentAlertViewController(title: "❌ Drink Removed", message: "\(drink!.name) removed from Favorites", buttonText: "OK")
 
         //If drink not already saved, save to favorites
         } else {
             FavoritesController.favorites.append(drink!)
             favoritesButton.image = UIImage(systemName: "heart.fill")
-            showAddToFavoritesAlert(title: "❤️ Drink Saved", message: "\(drink!.name) saved to Favorites")
+            presentAlertViewController(title: "❤️ Drink Saved", message: "\(drink!.name) saved to Favorites", buttonText: "OK")
         }
     }
-
     
-    //MARK:- TableView methods
+    //MARK:- Alert Controllers
+    
+    //Error alert handeler for data / image etc fetching issues
+    func showErrorAlert(with error: Error, sender: String = #function) {
+        
+        print("Error Alert called by: \(sender)\n")
+        
+        DispatchQueue.main.async {
+            let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Try again?", style: .default, handler: {
+                action in self.performFetchDrink()
+            }))
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(ac, animated: true)
+        }
+    }
+    
+}
+
+//MARK:- TableView extension
+extension DrinkDetailsViewController: UITableViewDataSource, UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return ingredients?.count ?? 0
     }
@@ -343,33 +363,6 @@ class DrinkDetailsViewController: UIViewController, UITableViewDataSource, UITab
         }
         
         return cell
-    }
-    
-    //MARK:- Alert Controllers
-    
-    //Error alert handeler for data / image etc fetching issues
-    func showErrorAlert(with error: Error, sender: String = #function) {
-        
-        print("Error Alert called by: \(sender)\n")
-        
-        DispatchQueue.main.async {
-            let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "Try again?", style: .default, handler: {
-                action in self.performFetchDrink()
-            }))
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            self.present(ac, animated: true)
-        }
-    }
-    
-    //Save to Favorites Alert confirmation
-    func showAddToFavoritesAlert(title: String, message: String) {
-//        print(title, message)
-        DispatchQueue.main.async {
-            let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            self.present(ac, animated: true)
-        }
     }
 }
 

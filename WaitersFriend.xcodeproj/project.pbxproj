@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2A0119C5233D108000C5C0A6 /* DrinkCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0119C4233D108000C5C0A6 /* DrinkCollectionViewCell.swift */; };
 		2A22B4302406043200FA7056 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A22B42F2406043200FA7056 /* CacheManager.swift */; };
+		2A22B434240622F400FA7056 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A22B433240622F400FA7056 /* UIViewController+Extension.swift */; };
 		2A448107233F568500BE602D /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A448106233F568500BE602D /* UIView+Extensions.swift */; };
 		2A53D2E22337302400506AFD /* ActivitySpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A53D2E12337302400506AFD /* ActivitySpinnerViewController.swift */; };
 		2A5B0FF12339F03D007C977B /* DrinkList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5B0FF02339F03D007C977B /* DrinkList.swift */; };
@@ -30,6 +31,7 @@
 /* Begin PBXFileReference section */
 		2A0119C4233D108000C5C0A6 /* DrinkCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkCollectionViewCell.swift; sourceTree = "<group>"; };
 		2A22B42F2406043200FA7056 /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
+		2A22B433240622F400FA7056 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIViewController+Extension.swift"; path = "CO2/Controllers/UIViewController+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		2A448106233F568500BE602D /* UIView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		2A53D2E12337302400506AFD /* ActivitySpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySpinnerViewController.swift; sourceTree = "<group>"; };
 		2A5B0FF02339F03D007C977B /* DrinkList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkList.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 		2AE939ED2344D1EC0039AAE2 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				2A22B433240622F400FA7056 /* UIViewController+Extension.swift */,
 				2A448106233F568500BE602D /* UIView+Extensions.swift */,
 				2A75D365234FF19200FC2FB2 /* DrinksTableViewController+Extension.swift */,
 			);
@@ -223,6 +226,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A22B434240622F400FA7056 /* UIViewController+Extension.swift in Sources */,
 				2ACEB3B8234CB517006D47B5 /* FavoritesController.swift in Sources */,
 				2AA670AB2327A3D4006534F0 /* DrinksController.swift in Sources */,
 				2A0119C5233D108000C5C0A6 /* DrinkCollectionViewCell.swift in Sources */,
