@@ -397,9 +397,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ZF4-Wr-IN3"/>
                     </view>
-                    <navigationItem key="navigationItem" id="5aQ-lG-mSO">
-                        <barButtonItem key="rightBarButtonItem" title="Filter" image="line.horizontal.3.decrease" catalog="system" id="qbU-lQ-ufd"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="5aQ-lG-mSO"/>
                     <connections>
                         <outlet property="searchDrinksTableView" destination="yhD-gX-rDW" id="5Za-Ht-C64"/>
                         <outlet property="trendingDrinksCollectionView" destination="1LI-sX-9XO" id="8hj-ou-3ZY"/>
@@ -505,7 +503,6 @@
     <resources>
         <image name="hand.thumbsup.fill" catalog="system" width="64" height="62"/>
         <image name="heart" catalog="system" width="64" height="54"/>
-        <image name="line.horizontal.3.decrease" catalog="system" width="64" height="36"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="evS-SR-87Y"/>
