@@ -6,7 +6,6 @@
 //  Copyright © 2019 SDI Group Inc. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 class DrinkTableViewCell: UITableViewCell {

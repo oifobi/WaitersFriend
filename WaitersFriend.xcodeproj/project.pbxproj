@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2A0119C5233D108000C5C0A6 /* DrinkCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0119C4233D108000C5C0A6 /* DrinkCollectionViewCell.swift */; };
+		2A22B4302406043200FA7056 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A22B42F2406043200FA7056 /* CacheManager.swift */; };
 		2A448107233F568500BE602D /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A448106233F568500BE602D /* UIView+Extensions.swift */; };
 		2A53D2E22337302400506AFD /* ActivitySpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A53D2E12337302400506AFD /* ActivitySpinnerViewController.swift */; };
 		2A5B0FF12339F03D007C977B /* DrinkList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5B0FF02339F03D007C977B /* DrinkList.swift */; };
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		2A0119C4233D108000C5C0A6 /* DrinkCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkCollectionViewCell.swift; sourceTree = "<group>"; };
+		2A22B42F2406043200FA7056 /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 		2A448106233F568500BE602D /* UIView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		2A53D2E12337302400506AFD /* ActivitySpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySpinnerViewController.swift; sourceTree = "<group>"; };
 		2A5B0FF02339F03D007C977B /* DrinkList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkList.swift; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 			children = (
 				2AA670AA2327A3D4006534F0 /* DrinksController.swift */,
 				2ACEB3B7234CB517006D47B5 /* FavoritesController.swift */,
+				2A22B42F2406043200FA7056 /* CacheManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -226,6 +229,7 @@
 				2A448107233F568500BE602D /* UIView+Extensions.swift in Sources */,
 				2AA6709523263CD4006534F0 /* DrinkDetailsViewController.swift in Sources */,
 				2A5B0FF12339F03D007C977B /* DrinkList.swift in Sources */,
+				2A22B4302406043200FA7056 /* CacheManager.swift in Sources */,
 				2A768EEC233D02EF00D694C7 /* DrinkTableViewCell.swift in Sources */,
 				2AA67067232632B9006534F0 /* AppDelegate.swift in Sources */,
 				2AA670AD2327ABFC006534F0 /* DrinksTableViewController.swift in Sources */,

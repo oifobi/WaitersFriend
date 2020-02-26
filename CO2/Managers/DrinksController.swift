@@ -6,7 +6,6 @@
 //  Copyright © 2019 SDI Group Inc. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 //API end points and Url struturing
@@ -103,20 +102,35 @@ public class DrinksController {
     //Fetch Drink images
     func fetchDrinkImage(with url: String, completion: @escaping (UIImage?, Error?) -> Void) {
         
-        if let urlString = URL(string: url) {
-            let task = URLSession.shared.dataTask(with: urlString) {
-                (data, response, error) in
-                
-                if let data = data,
-                    let image = UIImage(data: data) {
-                    completion(image, nil)
+        //check cache for image, load if cached
+        let imageCacheKey = NSString(string: url)
+        if let image = CacheManager.shared.imageCache.object(forKey: imageCacheKey) {
+            completion(image, nil)
+            print("Image loaded from cache")
+            return
+        }
+        
+        //fetch image from remote server
+        guard let urlString = URL(string: url) else { return }
+
+        let task = URLSession.shared.dataTask(with: urlString) {
+            (data, response, error) in
+            
+            if let data = data {
+                if let image = UIImage(data: data) {
                     
+                    //save image to cache with url to image as key
+                    CacheManager.shared.imageCache.setObject(image, forKey: imageCacheKey)
+                    print("Image saved to cache")
+                    
+                    completion(image, nil)
+                
                 } else {
                     completion(nil, error)
                 }
             }
-            task.resume()
         }
+        task.resume()
     }
     
     //Fetch List type (generic method to fetch any list type)
