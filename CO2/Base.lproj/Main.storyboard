@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9Cy-lF-j3c">
-    <device id="retina4_7" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9Cy-lF-j3c">
+    <device id="retina4_7" orientation="portrait" appearance="dark"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -10,7 +10,7 @@
         <!--Drinks Table View Controller-->
         <scene sceneID="9MY-ru-oQY">
             <objects>
-                <tableViewController id="2j6-AA-q3l" customClass="DrinksTableViewController" customModule="CO2" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="2j6-AA-q3l" customClass="DrinksTableViewController" customModule="Waiter_s_Friend" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="8ky-0K-fwW">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="574"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -18,7 +18,7 @@
                         <color key="separatorColor" red="0.75406885150000003" green="0.75408679249999999" blue="0.75407713649999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <inset key="separatorInset" minX="10" minY="0.0" maxX="15" maxY="0.0"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="DrinkCell" id="pzF-bP-cYq" customClass="DrinkTableViewCell" customModule="CO2" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="DrinkCell" id="pzF-bP-cYq" customClass="DrinkTableViewCell" customModule="Waiter_s_Friend" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pzF-bP-cYq" id="x5n-Xq-Xf7">
@@ -99,9 +99,9 @@
         <!--Drink Details View Controller-->
         <scene sceneID="fcU-Rd-M4A">
             <objects>
-                <viewController storyboardIdentifier="DrinkDetailsVC" automaticallyAdjustsScrollViewInsets="NO" id="rJa-FV-Fid" customClass="DrinkDetailsViewController" customModule="CO2" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DrinkDetailsVC" automaticallyAdjustsScrollViewInsets="NO" id="rJa-FV-Fid" customClass="DrinkDetailsViewController" customModule="Waiter_s_Friend" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pMF-p5-Pqd">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="574"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="center" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PfA-6z-I4G">
@@ -259,7 +259,7 @@
         <!--Drink Search View Controller-->
         <scene sceneID="zk3-YC-0V8">
             <objects>
-                <viewController id="jhn-BU-R4x" customClass="DrinkSearchViewController" customModule="CO2" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="jhn-BU-R4x" customClass="DrinkSearchViewController" customModule="Waiter_s_Friend" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Qx1-7i-khj">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -295,7 +295,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="scrollIndicatorInsets" minX="5" minY="5" maxX="5" maxY="5"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="0.0" reuseIdentifier="DrinkTableViewCell" rowHeight="105" id="UhI-Xm-l4t" customClass="DrinkTableViewCell" customModule="CO2" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="0.0" reuseIdentifier="DrinkTableViewCell" rowHeight="105" id="UhI-Xm-l4t" customClass="DrinkTableViewCell" customModule="Waiter_s_Friend" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="355" height="105"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UhI-Xm-l4t" id="Dd2-lq-GpP">
@@ -443,7 +443,6 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="Mq9-wT-k9E">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
                         <segue destination="lu1-p8-h7M" kind="relationship" relationship="viewControllers" id="ECm-mC-Dde"/>
@@ -504,11 +503,11 @@
         </scene>
     </scenes>
     <resources>
-        <image name="hand.thumbsup.fill" catalog="system" width="64" height="64"/>
-        <image name="heart" catalog="system" width="64" height="58"/>
+        <image name="hand.thumbsup.fill" catalog="system" width="64" height="62"/>
+        <image name="heart" catalog="system" width="64" height="54"/>
         <image name="line.horizontal.3.decrease" catalog="system" width="64" height="36"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="hFO-AD-XNe"/>
+        <segue reference="evS-SR-87Y"/>
     </inferredMetricsTieBreakers>
 </document>
