@@ -140,29 +140,6 @@ class DrinkSearchViewController: UIViewController {
                         self.performFetchRecentDrinks()
                 }))
             }
-            
-            
-            //fire UI update if fetch successful
-//            if let drinks = fetchedDrinks {
-//                self.trendingDrinks = drinks
-//                self.trendingDrinks?.sort(by: {$0.name < $1.name} )
-//                self.updateUI(for: "collectionView")
-//                print("Fetched Recent Drinks. Items: \(drinks.count)\n")
-//            }
-            
-//            //Stop and remove activity spinnner
-//            DispatchQueue.main.async() {
-//                let spinner = ActivitySpinnerViewController()
-//                spinner.stopActivitySpinner()
-//            }
-            
-            //fire error handler if error
-//            if let _ = error {
-//                self.presentErrorAlertVC(title: "Uh Oh!", message: WFError.unableToCompleteRequest.rawValue, buttonText: "OK",
-//                action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
-//                        self.performFetchRecentDrinks()
-//                }))
-//            }
         }
     }
     
@@ -250,7 +227,7 @@ class DrinkSearchViewController: UIViewController {
                 self.drinks = drinks
                 self.drinks?.sort(by: {$0.name < $1.name} )
                 self.updateUI(for: "tableView")
-    //                print("Fetched Drinks: \(drinks)\n")
+//                print("Fetched Drinks: \(drinks)\n")
                 
             case .failure(let error):
                 self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
@@ -258,23 +235,6 @@ class DrinkSearchViewController: UIViewController {
                         self.performFetchRecentDrinks()
                 }))
             }
-            
-                
-            //fire UI update if fetch successful
-//            if let drinks = fetchedDrinks {
-//                self.drinks = drinks
-//                self.drinks?.sort(by: {$0.name < $1.name} )
-//                self.updateUI(for: "tableView")
-////                print("Fetched Drinks: \(drinks)\n")
-//            }
-//
-//            //fire error handler if error
-//            if let _ = error {
-//                self.presentErrorAlertVC(title: "Uh Oh!", message: WFError.unableToCompleteRequest.rawValue, buttonText: "OK",
-//                action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
-//                        self.performFetchRecentDrinks()
-//                }))
-//            }
         }
     }
     

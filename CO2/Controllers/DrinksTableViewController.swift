@@ -67,48 +67,28 @@ class DrinksTableViewController: UITableViewController {
         //create / start activity spinner
         spinner.startSpinner(viewController: self)
 
-            //fire fetch drinks list method
-            let endpoint = EndPoint.popular.rawValue
-            DrinksController.shared.fetchDrinks(from: endpoint, using: nil) { [weak self] (result) in
-                
-                guard let self = self else { return }
-                
-                self.spinner.stopSpinner()
-                
-                switch result {
-                case .success(let drinks):
-                    self.drinks = drinks
-                    self.updateUI()
-//                    print("Fetched Drinks: \(drinks)\n")
-                    
-                case .failure(let error):
-                    self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
-                    action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
-                            self.performFetchDrinks()
-                    }))
-                }
+        //fire fetch drinks list method
+        let endpoint = EndPoint.popular.rawValue
+        DrinksController.shared.fetchDrinks(from: endpoint, using: nil) { [weak self] (result) in
             
-                //fire UI update if fetch successful
-//                if let drinks = fetchedDrinks {
-//                    self.drinks = drinks
-//                    self.updateUI()
-////                print("Fetched Drinks: \(drinks)\n")
-//                }
-//
-//                //Stop and remove activity spinnner
-//                DispatchQueue.main.async() {
-//                    spinner.stopActivitySpinner()
-//                }
-//
-//                //fire error handler if error
-//                if let _ = error {
-//                    self.presentErrorAlertVC(title: "Uh Oh!", message: WFError.unableToCompleteRequest.rawValue, buttonText: "OK",
-//                    action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
-//                            self.performFetchDrinks()
-//                    }))
-//                }
+            guard let self = self else { return }
+            
+            self.spinner.stopSpinner()
+            
+            switch result {
+            case .success(let drinks):
+                self.drinks = drinks
+                self.updateUI()
+//                    print("Fetched Drinks: \(drinks)\n")
+                
+            case .failure(let error):
+                self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
+                action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
+                        self.performFetchDrinks()
+                }))
             }
-//        }
+        }
+
     }
     
     func updateUI() {
