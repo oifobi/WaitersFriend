@@ -28,4 +28,19 @@ class ActivitySpinnerViewController: UIViewController {
         spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
+    
+    
+    func startActivitySpinner() {
+        addChild(ActivitySpinnerViewController.shared)
+        ActivitySpinnerViewController.shared.view.frame = view.bounds
+        view.addSubview(ActivitySpinnerViewController.shared.view)
+        ActivitySpinnerViewController.shared.didMove(toParent: self)
+    }
+
+    
+    func stopActivitySpinner() {
+        ActivitySpinnerViewController.shared.willMove(toParent: nil)
+        ActivitySpinnerViewController.shared.view.removeFromSuperview()
+        ActivitySpinnerViewController.shared.removeFromParent()
+    }
 }

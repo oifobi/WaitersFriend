@@ -190,7 +190,12 @@ class DrinkDetailsViewController: UIViewController {
             
             //if error, fire error meessage
             if let error = error {
-                self.showErrorAlert(with: error)
+//                self.showErrorAlert(with: error)
+                self.presentErrorAlertVC(title: "Uh Oh!", message: "\(error.localizedDescription)", buttonText: "OK",
+                action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
+                        self.performFetchDrink()
+                }))
+                
                 print("Error fetching drink with error: \(error.localizedDescription)\n")
             }
         }
@@ -200,7 +205,8 @@ class DrinkDetailsViewController: UIViewController {
         
         //Show and start activity indicator animation
         DispatchQueue.main.async {
-            self.startActivitySpinner()
+            let spinner = ActivitySpinnerViewController()
+            spinner.startActivitySpinner()
         }
         
         if let imageURL = drink?.imageURL {
@@ -212,7 +218,8 @@ class DrinkDetailsViewController: UIViewController {
                 
                 //Stop and hide activity indicator animation
                 DispatchQueue.main.async {
-                    self.stopActivitySpinner()
+                    let spinner = ActivitySpinnerViewController()
+                    spinner.stopActivitySpinner()
                 }
                 //catch any errors fetching image
                 if let error = error {
@@ -222,26 +229,7 @@ class DrinkDetailsViewController: UIViewController {
         }
     }
     
-    //Activity indicator / spinner
-    func startActivitySpinner() {
-    
-        //Add to relevant view
-        addChild(ActivitySpinnerViewController.shared)
-        
-        //Add spinner view to view controller
-        ActivitySpinnerViewController.shared.view.frame = view.bounds
-
-        view.addSubview(ActivitySpinnerViewController.shared.view)
-        ActivitySpinnerViewController.shared.didMove(toParent: self)
-    }
-    
-    func stopActivitySpinner() {
-        
-        ActivitySpinnerViewController.shared.willMove(toParent: nil)
-        ActivitySpinnerViewController.shared.view.removeFromSuperview()
-        ActivitySpinnerViewController.shared.removeFromParent()
-    }
-    
+  
     //MARK:- TableView data prep method/s (TO BE REFACTORED!)
     func loadIngredientsTableData() {
     
@@ -308,34 +296,17 @@ class DrinkDetailsViewController: UIViewController {
         if let index = FavoritesController.shared.getDrinkIndex(for: drink!.id) {
             FavoritesController.favorites.remove(at: index)
             favoritesButton.image = UIImage(systemName: "heart")
-            presentAlertViewController(title: "❌ Drink Removed", message: "\(drink!.name) removed from Favorites", buttonText: "OK")
+            presentAlertVC(title: "❌ Drink Removed", message: "\(drink!.name) removed from Favorites", buttonText: "OK")
 
         //If drink not already saved, save to favorites
         } else {
             FavoritesController.favorites.append(drink!)
             favoritesButton.image = UIImage(systemName: "heart.fill")
-            presentAlertViewController(title: "❤️ Drink Saved", message: "\(drink!.name) saved to Favorites", buttonText: "OK")
+            presentAlertVC(title: "❤️ Drink Saved", message: "\(drink!.name) saved to Favorites", buttonText: "OK")
         }
     }
-    
-    //MARK:- Alert Controllers
-    
-    //Error alert handeler for data / image etc fetching issues
-    func showErrorAlert(with error: Error, sender: String = #function) {
-        
-        print("Error Alert called by: \(sender)\n")
-        
-        DispatchQueue.main.async {
-            let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "Try again?", style: .default, handler: {
-                action in self.performFetchDrink()
-            }))
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            self.present(ac, animated: true)
-        }
-    }
-    
 }
+
 
 //MARK:- TableView extension
 extension DrinkDetailsViewController: UITableViewDataSource, UITableViewDelegate {

@@ -41,7 +41,7 @@ class DrinksTableViewController: UITableViewController {
             updateUI()
             
             if FavoritesController.favorites.count == 0 {
-                presentAlertViewController(title: ":/ Favorites is lonely", message: "You have no favorite drinks.\n To add drinks to Favorites, tap on ❤️ in drink details", buttonText: "OK")
+                presentAlertVC(title: ":/ Favorites is lonely", message: "You have no favorite drinks.\n To add drinks to Favorites, tap on ❤️ in drink details", buttonText: "OK")
             }
             
         default:
@@ -65,7 +65,8 @@ class DrinksTableViewController: UITableViewController {
         DispatchQueue.main.async {
             
             //start / display activity spinner
-            self.startActivitySpinner()
+            let spinner = ActivitySpinnerViewController()
+            spinner.startActivitySpinner()
 
             //fire fetch drinks list method
             let endpoint = EndPoint.popular.rawValue
@@ -75,17 +76,21 @@ class DrinksTableViewController: UITableViewController {
                 if let drinks = fetchedDrinks {
                     self.drinks = drinks
                     self.updateUI()
-    //                print("Fetched Drinks: \(drinks)\n")
+//                print("Fetched Drinks: \(drinks)\n")
                 }
                 
                 //Stop and remove activity spinnner
                 DispatchQueue.main.async() {
-                    self.stopActivitySpinner()
+                    let spinner = ActivitySpinnerViewController()
+                    spinner.stopActivitySpinner()
                 }
                 
                 //fire error handler if error
                 if let error = error {
-                    self.showErrorAlert(with: error)
+                    self.presentErrorAlertVC(title: "Uh Oh!", message: "\(error.localizedDescription)", buttonText: "OK",
+                    action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
+                            self.performFetchDrinks()
+                    }))
                 }
             }
         }
@@ -96,20 +101,6 @@ class DrinksTableViewController: UITableViewController {
             self.createTableSectionsIndex()
             self.tableView.reloadData()
         }
-    }
-    
-    //Activity indicator / spinner
-    func startActivitySpinner() {
-        addChild(ActivitySpinnerViewController.shared)
-        ActivitySpinnerViewController.shared.view.frame = view.bounds
-        view.addSubview(ActivitySpinnerViewController.shared.view)
-        ActivitySpinnerViewController.shared.didMove(toParent: self)
-    }
-
-    func stopActivitySpinner() {
-        ActivitySpinnerViewController.shared.willMove(toParent: nil)
-        ActivitySpinnerViewController.shared.view.removeFromSuperview()
-        ActivitySpinnerViewController.shared.removeFromParent()
     }
     
     //setup tableViewIndex
@@ -242,7 +233,7 @@ class DrinksTableViewController: UITableViewController {
             }
     }
     
-    // MARK: - Navigation
+    //MARK: - Navigation
     //Set and push selected cell data to DetailVC
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -257,18 +248,14 @@ class DrinksTableViewController: UITableViewController {
             vc.sender = "DrinksTableViewController"
         }
     }
-    
-    //MARK:- Alert Controllers
-    func showErrorAlert(with error: Error, sender: String = #function) {
-        print("Error Alert called by: \(sender)\n")
-        DispatchQueue.main.async {
-            let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "Try again?", style: .default, handler: {
-                action in self.performFetchDrinks()
-            }))
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            self.present(ac, animated: true)
-        }
+}
+
+
+//MARK:- Protocol delegate method to update drinks property when user modifies favorites from DrinksTableVC (Favorites mode)
+extension DrinksTableViewController: FavoriteDrinksDelegate {
+    func updateDrinks(with favorites: [Drink]) {
+        self.drinks = favorites
+        updateUI()
+//        print("FavoriteDrinksController delegate pattern executed")
     }
-    
 }

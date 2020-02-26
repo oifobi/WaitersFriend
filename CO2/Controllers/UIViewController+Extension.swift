@@ -11,13 +11,25 @@ import UIKit
 extension UIViewController {
     
     //alert controller
-    func presentAlertViewController(title: String, message: String, buttonText: String) {
+    func presentAlertVC(title: String, message: String, buttonText: String) {
         DispatchQueue.main.async { [unowned self] in
             let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: buttonText, style: .default))
             ac.modalPresentationStyle = .overFullScreen
                 //take over full screen esp. in iOS 13's new card style ui
             ac.modalTransitionStyle = .crossDissolve
+            self.present(ac, animated: true)
+        }
+    }
+    
+    //error alert controller
+    func presentErrorAlertVC(title: String, message: String, buttonText: String, action: UIAlertAction, sender: String = #function) {
+        print("Error Alert called by: \(sender)\n")
+        
+        DispatchQueue.main.async {
+            let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            ac.addAction(action)
+            ac.addAction(UIAlertAction(title: buttonText, style: .default))
             self.present(ac, animated: true)
         }
     }

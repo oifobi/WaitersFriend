@@ -44,11 +44,6 @@ class DrinkSearchViewController: UIViewController {
             performSelector(inBackground: #selector(performFetchIngredientList), with: nil)
         }
         
-        //Fetch List of Drinks made with Base Ingredient
-//        if ingredientDrinks == nil {
-//            performSelector(inBackground: #selector(performFetchDrinksList), with: "151 Proof Rum")
-//        }
-        
         //fetch drink name
         if drinks == nil {
             performSearchForDrinks(from: EndPoint.search.rawValue, queryName: QueryType.drinkName.rawValue, queryValue: "Margarita")
@@ -120,7 +115,8 @@ class DrinkSearchViewController: UIViewController {
         
         //start / display activity spinner
         DispatchQueue.main.async {
-            self.startActivitySpinner()
+            let spinner = ActivitySpinnerViewController()
+            spinner.startActivitySpinner()
         }
         
         //fire fetch recent drinks list method
@@ -136,12 +132,16 @@ class DrinkSearchViewController: UIViewController {
             
             //Stop and remove activity spinnner
             DispatchQueue.main.async() {
-                self.stopActivitySpinner()
+                let spinner = ActivitySpinnerViewController()
+                spinner.stopActivitySpinner()
             }
             
             //fire error handler if error
             if let error = error {
-                self.showAlert(with: error)
+                self.presentErrorAlertVC(title: "Uh Oh!", message: "\(error.localizedDescription)", buttonText: "OK",
+                action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
+                        self.performFetchRecentDrinks()
+                }))
             }
         }
     }
@@ -195,7 +195,8 @@ class DrinkSearchViewController: UIViewController {
         
         //start / display activity spinner
         DispatchQueue.main.async {
-            self.startActivitySpinner()
+            let spinner = ActivitySpinnerViewController()
+            spinner.startActivitySpinner()
         }
         
         //fire fetch list method
@@ -211,7 +212,8 @@ class DrinkSearchViewController: UIViewController {
             
             //Stop and remove activity spinnner
             DispatchQueue.main.async() {
-                self.stopActivitySpinner()
+                let spinner = ActivitySpinnerViewController()
+                spinner.stopActivitySpinner()
             }
            
            //if error, fire error meessage
@@ -236,7 +238,10 @@ class DrinkSearchViewController: UIViewController {
             
             //fire error handler if error
             if let error = error {
-                self.showAlert(with: error)
+                self.presentErrorAlertVC(title: "Uh Oh!", message: "\(error.localizedDescription)", buttonText: "OK",
+                action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
+                        self.performFetchRecentDrinks()
+                }))
             }
         }
     }
@@ -255,42 +260,13 @@ class DrinkSearchViewController: UIViewController {
         }
     }
     
-    //Activity indicator / spinner methods
-    func startActivitySpinner() {
-    
-        //Add to relevant view
-        addChild(ActivitySpinnerViewController.shared)
-        ActivitySpinnerViewController.shared.view.frame = view.bounds
-        view.addSubview(ActivitySpinnerViewController.shared.view)
-        ActivitySpinnerViewController.shared.didMove(toParent: self)
-    }
-    
-    func stopActivitySpinner() {
-        ActivitySpinnerViewController.shared.willMove(toParent: nil)
-        ActivitySpinnerViewController.shared.view.removeFromSuperview()
-        ActivitySpinnerViewController.shared.removeFromParent()
-    }
-    
-    //Alert Controllers
-    func showAlert(with error: Error, sender: String = #function) {
-        print("Error Alert called by: \(sender)\n")
-        
-        DispatchQueue.main.async {
-            let ac = UIAlertController(title: "Uh Oh!", message: "\(error.localizedDescription)", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "Try again?", style: .default, handler: {
-                action in self.performFetchRecentDrinks()
-            }))
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            self.present(ac, animated: true)
-        }
-    }
-    
     //Fetch drink details in prep tp pass to DrinkDetailsVC
     @objc func performFetchDrink(with id: String) {
         
         //start / display activity spinner
         DispatchQueue.main.async {
-            self.startActivitySpinner()
+            let spinner = ActivitySpinnerViewController()
+            spinner.startActivitySpinner()
         }
         
         //fire fetch drink method
@@ -315,7 +291,8 @@ class DrinkSearchViewController: UIViewController {
             
             //Stop and remove activity spinnner
             DispatchQueue.main.async() {
-                self.stopActivitySpinner()
+                let spinner = ActivitySpinnerViewController()
+                spinner.stopActivitySpinner()
             }
             
             //if error, fire error meessage
@@ -494,6 +471,7 @@ extension DrinkSearchViewController: UICollectionViewDataSource, UICollectionVie
         }
     }
 }
+
 
 //MARK:- UISearch Results / Delegate
 extension DrinkSearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
