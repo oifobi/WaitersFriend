@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2AA67062232632B9006534F0"
-               BuildableName = "WaitersFriend.app"
+               BuildableName = "Waiter&apos;s Friend.app"
                BlueprintName = "WaitersFriend"
                ReferencedContainer = "container:WaitersFriend.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2AA67062232632B9006534F0"
-            BuildableName = "WaitersFriend.app"
+            BuildableName = "Waiter&apos;s Friend.app"
             BlueprintName = "WaitersFriend"
             ReferencedContainer = "container:WaitersFriend.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2AA67062232632B9006534F0"
-            BuildableName = "WaitersFriend.app"
+            BuildableName = "Waiter&apos;s Friend.app"
             BlueprintName = "WaitersFriend"
             ReferencedContainer = "container:WaitersFriend.xcodeproj">
          </BuildableReference>
