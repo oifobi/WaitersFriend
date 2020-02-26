@@ -22,6 +22,9 @@ class DrinksTableViewController: UITableViewController {
     //Property to store Table section index
     var tableSectionsIndex: [(key: Substring, value: [Drink])]?
     
+    //create spinner
+    let spinner = SpinnerViewController()
+    
     //MARK:- Built in view management methods
     override func viewWillAppear(_ animated: Bool) {
         
@@ -41,7 +44,7 @@ class DrinksTableViewController: UITableViewController {
             updateUI()
             
             if FavoritesController.favorites.count == 0 {
-                presentAlertVC(title: ":/ Favorites is lonely", message: "You have no favorite drinks.\n To add drinks to Favorites, tap on ❤️ in drink details", buttonText: "OK")
+                presentAlertVC(title: ":/ Favorites is lonely", message: WFError.noFavorites.rawValue, buttonText: "OK")
             }
             
         default:
@@ -60,40 +63,52 @@ class DrinksTableViewController: UITableViewController {
     //MARK:- Custom Get Data / setup UI methods
     //Fire fetch reequest and pass in drinks list paramter, based on tab item selected by user
     @objc func performFetchDrinks() {
-    
-        //trigger fetch of JSON data from remote server
-        DispatchQueue.main.async {
-            
-            //start / display activity spinner
-            let spinner = ActivitySpinnerViewController()
-            spinner.startActivitySpinner()
+        
+        //create / start activity spinner
+        spinner.startSpinner(viewController: self)
 
             //fire fetch drinks list method
             let endpoint = EndPoint.popular.rawValue
-            DrinksController.shared.fetchDrinks(from: endpoint, using: nil) { (fetchedDrinks, error) in
-            
-                //fire UI update if fetch successful
-                if let drinks = fetchedDrinks {
+            DrinksController.shared.fetchDrinks(from: endpoint, using: nil) { [weak self] (result) in
+                
+                guard let self = self else { return }
+                
+                self.spinner.stopSpinner()
+                
+                switch result {
+                case .success(let drinks):
                     self.drinks = drinks
                     self.updateUI()
-//                print("Fetched Drinks: \(drinks)\n")
-                }
-                
-                //Stop and remove activity spinnner
-                DispatchQueue.main.async() {
-                    let spinner = ActivitySpinnerViewController()
-                    spinner.stopActivitySpinner()
-                }
-                
-                //fire error handler if error
-                if let error = error {
-                    self.presentErrorAlertVC(title: "Uh Oh!", message: "\(error.localizedDescription)", buttonText: "OK",
+//                    print("Fetched Drinks: \(drinks)\n")
+                    
+                case .failure(let error):
+                    self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
                     action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
                             self.performFetchDrinks()
                     }))
                 }
+            
+                //fire UI update if fetch successful
+//                if let drinks = fetchedDrinks {
+//                    self.drinks = drinks
+//                    self.updateUI()
+////                print("Fetched Drinks: \(drinks)\n")
+//                }
+//
+//                //Stop and remove activity spinnner
+//                DispatchQueue.main.async() {
+//                    spinner.stopActivitySpinner()
+//                }
+//
+//                //fire error handler if error
+//                if let _ = error {
+//                    self.presentErrorAlertVC(title: "Uh Oh!", message: WFError.unableToCompleteRequest.rawValue, buttonText: "OK",
+//                    action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
+//                            self.performFetchDrinks()
+//                    }))
+//                }
             }
-        }
+//        }
     }
     
     func updateUI() {

@@ -106,6 +106,9 @@ class DrinkDetailsViewController: UIViewController {
     var ingredients: [(key: String, value: String)]?
     var measures: [(key: String, value: String)]?
     
+    //create spinner
+    let spinner = SpinnerViewController()
+    
     //MARK:- Built-in View managemenet
     //Prepare Drink data content
     override func viewWillAppear(_ animated: Bool) {
@@ -191,7 +194,7 @@ class DrinkDetailsViewController: UIViewController {
             //if error, fire error meessage
             if let error = error {
 //                self.showErrorAlert(with: error)
-                self.presentErrorAlertVC(title: "Uh Oh!", message: "\(error.localizedDescription)", buttonText: "OK",
+                self.presentErrorAlertVC(title: "Uh Oh!", message: WFError.invalidServerResposne.rawValue, buttonText: "OK",
                 action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
                         self.performFetchDrink()
                 }))
@@ -203,12 +206,9 @@ class DrinkDetailsViewController: UIViewController {
     
     @objc func performFetchDrinksImage() {
         
-        //Show and start activity indicator animation
-        DispatchQueue.main.async {
-            let spinner = ActivitySpinnerViewController()
-            spinner.startActivitySpinner()
-        }
-        
+        //start / display activity spinner
+        spinner.startSpinner(viewController: self)
+
         if let imageURL = drink?.imageURL {
             DrinksController.shared.fetchDrinkImage(with: imageURL) { (fetchedImage, error) in
                 
@@ -216,11 +216,9 @@ class DrinkDetailsViewController: UIViewController {
                     self.drinkImage = image
                 }
                 
-                //Stop and hide activity indicator animation
-                DispatchQueue.main.async {
-                    let spinner = ActivitySpinnerViewController()
-                    spinner.stopActivitySpinner()
-                }
+                //Stop and hide activity spinner
+                self.spinner.stopSpinner()
+                
                 //catch any errors fetching image
                 if let error = error {
                     print("Error fetching image with error \(error.localizedDescription)\n")
@@ -296,13 +294,13 @@ class DrinkDetailsViewController: UIViewController {
         if let index = FavoritesController.shared.getDrinkIndex(for: drink!.id) {
             FavoritesController.favorites.remove(at: index)
             favoritesButton.image = UIImage(systemName: "heart")
-            presentAlertVC(title: "❌ Drink Removed", message: "\(drink!.name) removed from Favorites", buttonText: "OK")
+            presentAlertVC(title: "❌ Drink Removed", message: "\(drink!.name) \(WFError.favoriteRemoved.rawValue)", buttonText: "OK")
 
         //If drink not already saved, save to favorites
         } else {
             FavoritesController.favorites.append(drink!)
             favoritesButton.image = UIImage(systemName: "heart.fill")
-            presentAlertVC(title: "❤️ Drink Saved", message: "\(drink!.name) saved to Favorites", buttonText: "OK")
+            presentAlertVC(title: "❤️ Drink Saved", message: "\(drink!.name) \(WFError.favoriteSaved.rawValue)", buttonText: "OK")
         }
     }
 }

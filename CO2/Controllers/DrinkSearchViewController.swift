@@ -27,6 +27,10 @@ class DrinkSearchViewController: UIViewController {
     //Common/shared properties b/w TableView and CollectionView
     var drink: Drink?
     
+    //create spinner
+    let spinner = SpinnerViewController()
+    
+    
     //MARK:- Built-in UIView Life-Cycle handlers
     //Start fetch of data
     override func viewWillAppear(_ animated: Bool) {
@@ -113,36 +117,52 @@ class DrinkSearchViewController: UIViewController {
     //Fetch Recent Drinks
     @objc func performFetchRecentDrinks() {
         
-        //start / display activity spinner
-        DispatchQueue.main.async {
-            let spinner = ActivitySpinnerViewController()
-            spinner.startActivitySpinner()
-        }
-        
+        //create / start activity spinner
+        spinner.startSpinner(viewController: self)
+
         //fire fetch recent drinks list method
-        DrinksController.shared.fetchDrinks(from: EndPoint.recent.rawValue, using: nil) { (fetchedDrinks, error) in
-        
-            //fire UI update if fetch successful
-            if let drinks = fetchedDrinks {
+        DrinksController.shared.fetchDrinks(from: EndPoint.recent.rawValue, using: nil) { [weak self] (result) in
+            
+            guard let self = self else { return }
+                            
+            self.spinner.stopSpinner()
+
+            switch result {
+            case .success(let drinks):
                 self.trendingDrinks = drinks
                 self.trendingDrinks?.sort(by: {$0.name < $1.name} )
                 self.updateUI(for: "collectionView")
                 print("Fetched Recent Drinks. Items: \(drinks.count)\n")
-            }
-            
-            //Stop and remove activity spinnner
-            DispatchQueue.main.async() {
-                let spinner = ActivitySpinnerViewController()
-                spinner.stopActivitySpinner()
-            }
-            
-            //fire error handler if error
-            if let error = error {
-                self.presentErrorAlertVC(title: "Uh Oh!", message: "\(error.localizedDescription)", buttonText: "OK",
+                
+            case .failure(let error):
+                self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
                 action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
                         self.performFetchRecentDrinks()
                 }))
             }
+            
+            
+            //fire UI update if fetch successful
+//            if let drinks = fetchedDrinks {
+//                self.trendingDrinks = drinks
+//                self.trendingDrinks?.sort(by: {$0.name < $1.name} )
+//                self.updateUI(for: "collectionView")
+//                print("Fetched Recent Drinks. Items: \(drinks.count)\n")
+//            }
+            
+//            //Stop and remove activity spinnner
+//            DispatchQueue.main.async() {
+//                let spinner = ActivitySpinnerViewController()
+//                spinner.stopActivitySpinner()
+//            }
+            
+            //fire error handler if error
+//            if let _ = error {
+//                self.presentErrorAlertVC(title: "Uh Oh!", message: WFError.unableToCompleteRequest.rawValue, buttonText: "OK",
+//                action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
+//                        self.performFetchRecentDrinks()
+//                }))
+//            }
         }
     }
     
@@ -150,7 +170,6 @@ class DrinkSearchViewController: UIViewController {
     //MARK:- TableView Section methods (Search Results)
     func setUpNavigationBar() {
         DispatchQueue.main.async {
-//            self.title = "Search"
             
             //Search Controller
             let search = UISearchController(searchResultsController: nil)
@@ -193,15 +212,17 @@ class DrinkSearchViewController: UIViewController {
     //Fetch Selected Base Ingredient Drinks List (drinks made wih specific Base ingredient)
     @objc func performFetchDrinksList(for ingredient: String) {
         
-        //start / display activity spinner
-        DispatchQueue.main.async {
-            let spinner = ActivitySpinnerViewController()
-            spinner.startActivitySpinner()
-        }
-        
+        //start spinner
+        spinner.startSpinner(viewController: self)
+
         //fire fetch list method
-        DrinksController.shared.fetchList(from: "/filter.php", using: [URLQueryItem(name: "i", value: ingredient)]) { (fetchedList, error) in
-       
+        DrinksController.shared.fetchList(from: "/filter.php", using: [URLQueryItem(name: "i", value: ingredient)]) { [weak self] (fetchedList, error) in
+            
+            guard let self = self else { return }
+            
+            //Stop and remove activity spinnner
+            self.spinner.stopSpinner()
+            
            //If success, set fetechedList data to drinksList property
            if let list = fetchedList {
                 self.ingredientDrinks = list
@@ -210,12 +231,6 @@ class DrinkSearchViewController: UIViewController {
                 print("Fetched drink list made with Base ingredient. Items: \(self.ingredientDrinks!.count)\n")
            }
             
-            //Stop and remove activity spinnner
-            DispatchQueue.main.async() {
-                let spinner = ActivitySpinnerViewController()
-                spinner.stopActivitySpinner()
-            }
-           
            //if error, fire error meessage
            if let error = error {
                print("Error fetching drinks list with error: \(error.localizedDescription)\n")
@@ -226,23 +241,40 @@ class DrinkSearchViewController: UIViewController {
     //Fetch drink names from user's search query
     func performSearchForDrinks(from endpoint: String, queryName: String, queryValue: String) {
         
-        DrinksController.shared.fetchDrinks(from: endpoint, using: [URLQueryItem(name: queryName, value: queryValue)]) { (fetchedDrinks, error) in
-                
-            //fire UI update if fetch successful
-            if let drinks = fetchedDrinks {
+        DrinksController.shared.fetchDrinks(from: endpoint, using: [URLQueryItem(name: queryName, value: queryValue)]) { [weak self] (result) in
+            
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let drinks):
                 self.drinks = drinks
                 self.drinks?.sort(by: {$0.name < $1.name} )
                 self.updateUI(for: "tableView")
-//                print("Fetched Drinks: \(drinks)\n")
-            }
-            
-            //fire error handler if error
-            if let error = error {
-                self.presentErrorAlertVC(title: "Uh Oh!", message: "\(error.localizedDescription)", buttonText: "OK",
+    //                print("Fetched Drinks: \(drinks)\n")
+                
+            case .failure(let error):
+                self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
                 action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
                         self.performFetchRecentDrinks()
                 }))
             }
+            
+                
+            //fire UI update if fetch successful
+//            if let drinks = fetchedDrinks {
+//                self.drinks = drinks
+//                self.drinks?.sort(by: {$0.name < $1.name} )
+//                self.updateUI(for: "tableView")
+////                print("Fetched Drinks: \(drinks)\n")
+//            }
+//
+//            //fire error handler if error
+//            if let _ = error {
+//                self.presentErrorAlertVC(title: "Uh Oh!", message: WFError.unableToCompleteRequest.rawValue, buttonText: "OK",
+//                action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
+//                        self.performFetchRecentDrinks()
+//                }))
+//            }
         }
     }
     
@@ -263,12 +295,9 @@ class DrinkSearchViewController: UIViewController {
     //Fetch drink details in prep tp pass to DrinkDetailsVC
     @objc func performFetchDrink(with id: String) {
         
-        //start / display activity spinner
-        DispatchQueue.main.async {
-            let spinner = ActivitySpinnerViewController()
-            spinner.startActivitySpinner()
-        }
-        
+        //start activity spinner
+        spinner.startSpinner(viewController: self)
+
         //fire fetch drink method
         let endpoint = EndPoint.lookup.rawValue
         DrinksController.shared.fetchDrink(from: endpoint, using: [URLQueryItem(name: QueryType.ingredient.rawValue, value: id)]) { (fetchedDrink, error) in
@@ -290,10 +319,7 @@ class DrinkSearchViewController: UIViewController {
             }
             
             //Stop and remove activity spinnner
-            DispatchQueue.main.async() {
-                let spinner = ActivitySpinnerViewController()
-                spinner.stopActivitySpinner()
-            }
+            self.spinner.stopSpinner()
             
             //if error, fire error meessage
             if let error = error {

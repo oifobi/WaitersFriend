@@ -10,8 +10,9 @@
 		2A0119C5233D108000C5C0A6 /* DrinkCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0119C4233D108000C5C0A6 /* DrinkCollectionViewCell.swift */; };
 		2A22B4302406043200FA7056 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A22B42F2406043200FA7056 /* CacheManager.swift */; };
 		2A22B434240622F400FA7056 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A22B433240622F400FA7056 /* UIViewController+Extension.swift */; };
+		2A22B437240639E200FA7056 /* WFError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A22B436240639E200FA7056 /* WFError.swift */; };
 		2A448107233F568500BE602D /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A448106233F568500BE602D /* UIView+Extensions.swift */; };
-		2A53D2E22337302400506AFD /* ActivitySpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A53D2E12337302400506AFD /* ActivitySpinnerViewController.swift */; };
+		2A53D2E22337302400506AFD /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A53D2E12337302400506AFD /* SpinnerViewController.swift */; };
 		2A5B0FF12339F03D007C977B /* DrinkList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5B0FF02339F03D007C977B /* DrinkList.swift */; };
 		2A75D36E2351831600FC2FB2 /* DrinkSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A75D36D2351831600FC2FB2 /* DrinkSearchViewController.swift */; };
 		2A768EEC233D02EF00D694C7 /* DrinkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A768EEB233D02EF00D694C7 /* DrinkTableViewCell.swift */; };
@@ -31,8 +32,9 @@
 		2A0119C4233D108000C5C0A6 /* DrinkCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkCollectionViewCell.swift; sourceTree = "<group>"; };
 		2A22B42F2406043200FA7056 /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 		2A22B433240622F400FA7056 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIViewController+Extension.swift"; path = "CO2/Controllers/UIViewController+Extension.swift"; sourceTree = SOURCE_ROOT; };
+		2A22B436240639E200FA7056 /* WFError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WFError.swift; sourceTree = "<group>"; };
 		2A448106233F568500BE602D /* UIView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
-		2A53D2E12337302400506AFD /* ActivitySpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySpinnerViewController.swift; sourceTree = "<group>"; };
+		2A53D2E12337302400506AFD /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
 		2A5B0FF02339F03D007C977B /* DrinkList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkList.swift; sourceTree = "<group>"; };
 		2A75D36D2351831600FC2FB2 /* DrinkSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkSearchViewController.swift; sourceTree = "<group>"; };
 		2A768EEB233D02EF00D694C7 /* DrinkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTableViewCell.swift; sourceTree = "<group>"; };
@@ -61,14 +63,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2A4D28A72405F6090016BE1C /* Managers */ = {
+		2A22B4352406398C00FA7056 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				2A22B436240639E200FA7056 /* WFError.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
+		2A4D28A72405F6090016BE1C /* Network Controllers + Managers */ = {
 			isa = PBXGroup;
 			children = (
 				2AA670AA2327A3D4006534F0 /* DrinksController.swift */,
 				2ACEB3B7234CB517006D47B5 /* FavoritesController.swift */,
 				2A22B42F2406043200FA7056 /* CacheManager.swift */,
 			);
-			path = Managers;
+			path = "Network Controllers + Managers";
 			sourceTree = "<group>";
 		};
 		2A4D28A82405F65A0016BE1C /* Views */ = {
@@ -104,7 +114,7 @@
 				2AA670AC2327ABFC006534F0 /* DrinksTableViewController.swift */,
 				2A75D36D2351831600FC2FB2 /* DrinkSearchViewController.swift */,
 				2AA6709423263CD4006534F0 /* DrinkDetailsViewController.swift */,
-				2A53D2E12337302400506AFD /* ActivitySpinnerViewController.swift */,
+				2A53D2E12337302400506AFD /* SpinnerViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -129,7 +139,8 @@
 			isa = PBXGroup;
 			children = (
 				2A4D28A92405F70D0016BE1C /* Support */,
-				2A4D28A72405F6090016BE1C /* Managers */,
+				2A22B4352406398C00FA7056 /* Enums */,
+				2A4D28A72405F6090016BE1C /* Network Controllers + Managers */,
 				2AE939ED2344D1EC0039AAE2 /* Extensions */,
 				2A5B0FF4233C8DA2007C977B /* Models */,
 				2A4D28A82405F65A0016BE1C /* Views */,
@@ -227,6 +238,7 @@
 				2ACEB3B8234CB517006D47B5 /* FavoritesController.swift in Sources */,
 				2AA670AB2327A3D4006534F0 /* DrinksController.swift in Sources */,
 				2A0119C5233D108000C5C0A6 /* DrinkCollectionViewCell.swift in Sources */,
+				2A22B437240639E200FA7056 /* WFError.swift in Sources */,
 				2A448107233F568500BE602D /* UIView+Extensions.swift in Sources */,
 				2AA6709523263CD4006534F0 /* DrinkDetailsViewController.swift in Sources */,
 				2A5B0FF12339F03D007C977B /* DrinkList.swift in Sources */,
@@ -235,7 +247,7 @@
 				2AA67067232632B9006534F0 /* AppDelegate.swift in Sources */,
 				2AA670AD2327ABFC006534F0 /* DrinksTableViewController.swift in Sources */,
 				2AA6709723263EF9006534F0 /* Drink.swift in Sources */,
-				2A53D2E22337302400506AFD /* ActivitySpinnerViewController.swift in Sources */,
+				2A53D2E22337302400506AFD /* SpinnerViewController.swift in Sources */,
 				2A75D36E2351831600FC2FB2 /* DrinkSearchViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

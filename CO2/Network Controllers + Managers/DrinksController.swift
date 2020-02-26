@@ -32,7 +32,7 @@ enum QueryType: String {
     case glass = "g"
 }
 
-public class DrinksController {
+class DrinksController {
     
     //Global Property for VCs to access DrinkController methods
     static let shared = DrinksController()
@@ -53,8 +53,13 @@ public class DrinksController {
     }
     
     //Fetch Drink Details
-    func fetchDrinks(from endpoint: String, using queryItems: [URLQueryItem]?, _ completion: @escaping ([Drink]?, Error?) -> Void)  {
-        guard endpoint != "" else { return }
+    func fetchDrinks(from endpoint: String, using queryItems: [URLQueryItem]?, _ completion: @escaping (Result<[Drink], WFError>) -> Void)  {
+        
+        //check url is valid, return error if not
+        guard let _ = URL(string: endpoint) else {
+            completion(.failure(.invalidURLRequested))
+            return
+        }
         
         //Create URL object and append endpoint
         var components = constructURLComponents()
@@ -71,29 +76,47 @@ public class DrinksController {
         
         print("API endpoint: \(String(describing: url))\n")
         
+        
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
-            if error == nil && data != nil {
-                
-                do {
-                    let decoder = JSONDecoder()
-                    
-                    //map data fetched to Drink object
-                    let drinks = try decoder.decode(Drinks.self, from: data!)
-//                    print("json fetched successfully with data: \(json)\n")
-                    
-                    //Pass drinks back to caller
-                    completion(drinks.drinks, nil)
-                    
-                //catch and print errors to console
-                } catch {
-                    print("Couldn't decode JSON data with error: \(error.localizedDescription)\n")
-                    completion(nil, error)
-                    return
-                }
-            } else if error != nil || data == nil {
-                completion(nil, error)
+            //handle error cases
+            //random network error
+            if let error = error {
+                completion(.failure(.unableToCompleteRequest))
+                print("Error fetching followers: \(error.localizedDescription)")
+                    //for debugging
+                return
             }
+            
+            //bad http response
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200  else {
+                completion(.failure(.invalidServerResposne))
+                return
+            }
+            
+            //bad data returned, or alternate message like api rate limit exceeded
+            guard let data = data else {
+                completion(.failure(.invalidDataReturned))
+                return
+            }
+            
+            //decode data
+            do {
+                let decoder = JSONDecoder()
+                
+                //map data fetched to Drink object
+                let drinks = try decoder.decode(Drinks.self, from: data)
+//                    print("json fetched successfully with data: \(json)\n")
+                
+                //Pass drinks back to caller
+                completion(.success(drinks.drinks!))
+                
+            //catch and print errors to console
+            } catch {
+                completion(.failure(.invalidDataReturned))
+                print("Couldn't decode JSON data with error: \(error.localizedDescription)\n")
+            }
+            
         }
         
         task.resume()
