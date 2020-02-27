@@ -44,7 +44,7 @@ class DrinksTableViewController: UITableViewController {
             updateUI()
             
             if FavoritesController.favorites.count == 0 {
-                presentAlertVC(title: ":/ Favorites is lonely", message: WFError.noFavorites.rawValue, buttonText: "OK")
+                presentAlertVC(title: ":/ Favorites is lonely", message: WFSuccess.noFavorites.rawValue, buttonText: "OK")
             }
             
         default:
@@ -79,7 +79,6 @@ class DrinksTableViewController: UITableViewController {
             case .success(let drinks):
                 self.drinks = drinks
                 self.updateUI()
-//                    print("Fetched Drinks: \(drinks)\n")
                 
             case .failure(let error):
                 self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
@@ -251,6 +250,5 @@ extension DrinksTableViewController: FavoriteDrinksDelegate {
     func updateDrinks(with favorites: [Drink]) {
         self.drinks = favorites
         updateUI()
-//        print("FavoriteDrinksController delegate pattern executed")
     }
 }

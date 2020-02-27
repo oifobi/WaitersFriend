@@ -83,7 +83,6 @@ class DrinksController {
             //random network error
             if let _ = error {
                 completion(.failure(.unableToCompleteRequest))
-//                print("Error fetching drinks: \(error.localizedDescription)")
                 return
             }
             
@@ -105,7 +104,6 @@ class DrinksController {
                 
                 //map data fetched to Drink object
                 let drinks = try decoder.decode(Drinks.self, from: data)
-//                    print("json fetched successfully with data: \(drinks)\n")
                 
                 //Pass drinks back to caller
                 completion(.success(drinks.drinks!))
@@ -113,7 +111,6 @@ class DrinksController {
             //catch any errrors
             } catch {
                 completion(.failure(.invalidDataReturned))
-//                print("Couldn't decode JSON data with error: \(error.localizedDescription)\n")
             }
             
         }
@@ -128,7 +125,6 @@ class DrinksController {
         let imageCacheKey = NSString(string: url)
         if let image = CacheManager.shared.imageCache.object(forKey: imageCacheKey) {
             completion(image, nil)
-//            print("Image loaded from cache")
             return
         }
         
@@ -143,8 +139,6 @@ class DrinksController {
                     
                     //save image to cache with url to image as key
                     CacheManager.shared.imageCache.setObject(image, forKey: imageCacheKey)
-//                    print("Image saved to cache")
-                    
                     completion(image, nil)
                 
                 } else {
@@ -177,7 +171,6 @@ class DrinksController {
             //random network error
             if let _ = error {
                 completion(.failure(.unableToCompleteRequest))
-//                print("Error fetching drink list: \(error.localizedDescription)")
                 return
             }
             
@@ -198,7 +191,6 @@ class DrinksController {
             do {
                 let jsonDecoder = JSONDecoder()
                 let list = try jsonDecoder.decode(DrinkListType.self, from: data)
-//                print("json fetched successfully with data: \(list)\n")
                 
                 //Pass list back to caller
                 completion(.success(list.type))
@@ -206,7 +198,6 @@ class DrinksController {
             //catch any errors
             } catch {
                 completion(.failure(.invalidDataReturned))
-//                print("Couldn't decode JSON data with error: \(error.localizedDescription)\n")
             }
             
         }
@@ -229,8 +220,6 @@ class DrinksController {
             components.queryItems = queryItems
             url = components.url!.appendingPathComponent(path)
         }
-        
-        print("API endpoint: \(String(describing: url))\n")
         
         let task = URLSession.shared.dataTask(with: url) {
             (data, response, error) in

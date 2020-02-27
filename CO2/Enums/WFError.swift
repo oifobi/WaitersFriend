@@ -16,11 +16,7 @@ enum WFError: String, Error {
     case invalidServerResposne = "Invalid response from server. Please try again."
     case invalidDataReturned = "Data from server was invalid. Please try again."
     
-    
-    //Favorites related errors
-    case unableToAddFavorite = "Error adding user to Favorites."
-    case unableToGetFavorite = "Error retrieving Favorites."
-    case noFavorites = "You have no Favorite drinks.\n To add drinks to Favorites, tap on ❤️ in drink details."
-    case favoriteSaved = "saved to Favorites."
-    case favoriteRemoved = "removed from Favorites."
+    //favorites related errors
+    case unableToSaveFavorite = "Error adding Drink to Favorites."
+    case unableToLoadFavorites = "Error loading Favorites."
 }

@@ -50,7 +50,6 @@ class DrinkDetailsViewController: UIViewController {
 
       //trigger transform
       if recognizer.state == .began {
-//          print("Long Press started")
           self.becomeFirstResponder()
           
           //move recognizer view to front of all other views
@@ -65,7 +64,6 @@ class DrinkDetailsViewController: UIViewController {
       
       //stop transform, reset to pre-transform state
       if recognizer.state == .ended {
-//          print("Long press ended")
           self.resignFirstResponder()
           
           //reset new image scaling
@@ -137,9 +135,6 @@ class DrinkDetailsViewController: UIViewController {
     //MARK:- Custom View management
     //perform UI setup
     func updateUI(sender: String?) {
-        
-        print("Sender is: \(self.sender ?? "nil")")
-        
         DispatchQueue.main.async {
             
             //Fire fetch data depending on sender
@@ -157,9 +152,7 @@ class DrinkDetailsViewController: UIViewController {
             
             //Get ingredients / meassure
             self.loadIngredientsTableData()
-//            print("Drink: \(String(describing: self.drink?.name))\n ID: \(String(describing: self.drink?.id))\n")
-            
-            
+
             //Set up How to prepare text
             self.instructionsLabel.text = self.drink?.instructions
             self.instructionsLabel.sizeToFit()
@@ -188,7 +181,6 @@ class DrinkDetailsViewController: UIViewController {
             if let drink = fetchedDrink {
                 self.updateUI(sender: "TabBarItem")
                 self.drink = drink
-//                print("Fetched drink: \(String(describing: self.drink))\n")
             }
             
             //if error, fire error meessage
@@ -294,13 +286,13 @@ class DrinkDetailsViewController: UIViewController {
         if let index = FavoritesController.shared.getDrinkIndex(for: drink!.id) {
             FavoritesController.favorites.remove(at: index)
             favoritesButton.image = UIImage(systemName: "heart")
-            presentAlertVC(title: "❌ Drink Removed", message: "\(drink!.name) \(WFError.favoriteRemoved.rawValue)", buttonText: "OK")
+            presentAlertVC(title: "❌ Drink Removed", message: "\(drink!.name) \(WFSuccess.favoriteRemoved.rawValue)", buttonText: "OK")
 
         //If drink not already saved, save to favorites
         } else {
             FavoritesController.favorites.append(drink!)
             favoritesButton.image = UIImage(systemName: "heart.fill")
-            presentAlertVC(title: "❤️ Drink Saved", message: "\(drink!.name) \(WFError.favoriteSaved.rawValue)", buttonText: "OK")
+            presentAlertVC(title: "❤️ Drink Saved", message: "\(drink!.name) \(WFSuccess.favoriteSaved.rawValue).", buttonText: "OK")
         }
     }
 }

@@ -132,7 +132,6 @@ class DrinkSearchViewController: UIViewController {
                 self.trendingDrinks = drinks
                 self.trendingDrinks?.sort(by: {$0.name < $1.name} )
                 self.updateUI(for: "collectionView")
-                print("Fetched Recent Drinks. Items: \(drinks.count)\n")
                 
             case .failure(let error):
                 self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
@@ -178,14 +177,12 @@ class DrinkSearchViewController: UIViewController {
                 //Sort Ingredients array (ascending order)
                 self.ingredients.sort()
                 self.updateUI(for: "tableView")
-//                print("Fetched Base ingredient list. Items:  \(self.ingredients.count)\n")
             
             case .failure(let error):
                 self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
                 action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
                         self.performFetchIngredientList()
                 }))
-//                print("Error fetching ingredients list with error: \(error.rawValue)\n")
             }
         }
     }
@@ -209,7 +206,6 @@ class DrinkSearchViewController: UIViewController {
                 self.ingredientDrinks = list
                 self.currentIngredient = ingredient
                 self.updateUI(for: "tableView")
-//                print("Fetched drink list made with Base ingredient. Items: \(self.ingredientDrinks!.count)\n")
                 
             case .failure(let error):
                 print("Error fetching drinks list with error: \(error.rawValue)\n")
@@ -229,7 +225,6 @@ class DrinkSearchViewController: UIViewController {
                 self.drinks = drinks
                 self.drinks?.sort(by: {$0.name < $1.name} )
                 self.updateUI(for: "tableView")
-//                print("Fetched Drinks: \(drinks)\n")
                 
             case .failure(let error):
                 self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
@@ -267,7 +262,6 @@ class DrinkSearchViewController: UIViewController {
             //If success,
             if let drink = fetchedDrink {
                 self.drink = drink
-                print("Fetched drink: \(String(describing: self.drink))\n")
                 
                 //perform segue to detailsVC
                 DispatchQueue.main.async {
@@ -466,7 +460,6 @@ extension DrinkSearchViewController: UISearchResultsUpdating, UISearchBarDelegat
     
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text, !text.isEmpty else { return }
-        print("Search text: \(text)")
 
         //fetch drink name
         performSearchForDrinks(from: EndPoint.search.rawValue, queryName: QueryType.drinkName.rawValue, queryValue: text)

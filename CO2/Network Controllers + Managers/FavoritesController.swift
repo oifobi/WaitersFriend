@@ -17,6 +17,8 @@ class FavoritesController {
     //Property to access this struct's methods globally
     static var shared = FavoritesController()
     
+    let defaults = UserDefaults.standard
+    
     //Properties to track favorite drinks and update other VCs when favorites are modified
     var delegate: FavoriteDrinksDelegate?
     static var favorites = [Drink]() {
@@ -24,7 +26,6 @@ class FavoritesController {
         //Detect when drinks object is modified
         didSet {
             self.shared.delegate?.updateDrinks(with: favorites)
-            print("Drinks object modified. Count is: \(favorites.count)\n")
         }
     }
     
@@ -39,35 +40,36 @@ class FavoritesController {
         return nil
     }
     
-    func saveFavorites(_ completion: @escaping (String?, Error?) -> Void) {
+    func saveFavorites(_ completion: @escaping (Result<WFSuccess, WFError>) -> Void) {
+        
         do {
             let encoder = JSONEncoder()
             let favorites = try encoder.encode(FavoritesController.favorites)
-                    
+     
             //Save Data object to UserDefaults
-            let defaults = UserDefaults.standard
-            defaults.set(favorites, forKey: "favorites")
-            completion("Success! drinks object succeesfully saved\n", nil)
+            FavoritesController.shared.defaults.set(favorites, forKey: "favorites")
+            completion(.success(.favoriteSaved))
         
         //If save failed handle error
         } catch {
-            completion(nil, error)
+            completion(.failure(.unableToSaveFavorite))
         }
     }
     
-    func loadFavorites(_ completion: @escaping (String?, Error?) -> Void) {
-        let defaults = UserDefaults.standard
-        if let favorites = defaults.object(forKey: "favorites") as? Data {
+    func loadFavorites(_ completion: @escaping (Result<WFSuccess, WFError>) -> Void) {
+        
+        guard let favorites = FavoritesController.shared.defaults.object(forKey: "favorites") as? Data else {
+            completion(.failure(.unableToLoadFavorites))
+            return
+        }
+        
+        do {
             let encoder = JSONDecoder()
+            FavoritesController.favorites = try encoder.decode([Drink].self, from: favorites)
+            completion(.success(.favoritesLoaded))
             
-            do {
-                FavoritesController.favorites = try encoder.decode([Drink].self, from: favorites)
-                completion("Success! drinks object succeesfully loaded from user defaults\n", nil)
-                
-            } catch {
-//                print("Failed! drinks object failed to load from user defualts with error: \(error.localizedDescription)")
-                completion(nil, error)
-            }
+        } catch {
+            completion(.failure(.unableToLoadFavorites))
         }
     }
 }
