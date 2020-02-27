@@ -20,7 +20,7 @@ enum WFError: String, Error {
     //Favorites related errors
     case unableToAddFavorite = "Error adding user to Favorites."
     case unableToGetFavorite = "Error retrieving Favorites."
-    case noFavorites = "You have no favorite drinks.\n To add drinks to Favorites, tap on ❤️ in drink details."
+    case noFavorites = "You have no Favorite drinks.\n To add drinks to Favorites, tap on ❤️ in drink details."
     case favoriteSaved = "saved to Favorites."
     case favoriteRemoved = "removed from Favorites."
 }

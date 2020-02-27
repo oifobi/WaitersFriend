@@ -167,21 +167,25 @@ class DrinkSearchViewController: UIViewController {
     @objc func performFetchIngredientList() {
         
         //fire fetch drinks list method
-        DrinksController.shared.fetchList(from: "/list.php", using: [URLQueryItem(name: "i", value: "list")]) { (fetchedList, error) in
-        
-            //If success, set fetechedList data to baseIngredients property
-            if let list = fetchedList {
+        DrinksController.shared.fetchList(from: "/list.php", using: [URLQueryItem(name: "i", value: "list")]) { [weak self] (result) in
+            
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let list):
                 self.ingredients = list.map( { $0.baseIngredient! } )
                 
                 //Sort Ingredients array (ascending order)
                 self.ingredients.sort()
                 self.updateUI(for: "tableView")
-                print("Fetched Base ingredient list. Items:  \(self.ingredients.count)\n")
-            }
+//                print("Fetched Base ingredient list. Items:  \(self.ingredients.count)\n")
             
-            //if error, fire error meessage
-            if let error = error {
-                print("Error fetching ingredients list with error: \(error.localizedDescription)\n")
+            case .failure(let error):
+                self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
+                action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
+                        self.performFetchIngredientList()
+                }))
+//                print("Error fetching ingredients list with error: \(error.rawValue)\n")
             }
         }
     }
@@ -193,25 +197,23 @@ class DrinkSearchViewController: UIViewController {
         spinner.startSpinner(viewController: self)
 
         //fire fetch list method
-        DrinksController.shared.fetchList(from: "/filter.php", using: [URLQueryItem(name: "i", value: ingredient)]) { [weak self] (fetchedList, error) in
+        DrinksController.shared.fetchList(from: "/filter.php", using: [URLQueryItem(name: "i", value: ingredient)]) { [weak self] (fetchedList) in
             
             guard let self = self else { return }
             
             //Stop and remove activity spinnner
             self.spinner.stopSpinner()
             
-           //If success, set fetechedList data to drinksList property
-           if let list = fetchedList {
+            switch fetchedList {
+            case .success(let list):
                 self.ingredientDrinks = list
                 self.currentIngredient = ingredient
                 self.updateUI(for: "tableView")
-                print("Fetched drink list made with Base ingredient. Items: \(self.ingredientDrinks!.count)\n")
-           }
-            
-           //if error, fire error meessage
-           if let error = error {
-               print("Error fetching drinks list with error: \(error.localizedDescription)\n")
-           }
+//                print("Fetched drink list made with Base ingredient. Items: \(self.ingredientDrinks!.count)\n")
+                
+            case .failure(let error):
+                print("Error fetching drinks list with error: \(error.rawValue)\n")
+            }
         }
     }
     

@@ -81,10 +81,9 @@ class DrinksController {
             
             //handle error cases
             //random network error
-            if let error = error {
+            if let _ = error {
                 completion(.failure(.unableToCompleteRequest))
-                print("Error fetching followers: \(error.localizedDescription)")
-                    //for debugging
+//                print("Error fetching drinks: \(error.localizedDescription)")
                 return
             }
             
@@ -106,15 +105,15 @@ class DrinksController {
                 
                 //map data fetched to Drink object
                 let drinks = try decoder.decode(Drinks.self, from: data)
-//                    print("json fetched successfully with data: \(json)\n")
+//                    print("json fetched successfully with data: \(drinks)\n")
                 
                 //Pass drinks back to caller
                 completion(.success(drinks.drinks!))
                 
-            //catch and print errors to console
+            //catch any errrors
             } catch {
                 completion(.failure(.invalidDataReturned))
-                print("Couldn't decode JSON data with error: \(error.localizedDescription)\n")
+//                print("Couldn't decode JSON data with error: \(error.localizedDescription)\n")
             }
             
         }
@@ -129,7 +128,7 @@ class DrinksController {
         let imageCacheKey = NSString(string: url)
         if let image = CacheManager.shared.imageCache.object(forKey: imageCacheKey) {
             completion(image, nil)
-            print("Image loaded from cache")
+//            print("Image loaded from cache")
             return
         }
         
@@ -144,7 +143,7 @@ class DrinksController {
                     
                     //save image to cache with url to image as key
                     CacheManager.shared.imageCache.setObject(image, forKey: imageCacheKey)
-                    print("Image saved to cache")
+//                    print("Image saved to cache")
                     
                     completion(image, nil)
                 
@@ -153,11 +152,18 @@ class DrinksController {
                 }
             }
         }
+        
         task.resume()
     }
     
     //Fetch List type (generic method to fetch any list type)
-    func fetchList(from path: String, using queryItems: [URLQueryItem], completion: @escaping ([DrinkList]?, Error?) -> Void) {
+    func fetchList(from path: String, using queryItems: [URLQueryItem], completion: @escaping (Result<[DrinkList], WFError>) -> Void) {
+        
+        //check url is valid, return error if not
+        guard let _ = URL(string: path) else {
+            completion(.failure(.invalidURLRequested))
+            return
+        }
         
         //Create URL object with querry item/s and append endpoint
         var components = constructURLComponents()
@@ -165,23 +171,46 @@ class DrinksController {
         
         let url = components.url!.appendingPathComponent(path)
         
-        let task = URLSession.shared.dataTask(with: url) {
-            (data, response, error) in
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
-            let jsonDecoder = JSONDecoder()
-            if let data = data,
-                
-                let list = try? jsonDecoder.decode(DrinkListType.self, from: data) {
-                completion(list.type, nil)
-                
-            } else {
-                if let error = error {
-                    print("Couldn't decode JSON data with error: \(error.localizedDescription)\n")
-                    completion(nil, error)
-                }
+            //handle error cases
+            //random network error
+            if let _ = error {
+                completion(.failure(.unableToCompleteRequest))
+//                print("Error fetching drink list: \(error.localizedDescription)")
+                return
             }
+            
+            //bad http response
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200  else {
+                completion(.failure(.invalidServerResposne))
+                return
+            }
+            
+            //bad data returned, or alternate message like api rate limit exceeded
+            guard let data = data else {
+                completion(.failure(.invalidDataReturned))
+                return
+            }
+            
+            
+            //decode data
+            do {
+                let jsonDecoder = JSONDecoder()
+                let list = try jsonDecoder.decode(DrinkListType.self, from: data)
+//                print("json fetched successfully with data: \(list)\n")
+                
+                //Pass list back to caller
+                completion(.success(list.type))
+                    
+            //catch any errors
+            } catch {
+                completion(.failure(.invalidDataReturned))
+//                print("Couldn't decode JSON data with error: \(error.localizedDescription)\n")
+            }
+            
         }
-        
+
         task.resume()
     }
     
