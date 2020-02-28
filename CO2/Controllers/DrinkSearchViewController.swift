@@ -37,12 +37,13 @@ class DrinkSearchViewController: UIViewController {
         super.viewWillAppear(animated)
         
         fireFetchData()
+        setUpNavigationBar()
         
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpNavigationBar()
         configureCollectionView()
     }
     
