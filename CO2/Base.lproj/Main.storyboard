@@ -265,16 +265,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trending Drinks" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0RZ-Xw-46X">
-                                <rect key="frame" x="10" y="0.0" width="365" height="50"/>
+                                <rect key="frame" x="10" y="0.0" width="365" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="ahb-LJ-JHS"/>
+                                    <constraint firstAttribute="height" constant="40" id="ahb-LJ-JHS"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="1LI-sX-9XO">
-                                <rect key="frame" x="0.0" y="50" width="375" height="200"/>
+                                <rect key="frame" x="0.0" y="40" width="375" height="200"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="Yny-ve-LrX"/>
                                 </constraints>
@@ -291,7 +291,7 @@
                                 </connections>
                             </collectionView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="yhD-gX-rDW">
-                                <rect key="frame" x="10" y="255" width="355" height="319"/>
+                                <rect key="frame" x="10" y="245" width="355" height="329"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="scrollIndicatorInsets" minX="5" minY="5" maxX="5" maxY="5"/>
                                 <prototypes>

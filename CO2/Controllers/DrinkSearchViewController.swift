@@ -36,37 +36,46 @@ class DrinkSearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        //CollectionView setup
-        //Fire fetch Recents Drink
-        if trendingDrinks == nil {
-            performSelector(inBackground: #selector(performFetchRecentDrinks), with: nil)
-        }
-
-        //TableView setup
-        //Fire fetch Base Ingrediets list
-        if ingredients == [] {
-            performSelector(inBackground: #selector(performFetchIngredientList), with: nil)
-        }
-
-        //fetch drink name
-        if drinks == nil {
-            performSearchForDrinks(from: EndPoint.search.rawValue, queryName: QueryType.drinkName.rawValue, queryValue: "Margarita")
-        }
+        fireFetchData()
+        
     }
     
-    //Setup interface
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //Set NavigationBar items
-        self.setUpNavigationBar()
-        
+        setUpNavigationBar()
+        configureCollectionView()
+    }
+    
+    
+    func fireFetchData() {
+          //Fire fetch Recents Drink
+          if trendingDrinks == nil {
+              performSelector(inBackground: #selector(performFetchRecentDrinks), with: nil)
+          }
+
+          //TableView setup
+          //Fire fetch Base Ingrediets list
+          if ingredients == [] {
+              performSelector(inBackground: #selector(performFetchIngredientList), with: nil)
+          }
+
+          //fetch drink name
+          if drinks == nil {
+              performSearchForDrinks(from: EndPoint.search.rawValue, queryName: QueryType.drinkName.rawValue, queryValue: "Margarita")
+          }
+          
+      }
+    
+    
+    func configureCollectionView() {
+
         //CollectionView
         //Register cell classes and nibs
         trendingDrinksCollectionView.register(UINib(nibName: "DrinkCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "DrinkCollectionViewCell")
         
         //Set compositionViewLayout
         trendingDrinksCollectionView.collectionViewLayout = self.createCompositionalLayout()
+
     }
     
     
@@ -102,6 +111,9 @@ class DrinkSearchViewController: UIViewController {
     
     //MARK:- TableView Section methods (Search Results)
     func setUpNavigationBar() {
+        
+        title = "Search"
+        
         DispatchQueue.main.async {
             
             //Search Controller
@@ -144,6 +156,7 @@ class DrinkSearchViewController: UIViewController {
         }
     }
     
+    
     //Fetch Selected Base Ingredient Drinks List (drinks made wih specific Base ingredient)
     @objc func performFetchDrinksList(for ingredient: String) {
         
@@ -169,6 +182,7 @@ class DrinkSearchViewController: UIViewController {
             }
         }
     }
+    
     
     //Fetch drink names from user's search query
     func performSearchForDrinks(from endpoint: String, queryName: String, queryValue: String) {
@@ -242,6 +256,7 @@ class DrinkSearchViewController: UIViewController {
     }
 }
 
+
 //MARK:- TableView Data Source / Delegate
 extension DrinkSearchViewController: UITableViewDataSource, UITableViewDelegate {
     
@@ -250,11 +265,16 @@ extension DrinkSearchViewController: UITableViewDataSource, UITableViewDelegate 
         return 1
     }
     
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        guard drinks != nil else { return 0 }
+//        return drinks!.count
         
-        guard drinks != nil else { return 0 }
-        return drinks!.count
+        guard let drinks = drinks else { return 0 }
+        return drinks.count
+        
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -313,6 +333,7 @@ extension DrinkSearchViewController: UITableViewDataSource, UITableViewDelegate 
         return cell
     }
     
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard drinks != nil else { return }
 
@@ -333,13 +354,15 @@ extension DrinkSearchViewController: UICollectionViewDataSource, UICollectionVie
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
+    
 
     //Define number of items per section
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard trendingDrinks != nil else { return 0 }
-        return trendingDrinks!.count
+        guard let drinks = trendingDrinks else { return 0 }
+        return drinks.count
     }
         
+    
     //Define cells / content per section item
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -350,9 +373,8 @@ extension DrinkSearchViewController: UICollectionViewDataSource, UICollectionVie
             preconditionFailure("Invalid cell type")
         }
         
-        guard trendingDrinks != nil else { preconditionFailure("Drinks property is nil") }
-        let drink = trendingDrinks![indexPath.item]
-        
+        guard let drink = trendingDrinks?[indexPath.item] else { preconditionFailure("Drinks property is nil") }
+
         //Set cell properties
         //Cell text
         cell.setTitleLabel(text: drink.name)
@@ -397,6 +419,7 @@ extension DrinkSearchViewController: UICollectionViewDataSource, UICollectionVie
         }
         return cell
     }
+    
     
     //Send to DrinkDetailsVC when cell tapped
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

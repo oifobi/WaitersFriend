@@ -27,7 +27,6 @@ class DrinksTableViewController: UITableViewController {
     
     //MARK:- Built in view management methods
     override func viewWillAppear(_ animated: Bool) {
-        
         configureTableView()
     }
     
@@ -58,7 +57,7 @@ class DrinksTableViewController: UITableViewController {
             updateUI()
             
             if DataPersistenceManager.favorites.count == 0 {
-                presentAlertVC(title: ":/ Favorites is lonely", message: WFSuccess.noFavorites.rawValue, buttonText: "OK")
+                presentAlertVC(title: "😕 Favorites is lonely", message: WFSuccess.noFavorites.rawValue, buttonText: "OK")
             }
             
         default:
@@ -106,7 +105,6 @@ class DrinksTableViewController: UITableViewController {
     
     //setup tableViewIndex
     func createTableSectionsIndex() {
-        
         guard drinks != nil else { return }
         
         //create dictionary of letters to for index (based on first letter of Drinks name), then sort by keys
@@ -125,7 +123,6 @@ class DrinksTableViewController: UITableViewController {
     
     //set number of section rows based on number of drinks contained within in each section title
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         guard tableSectionsIndex != nil else { return 0 }
         
         //Get the number of rows per section by accessing the key's drinks count
@@ -135,7 +132,6 @@ class DrinksTableViewController: UITableViewController {
     
     //set and display tbale section headings in tableView (Letter)
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
         guard tableSectionsIndex != nil else { return "" }
         
         //Pull out the key value (Letter) and set as Section heading
@@ -145,7 +141,6 @@ class DrinksTableViewController: UITableViewController {
     
     //set titles to display in index on RHS of tableView
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        
         guard tableSectionsIndex != nil else { return [""] }
         
         //create an array of all the letters for the table index, using the keys and transform to type string
@@ -225,7 +220,6 @@ class DrinksTableViewController: UITableViewController {
     
     //Enable swipe to delete on table row for Favorites
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        
         guard navigationController?.tabBarItem.tag == TabBarItem.Favorites.rawValue else { return }
             if editingStyle == .delete {
                 

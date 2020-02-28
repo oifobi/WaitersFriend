@@ -111,8 +111,6 @@ class DrinkDetailsViewController: UIViewController {
     //Prepare Drink data content
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        //setup UI
         updateUI(sender: self.sender)
     }
     
@@ -177,6 +175,7 @@ class DrinkDetailsViewController: UIViewController {
         }
     }
     
+    
     @objc func performFetchDrink() {
         let endpoint = EndPoint.random.rawValue
         NetworkManager.shared.fetchDrink(from: endpoint, using: nil) { [weak self] (result) in
@@ -196,6 +195,7 @@ class DrinkDetailsViewController: UIViewController {
             }
         }
     }
+    
     
     @objc func performFetchDrinksImage() {
         
@@ -229,6 +229,7 @@ class DrinkDetailsViewController: UIViewController {
         ingredientsTableView.reloadData()
     }
     
+    
     func getIngredients() -> [(key: String, value: String)] {
         var dict = [String: String]()
         
@@ -254,6 +255,7 @@ class DrinkDetailsViewController: UIViewController {
         //filter empty properties and return result
         return sorted.filter({$0.value != "" || $0.value != " "})
     }
+    
     
     func getMeasures() -> [(key: String, value: String)] {
         var dict = [String: String]()
@@ -282,18 +284,19 @@ class DrinkDetailsViewController: UIViewController {
     }
     
     func updateFavorites() {
+        guard let drinkID = drink?.id, let drinkName = drink?.name else { return }
         
         //If drink already saved, remove from favorites
-        if let index = DataPersistenceManager.shared.getDrinkIndex(for: drink!.id) {
+        if let index = DataPersistenceManager.shared.getDrinkIndex(for: drinkID) {
             DataPersistenceManager.favorites.remove(at: index)
             favoritesButton.image = UIImage(systemName: "heart")
-            presentAlertVC(title: "❌ Drink Removed", message: "\(drink!.name) \(WFSuccess.favoriteRemoved.rawValue)", buttonText: "OK")
+            presentAlertVC(title: "💔 Drink Removed", message: "\(drinkName) \(WFSuccess.favoriteRemoved.rawValue)", buttonText: "OK")
 
         //If drink not already saved, save to favorites
         } else {
             DataPersistenceManager.favorites.append(drink!)
             favoritesButton.image = UIImage(systemName: "heart.fill")
-            presentAlertVC(title: "❤️ Drink Saved", message: "\(drink!.name) \(WFSuccess.favoriteSaved.rawValue).", buttonText: "OK")
+            presentAlertVC(title: "❤️ Drink Saved", message: "\(drinkName) \(WFSuccess.favoriteSaved.rawValue).", buttonText: "OK")
         }
     }
 }
