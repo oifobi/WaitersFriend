@@ -283,6 +283,7 @@ class DrinkDetailsViewController: UIViewController {
         return sorted.filter({$0.value != "" || $0.value != " "})
     }
     
+    
     func updateFavorites() {
         guard let drinkID = drink?.id, let drinkName = drink?.name else { return }
         
@@ -330,4 +331,3 @@ extension DrinkDetailsViewController: UITableViewDataSource, UITableViewDelegate
         return cell
     }
 }
-
