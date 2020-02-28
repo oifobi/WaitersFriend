@@ -179,24 +179,20 @@ class DrinkDetailsViewController: UIViewController {
     
     @objc func performFetchDrink() {
         let endpoint = EndPoint.random.rawValue
-        NetworkManager.shared.fetchDrink(from: endpoint, using: nil) { (fetchedDrink, error) in
-        
-            //fire fetch drinks method
-            //If success,
-            if let drink = fetchedDrink {
+        NetworkManager.shared.fetchDrink(from: endpoint, using: nil) { [weak self] (result) in
+            
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let drink):
                 self.updateUI(sender: "TabBarItem")
                 self.drink = drink
-            }
-            
-            //if error, fire error meessage
-            if let error = error {
-//                self.showErrorAlert(with: error)
-                self.presentErrorAlertVC(title: "Uh Oh!", message: WFError.invalidServerResposne.rawValue, buttonText: "OK",
+                
+            case .failure(let error):
+                self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
                 action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
                         self.performFetchDrink()
                 }))
-                
-                print("Error fetching drink with error: \(error.localizedDescription)\n")
             }
         }
     }

@@ -74,9 +74,6 @@ class NetworkManager {
             url = components.url!.appendingPathComponent(endpoint)
         }
         
-        print("API endpoint: \(String(describing: url))\n")
-        
-        
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
             //handle error cases
@@ -206,7 +203,13 @@ class NetworkManager {
     }
     
     //Fetch drink details by drink id lookup
-    func fetchDrink(from path: String, using queryItems: [URLQueryItem]?, completion: @escaping (Drink?, Error?) -> Void) {
+    func fetchDrink(from path: String, using queryItems: [URLQueryItem]?, completion: @escaping (Result<Drink, WFError>) -> Void) {
+        
+        //check url is valid, return error if not
+        guard let _ = URL(string: path) else {
+            completion(.failure(.invalidURLRequested))
+            return
+        }
         
         //Create URL object and append endpoint as needed
         var components = constructURLComponents()
@@ -221,23 +224,45 @@ class NetworkManager {
             url = components.url!.appendingPathComponent(path)
         }
         
-        let task = URLSession.shared.dataTask(with: url) {
-            (data, response, error) in
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
-            let jsonDecoder = JSONDecoder()
-            if let data = data,
+            //handle error cases
+            //random network error
+            if let _ = error {
+                completion(.failure(.unableToCompleteRequest))
+                return
+            }
+            
+            //bad http response
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200  else {
+                completion(.failure(.invalidServerResposne))
+                return
+            }
+            
+            //bad data returned, or alternate message like api rate limit exceeded
+            guard let data = data else {
+                completion(.failure(.invalidDataReturned))
+                return
+            }
+            
+            //decode data
+            do {
+                let jsonDecoder = JSONDecoder()
                 
-                let drinks = try? jsonDecoder.decode(Drinks.self, from: data) {
-                let drink = drinks.drinks.first
-                completion(drink, nil)
+                //map data fetched to Drink object
+                let drinks = try jsonDecoder.decode(Drinks.self, from: data)
                 
-            } else {
-                if let error = error {
-                    print("Couldn't decode JSON data with error: \(error.localizedDescription)\n")
-                    completion(nil, error)
+                //Pass drinks back to caller
+                if let drink = drinks.drinks.first {
+                    completion(.success(drink))
                 }
+                    
+            //catch any errrors
+            } catch {
+                completion(.failure(.invalidDataReturned))
             }
         }
+        
         task.resume()
     }
 }

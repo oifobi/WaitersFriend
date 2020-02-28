@@ -184,11 +184,6 @@ class DrinkSearchViewController: UIViewController {
                 self.updateUI(for: "tableView")
                 
             case .failure(let error):
-//                self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
-//                action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
-//                        self.performFetchRecentDrinks()
-//                }))
-                
                 print(error.rawValue)
             }
         }
@@ -213,15 +208,20 @@ class DrinkSearchViewController: UIViewController {
     //Fetch drink details in prep tp pass to DrinkDetailsVC
     @objc func performFetchDrink(with id: String) {
         
-        //start activity spinner
+        //create / start activity spinner
         spinner.startSpinner(viewController: self)
 
         //fire fetch drink method
         let endpoint = EndPoint.lookup.rawValue
-        NetworkManager.shared.fetchDrink(from: endpoint, using: [URLQueryItem(name: QueryType.ingredient.rawValue, value: id)]) { (fetchedDrink, error) in
+        NetworkManager.shared.fetchDrink(from: endpoint, using: [URLQueryItem(name: QueryType.ingredient.rawValue, value: id)]) { [weak self] (result) in
         
-            //If success,
-            if let drink = fetchedDrink {
+            guard let self = self else { return }
+            
+            //Stop and remove activity spinnner
+            self.spinner.stopSpinner()
+            
+            switch result {
+            case .success(let drink):
                 self.drink = drink
                 
                 //perform segue to detailsVC
@@ -233,16 +233,12 @@ class DrinkSearchViewController: UIViewController {
                         self.navigationController?.pushViewController(vc, animated: true)
                     }
                 }
+                
+            case .failure(let error):
+                print("Error fetching drink with error: \(error.rawValue)\n")
+                
             }
-            
-            //Stop and remove activity spinnner
-            self.spinner.stopSpinner()
-            
-            //if error, fire error meessage
-            if let error = error {
-                print("Error fetching drink with error: \(error.localizedDescription)\n")
-            }
-         }
+        }
     }
 }
 

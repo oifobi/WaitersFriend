@@ -29,6 +29,7 @@ class DataPersistenceManager {
         }
     }
     
+    
     func getDrinkIndex(for drinkID: String) -> Int? {
         guard DataPersistenceManager.favorites.count > 0 else { return nil }
         
@@ -39,6 +40,7 @@ class DataPersistenceManager {
         }
         return nil
     }
+    
     
     func saveFavorites(_ completion: @escaping (Result<WFSuccess, WFError>) -> Void) {
         
@@ -55,6 +57,7 @@ class DataPersistenceManager {
             completion(.failure(.unableToSaveFavorite))
         }
     }
+    
     
     func loadFavorites(_ completion: @escaping (Result<WFSuccess, WFError>) -> Void) {
         
