@@ -10,7 +10,7 @@ import UIKit
 
 enum TabBarItem: Int {
     case TopRated = 0
-    case Favorites = 4
+    case Favorites = 3
 }
 
 //MARK:- Class Definition
@@ -28,6 +28,20 @@ class DrinksTableViewController: UITableViewController {
     //MARK:- Built in view management methods
     override func viewWillAppear(_ animated: Bool) {
         
+        configureTableView()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        //Set self as delegate for when favorites are modified
+        DataPersistenceManager.shared.delegate = self
+
+    }
+    
+    //MARK:- Custom Get Data / setup UI methods
+    func configureTableView() {
+        
         switch navigationController?.tabBarItem.tag {
         
         //Fetch Top Rated data
@@ -40,27 +54,19 @@ class DrinksTableViewController: UITableViewController {
         //Load + Display favorite drinks data
         case TabBarItem.Favorites.rawValue:
             self.title = "Favorites"
-            drinks = FavoritesController.favorites
+            drinks = DataPersistenceManager.favorites
             updateUI()
             
-            if FavoritesController.favorites.count == 0 {
+            if DataPersistenceManager.favorites.count == 0 {
                 presentAlertVC(title: ":/ Favorites is lonely", message: WFSuccess.noFavorites.rawValue, buttonText: "OK")
             }
             
         default:
             break
         }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
         
-        //Set self as delegate for when favorites are modified
-        FavoritesController.shared.delegate = self
-
     }
     
-    //MARK:- Custom Get Data / setup UI methods
     //Fire fetch reequest and pass in drinks list paramter, based on tab item selected by user
     @objc func performFetchDrinks() {
         
@@ -69,7 +75,7 @@ class DrinksTableViewController: UITableViewController {
 
         //fire fetch drinks list method
         let endpoint = EndPoint.popular.rawValue
-        DrinksController.shared.fetchDrinks(from: endpoint, using: nil) { [weak self] (result) in
+        NetworkManager.shared.fetchDrinks(from: endpoint, using: nil) { [weak self] (result) in
             
             guard let self = self else { return }
             
@@ -94,6 +100,7 @@ class DrinksTableViewController: UITableViewController {
         DispatchQueue.main.async {
             self.createTableSectionsIndex()
             self.tableView.reloadData()
+            self.view.bringSubviewToFront(self.tableView)
         }
     }
     
@@ -173,7 +180,7 @@ class DrinksTableViewController: UITableViewController {
                     //Start cell activity indicator
                     cell.startActivityIndicator()
                     
-                    DrinksController.shared.fetchDrinkImage(with:imageURL) { (fetchedImage, error) in
+                    NetworkManager.shared.fetchDrinkImage(with:imageURL) { (fetchedImage, error) in
                     if let drinkImage = fetchedImage {
 
                             //Update cell image to fecthedImage via main thread
@@ -223,7 +230,7 @@ class DrinksTableViewController: UITableViewController {
             if editingStyle == .delete {
                 
                 // Delete the drink object from respective data sources (Favorites and current VC)
-                FavoritesController.favorites.remove(at: indexPath.row)
+                DataPersistenceManager.favorites.remove(at: indexPath.row)
             }
     }
     
@@ -233,6 +240,7 @@ class DrinksTableViewController: UITableViewController {
         
         // Get the new view controller using segue.destination
         if segue.identifier == "DrinksTableVCToDrinkDetailsVC" {
+            
             let vc = segue.destination as! DrinkDetailsViewController
             
             let sectionIndexOfRowTapped = tableView.indexPathForSelectedRow!.section

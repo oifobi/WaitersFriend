@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         
         //Load Favorite drinks data (if any) from user default
-        FavoritesController.shared.loadFavorites() { (result) in
+        DataPersistenceManager.shared.loadFavorites() { (result) in
             
             switch result {
             case .success(let message):
@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "TableViewNavController")
             let image = UIImage(systemName: "heart.fill")
-            vc.tabBarItem = UITabBarItem.init(title: "Favorites", image: image, tag: 4)
+            vc.tabBarItem = UITabBarItem.init(title: "Favorites", image: image, tag: 3)
             tabBarController.viewControllers?.append(vc)
         }
         
@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         
         //Save Favorite drinks data to user defaults
-        FavoritesController.shared.saveFavorites() { (result) in
+        DataPersistenceManager.shared.saveFavorites() { (result) in
             
             switch result {
             case .success(let message):

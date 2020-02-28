@@ -41,13 +41,13 @@ class DrinkSearchViewController: UIViewController {
         if trendingDrinks == nil {
             performSelector(inBackground: #selector(performFetchRecentDrinks), with: nil)
         }
-        
+
         //TableView setup
         //Fire fetch Base Ingrediets list
         if ingredients == [] {
             performSelector(inBackground: #selector(performFetchIngredientList), with: nil)
         }
-        
+
         //fetch drink name
         if drinks == nil {
             performSearchForDrinks(from: EndPoint.search.rawValue, queryName: QueryType.drinkName.rawValue, queryValue: "Margarita")
@@ -66,53 +66,10 @@ class DrinkSearchViewController: UIViewController {
         trendingDrinksCollectionView.register(UINib(nibName: "DrinkCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "DrinkCollectionViewCell")
         
         //Set compositionViewLayout
-        trendingDrinksCollectionView.collectionViewLayout = self.setUpUICollectionViewCompositionLayout()
+        trendingDrinksCollectionView.collectionViewLayout = self.createCompositionalLayout()
     }
     
-    //MARK:- UICollectionView Section methods (Trending Drinks)
-    //Layout setup (UICollectionViewCompositionalLayout)
-    //Define / configure and create UICollectionView compositional layout
-    func setUpUICollectionViewCompositionLayout() -> UICollectionViewCompositionalLayout {
-
-        //Define Layout
-        let layout = UICollectionViewCompositionalLayout {
-            (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            
-            //Define Item
-            let item = NSCollectionLayoutItem(
-                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .fractionalHeight(1.0)))
-                item.contentInsets = NSDirectionalEdgeInsets(top: 0.0, leading: 5.0, bottom: 0.0, trailing: 5.0)
-            
-            //Define Group
-            let group = NSCollectionLayoutGroup.horizontal(
-                layoutSize: NSCollectionLayoutSize(widthDimension: .estimated(250),
-                heightDimension: .absolute(170)),
-                subitem: item,
-                count: 1)
-            
-            //Define Section
-            let section = NSCollectionLayoutSection(group: group)
-            
-            //Define Section header
-            let headerView = NSCollectionLayoutBoundarySupplementaryItem(
-                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),heightDimension: .absolute(1.0)),
-                elementKind: UICollectionView.elementKindSectionHeader,
-                alignment: .top)
-            
-            headerView.pinToVisibleBounds = true
-            section.boundarySupplementaryItems = [headerView]
-            section.contentInsets = NSDirectionalEdgeInsets(top: 5.0,
-                                                            leading: 0.0,
-                                                            bottom: 16.0,
-                                                            trailing: 0.0)
-            section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-            return section
-        }
-        
-        return layout
-    }
-        
+    
     //MARK:- CollectionView Data Fetching methods
     //Fetch Recent Drinks
     @objc func performFetchRecentDrinks() {
@@ -121,7 +78,7 @@ class DrinkSearchViewController: UIViewController {
         spinner.startSpinner(viewController: self)
 
         //fire fetch recent drinks list method
-        DrinksController.shared.fetchDrinks(from: EndPoint.recent.rawValue, using: nil) { [weak self] (result) in
+        NetworkManager.shared.fetchDrinks(from: EndPoint.recent.rawValue, using: nil) { [weak self] (result) in
             
             guard let self = self else { return }
                             
@@ -166,7 +123,7 @@ class DrinkSearchViewController: UIViewController {
     @objc func performFetchIngredientList() {
         
         //fire fetch drinks list method
-        DrinksController.shared.fetchList(from: "/list.php", using: [URLQueryItem(name: "i", value: "list")]) { [weak self] (result) in
+        NetworkManager.shared.fetchList(from: "/list.php", using: [URLQueryItem(name: "i", value: "list")]) { [weak self] (result) in
             
             guard let self = self else { return }
             
@@ -194,7 +151,7 @@ class DrinkSearchViewController: UIViewController {
         spinner.startSpinner(viewController: self)
 
         //fire fetch list method
-        DrinksController.shared.fetchList(from: "/filter.php", using: [URLQueryItem(name: "i", value: ingredient)]) { [weak self] (fetchedList) in
+        NetworkManager.shared.fetchList(from: "/filter.php", using: [URLQueryItem(name: "i", value: ingredient)]) { [weak self] (fetchedList) in
             
             guard let self = self else { return }
             
@@ -216,7 +173,7 @@ class DrinkSearchViewController: UIViewController {
     //Fetch drink names from user's search query
     func performSearchForDrinks(from endpoint: String, queryName: String, queryValue: String) {
         
-        DrinksController.shared.fetchDrinks(from: endpoint, using: [URLQueryItem(name: queryName, value: queryValue)]) { [weak self] (result) in
+        NetworkManager.shared.fetchDrinks(from: endpoint, using: [URLQueryItem(name: queryName, value: queryValue)]) { [weak self] (result) in
             
             guard let self = self else { return }
             
@@ -245,9 +202,11 @@ class DrinkSearchViewController: UIViewController {
             
             } else if view == "tableView" {
                 self.searchDrinksTableView.reloadData()
+                self.view.bringSubviewToFront(self.searchDrinksTableView)
             }
         }
     }
+    
     
     //Fetch drink details in prep tp pass to DrinkDetailsVC
     @objc func performFetchDrink(with id: String) {
@@ -257,7 +216,7 @@ class DrinkSearchViewController: UIViewController {
 
         //fire fetch drink method
         let endpoint = EndPoint.lookup.rawValue
-        DrinksController.shared.fetchDrink(from: endpoint, using: [URLQueryItem(name: QueryType.ingredient.rawValue, value: id)]) { (fetchedDrink, error) in
+        NetworkManager.shared.fetchDrink(from: endpoint, using: [URLQueryItem(name: QueryType.ingredient.rawValue, value: id)]) { (fetchedDrink, error) in
         
             //If success,
             if let drink = fetchedDrink {
@@ -320,7 +279,7 @@ extension DrinkSearchViewController: UITableViewDataSource, UITableViewDelegate 
                     //Start cell activity indicator
                     cell.startActivityIndicator()
                     
-                    DrinksController.shared.fetchDrinkImage(with:imageURL) { (fetchedImage, error) in
+                    NetworkManager.shared.fetchDrinkImage(with:imageURL) { (fetchedImage, error) in
                     if let drinkImage = fetchedImage {
 
                             //Update cell image to fecthedImage via main thread
@@ -361,9 +320,9 @@ extension DrinkSearchViewController: UITableViewDataSource, UITableViewDelegate 
 
         if let vc = storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as? DrinkDetailsViewController {
                
-           vc.drink = drinks![indexPath.item]
-           vc.sender = "DrinkSearchViewController"
-           navigationController?.pushViewController(vc, animated: true)
+            vc.drink = drinks![indexPath.item]
+            vc.sender = "DrinkSearchViewController"
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
 }
@@ -408,7 +367,7 @@ extension DrinkSearchViewController: UICollectionViewDataSource, UICollectionVie
             //Show and start cell activity indicator animation
             cell.startActivityIndicator()
             
-            DrinksController.shared.fetchDrinkImage(with: imageURL) { (fetchedImage, error) in
+            NetworkManager.shared.fetchDrinkImage(with: imageURL) { (fetchedImage, error) in
                if let drinkImage = fetchedImage {
 
                    //Update cell image to fecthedImage via main thread
@@ -463,6 +422,52 @@ extension DrinkSearchViewController: UISearchResultsUpdating, UISearchBarDelegat
 
         //fetch drink name
         performSearchForDrinks(from: EndPoint.search.rawValue, queryName: QueryType.drinkName.rawValue, queryValue: text)
+    }
+}
+
+
+//MARK:- UICollectionView Section methods (Trending Drinks)
+extension DrinkSearchViewController {
+
+    func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
+
+        //Define Layout
+        let layout = UICollectionViewCompositionalLayout {
+            (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+
+            //Define Item
+            let item = NSCollectionLayoutItem(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .fractionalHeight(1.0)))
+                item.contentInsets = NSDirectionalEdgeInsets(top: 0.0, leading: 5.0, bottom: 0.0, trailing: 5.0)
+
+            //Define Group
+            let group = NSCollectionLayoutGroup.horizontal(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .estimated(250),
+                heightDimension: .absolute(170)),
+                subitem: item,
+                count: 1)
+
+            //Define Section
+            let section = NSCollectionLayoutSection(group: group)
+
+            //Define Section header
+            let headerView = NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),heightDimension: .absolute(1.0)),
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .top)
+
+            headerView.pinToVisibleBounds = true
+            section.boundarySupplementaryItems = [headerView]
+            section.contentInsets = NSDirectionalEdgeInsets(top: 5.0,
+                                                            leading: 0.0,
+                                                            bottom: 16.0,
+                                                            trailing: 0.0)
+            section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+            return section
+        }
+
+        return layout
     }
 }
 

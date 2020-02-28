@@ -8,11 +8,6 @@
 
 import UIKit
 
-//Collection of Drink data objects
-struct Drinks: Codable {
-    var drinks: [Drink]?
-}
-
 //Data structure of Drink (Full details)
 struct Drink: Codable {
     

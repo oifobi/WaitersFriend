@@ -12,10 +12,10 @@ protocol FavoriteDrinksDelegate {
     func updateDrinks(with favorites: [Drink])
 }
 
-class FavoritesController {
+class DataPersistenceManager {
     
     //Property to access this struct's methods globally
-    static var shared = FavoritesController()
+    static var shared = DataPersistenceManager()
     
     let defaults = UserDefaults.standard
     
@@ -30,9 +30,9 @@ class FavoritesController {
     }
     
     func getDrinkIndex(for drinkID: String) -> Int? {
-        guard FavoritesController.favorites.count > 0 else { return nil }
+        guard DataPersistenceManager.favorites.count > 0 else { return nil }
         
-        for (index, drink) in FavoritesController.favorites.enumerated() {
+        for (index, drink) in DataPersistenceManager.favorites.enumerated() {
             if drinkID == drink.id {
                 return index
             }
@@ -44,10 +44,10 @@ class FavoritesController {
         
         do {
             let encoder = JSONEncoder()
-            let favorites = try encoder.encode(FavoritesController.favorites)
+            let favorites = try encoder.encode(DataPersistenceManager.favorites)
      
             //Save Data object to UserDefaults
-            FavoritesController.shared.defaults.set(favorites, forKey: "favorites")
+            DataPersistenceManager.shared.defaults.set(favorites, forKey: "favorites")
             completion(.success(.favoriteSaved))
         
         //If save failed handle error
@@ -58,14 +58,14 @@ class FavoritesController {
     
     func loadFavorites(_ completion: @escaping (Result<WFSuccess, WFError>) -> Void) {
         
-        guard let favorites = FavoritesController.shared.defaults.object(forKey: "favorites") as? Data else {
+        guard let favorites = DataPersistenceManager.shared.defaults.object(forKey: "favorites") as? Data else {
             completion(.failure(.unableToLoadFavorites))
             return
         }
         
         do {
             let encoder = JSONDecoder()
-            FavoritesController.favorites = try encoder.decode([Drink].self, from: favorites)
+            DataPersistenceManager.favorites = try encoder.decode([Drink].self, from: favorites)
             completion(.success(.favoritesLoaded))
             
         } catch {

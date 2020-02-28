@@ -118,6 +118,7 @@ class DrinkDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -135,14 +136,18 @@ class DrinkDetailsViewController: UIViewController {
     //MARK:- Custom View management
     //perform UI setup
     func updateUI(sender: String?) {
+        
         DispatchQueue.main.async {
             
-            //Fire fetch data depending on sender
+            //Fire fetch data depending on sender (if featured tab item tapped)
             if sender == nil {
+                
+                //ovveride hideBottomBarOnPush (from storyboard)
+                self.tabBarController?.tabBar.isHidden = false
                 
                 self.performSelector(inBackground: #selector(self.performFetchDrink), with: nil)
             }
-            
+
             //Fetch drink image from API server and set
             self.performSelector(inBackground: #selector(self.performFetchDrinksImage), with: nil)
             
@@ -162,7 +167,7 @@ class DrinkDetailsViewController: UIViewController {
             
             //Set Favorites icon state
             if let id = self.drink?.id {
-                if let _ = FavoritesController.shared.getDrinkIndex(for: id) {
+                if let _ = DataPersistenceManager.shared.getDrinkIndex(for: id) {
                         self.favoritesButton.image = UIImage(systemName: "heart.fill")
                     
                 } else {
@@ -174,7 +179,7 @@ class DrinkDetailsViewController: UIViewController {
     
     @objc func performFetchDrink() {
         let endpoint = EndPoint.random.rawValue
-        DrinksController.shared.fetchDrink(from: endpoint, using: nil) { (fetchedDrink, error) in
+        NetworkManager.shared.fetchDrink(from: endpoint, using: nil) { (fetchedDrink, error) in
         
             //fire fetch drinks method
             //If success,
@@ -202,7 +207,7 @@ class DrinkDetailsViewController: UIViewController {
         spinner.startSpinner(viewController: self)
 
         if let imageURL = drink?.imageURL {
-            DrinksController.shared.fetchDrinkImage(with: imageURL) { (fetchedImage, error) in
+            NetworkManager.shared.fetchDrinkImage(with: imageURL) { (fetchedImage, error) in
                 
                 if let image = fetchedImage {
                     self.drinkImage = image
@@ -283,14 +288,14 @@ class DrinkDetailsViewController: UIViewController {
     func updateFavorites() {
         
         //If drink already saved, remove from favorites
-        if let index = FavoritesController.shared.getDrinkIndex(for: drink!.id) {
-            FavoritesController.favorites.remove(at: index)
+        if let index = DataPersistenceManager.shared.getDrinkIndex(for: drink!.id) {
+            DataPersistenceManager.favorites.remove(at: index)
             favoritesButton.image = UIImage(systemName: "heart")
             presentAlertVC(title: "❌ Drink Removed", message: "\(drink!.name) \(WFSuccess.favoriteRemoved.rawValue)", buttonText: "OK")
 
         //If drink not already saved, save to favorites
         } else {
-            FavoritesController.favorites.append(drink!)
+            DataPersistenceManager.favorites.append(drink!)
             favoritesButton.image = UIImage(systemName: "heart.fill")
             presentAlertVC(title: "❤️ Drink Saved", message: "\(drink!.name) \(WFSuccess.favoriteSaved.rawValue).", buttonText: "OK")
         }

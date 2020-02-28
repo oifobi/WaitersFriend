@@ -32,10 +32,10 @@ enum QueryType: String {
     case glass = "g"
 }
 
-class DrinksController {
+class NetworkManager {
     
     //Global Property for VCs to access DrinkController methods
-    static let shared = DrinksController()
+    static let shared = NetworkManager()
     
     //MARK:- Fetch data from given API end point based on list parameter passed in (set by user tab bar item selected)
     //Setup construction of URL
@@ -106,7 +106,7 @@ class DrinksController {
                 let drinks = try decoder.decode(Drinks.self, from: data)
                 
                 //Pass drinks back to caller
-                completion(.success(drinks.drinks!))
+                completion(.success(drinks.drinks))
                 
             //catch any errrors
             } catch {
@@ -228,7 +228,7 @@ class DrinksController {
             if let data = data,
                 
                 let drinks = try? jsonDecoder.decode(Drinks.self, from: data) {
-                let drink = drinks.drinks?.first
+                let drink = drinks.drinks.first
                 completion(drink, nil)
                 
             } else {
