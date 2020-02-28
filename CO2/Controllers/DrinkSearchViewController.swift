@@ -184,10 +184,12 @@ class DrinkSearchViewController: UIViewController {
                 self.updateUI(for: "tableView")
                 
             case .failure(let error):
-                self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
-                action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
-                        self.performFetchRecentDrinks()
-                }))
+//                self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
+//                action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
+//                        self.performFetchRecentDrinks()
+//                }))
+                
+                print(error.rawValue)
             }
         }
     }

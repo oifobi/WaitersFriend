@@ -69,7 +69,7 @@ class DataPersistenceManager {
             completion(.success(.favoritesLoaded))
             
         } catch {
-            completion(.failure(.unableToLoadFavorites))
+            completion(.failure(.unableToDecodeFavorites))
         }
     }
 }

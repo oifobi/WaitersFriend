@@ -18,5 +18,6 @@ enum WFError: String, Error {
     
     //favorites related errors
     case unableToSaveFavorite = "Error adding Drink to Favorites."
-    case unableToLoadFavorites = "Error loading Favorites."
+    case unableToLoadFavorites = "Unable to load Favoites. No Favorites data object exists."
+    case unableToDecodeFavorites = "Error decoding saved Favorites data object."
 }
