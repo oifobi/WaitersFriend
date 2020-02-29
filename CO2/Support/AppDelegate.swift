@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let tabBarController = window?.rootViewController as? UITabBarController {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "TableViewNavController")
-            let image = UIImage(systemName: "heart.fill")
+            let image = UIImage(systemName: SFSymbol.heartFill)
             vc.tabBarItem = UITabBarItem.init(title: "Favorites", image: image, tag: 3)
             tabBarController.viewControllers?.append(vc)
         }

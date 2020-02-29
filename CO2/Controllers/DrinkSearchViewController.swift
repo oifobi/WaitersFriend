@@ -10,6 +10,10 @@ import UIKit
 
 class DrinkSearchViewController: UIViewController {
     
+    enum Ingredient {
+        static let margarita = "margarita"
+    }
+    
     //IBOutles
     @IBOutlet weak var trendingDrinksCollectionView: UICollectionView!
     @IBOutlet weak var searchDrinksTableView: UITableView!
@@ -20,7 +24,6 @@ class DrinkSearchViewController: UIViewController {
     
     //For TableView
     var drinks: [Drink]? //Search drinks
-    var ingredients = [String]() //Base ingredient
     var ingredientDrinks: [DrinkList]? //List of drinks made with base ingredient
     var currentIngredient = String() //for tracking currently selected base ingredient
     
@@ -54,15 +57,9 @@ class DrinkSearchViewController: UIViewController {
               performSelector(inBackground: #selector(performFetchRecentDrinks), with: nil)
           }
 
-          //TableView setup
-          //Fire fetch Base Ingrediets list
-          if ingredients == [] {
-              performSelector(inBackground: #selector(performFetchIngredientList), with: nil)
-          }
-
           //fetch drink name
           if drinks == nil {
-              performSearchForDrinks(from: EndPoint.search.rawValue, queryName: QueryType.drinkName.rawValue, queryValue: "Margarita")
+            performSearchForDrinks(from: EndPoint.search, queryName: QueryType.drinkName, queryValue: Ingredient.margarita)
           }
           
       }
@@ -88,7 +85,7 @@ class DrinkSearchViewController: UIViewController {
         spinner.startSpinner(viewController: self)
 
         //fire fetch recent drinks list method
-        NetworkManager.shared.fetchDrinks(from: EndPoint.recent.rawValue, using: nil) { [weak self] (result) in
+        NetworkManager.shared.fetchDrinks(from: EndPoint.recent, using: nil) { [weak self] (result) in
             
             guard let self = self else { return }
                             
@@ -103,7 +100,7 @@ class DrinkSearchViewController: UIViewController {
             case .failure(let error):
                 self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
                 action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
-                        self.performFetchRecentDrinks()
+                        self.fireFetchData()
                 }))
             }
         }
@@ -132,32 +129,6 @@ class DrinkSearchViewController: UIViewController {
 
     
     //MARK:- TableView Data Fetching methods
-    //Fetch List of Base Ingredients (ie: Vodka, Bitters, etc)
-    @objc func performFetchIngredientList() {
-        
-        //fire fetch drinks list method
-        NetworkManager.shared.fetchList(from: "/list.php", using: [URLQueryItem(name: "i", value: "list")]) { [weak self] (result) in
-            
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let list):
-                self.ingredients = list.map( { $0.baseIngredient! } )
-                
-                //Sort Ingredients array (ascending order)
-                self.ingredients.sort()
-                self.updateUI(for: "tableView")
-            
-            case .failure(let error):
-                self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
-                action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
-                        self.performFetchIngredientList()
-                }))
-            }
-        }
-    }
-    
-    
     //Fetch Selected Base Ingredient Drinks List (drinks made wih specific Base ingredient)
     @objc func performFetchDrinksList(for ingredient: String) {
         
@@ -227,8 +198,8 @@ class DrinkSearchViewController: UIViewController {
         spinner.startSpinner(viewController: self)
 
         //fire fetch drink method
-        let endpoint = EndPoint.lookup.rawValue
-        NetworkManager.shared.fetchDrink(from: endpoint, using: [URLQueryItem(name: QueryType.ingredient.rawValue, value: id)]) { [weak self] (result) in
+        let endpoint = EndPoint.lookup
+        NetworkManager.shared.fetchDrink(from: endpoint, using: [URLQueryItem(name: QueryType.ingredient, value: id)]) { [weak self] (result) in
         
             guard let self = self else { return }
             
@@ -268,9 +239,6 @@ extension DrinkSearchViewController: UITableViewDataSource, UITableViewDelegate 
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        guard drinks != nil else { return 0 }
-//        return drinks!.count
-        
         guard let drinks = drinks else { return 0 }
         return drinks.count
         
@@ -443,7 +411,7 @@ extension DrinkSearchViewController: UISearchResultsUpdating, UISearchBarDelegat
         guard let text = searchController.searchBar.text, !text.isEmpty else { return }
 
         //fetch drink name
-        performSearchForDrinks(from: EndPoint.search.rawValue, queryName: QueryType.drinkName.rawValue, queryValue: text)
+        performSearchForDrinks(from: EndPoint.search, queryName: QueryType.drinkName, queryValue: text)
     }
 }
 
@@ -492,7 +460,3 @@ extension DrinkSearchViewController {
         return layout
     }
 }
-
-
-
-

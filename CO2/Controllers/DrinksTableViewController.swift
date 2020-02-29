@@ -8,13 +8,13 @@
 
 import UIKit
 
-enum TabBarItem: Int {
-    case TopRated = 0
-    case Favorites = 3
-}
-
 //MARK:- Class Definition
 class DrinksTableViewController: UITableViewController {
+    
+    enum TabBarItem {
+        static let TopRated = 0
+        static let Favorites = 3
+    }
     
     //For drinks fetched from Top Rated API and for storing Favorite drinks
     var drinks: [Drink]?
@@ -44,26 +44,25 @@ class DrinksTableViewController: UITableViewController {
         switch navigationController?.tabBarItem.tag {
         
         //Fetch Top Rated data
-        case TabBarItem.TopRated.rawValue:
+        case TabBarItem.TopRated:
             self.title = "Top Rated"
             if drinks == nil {
                 performSelector(inBackground: #selector(performFetchDrinks), with: nil)
             }
             
         //Load + Display favorite drinks data
-        case TabBarItem.Favorites.rawValue:
+        case TabBarItem.Favorites:
             self.title = "Favorites"
             drinks = DataPersistenceManager.favorites
             updateUI()
             
             if DataPersistenceManager.favorites.count == 0 {
-                presentAlertVC(title: "😕 Favorites is lonely", message: WFSuccess.noFavorites.rawValue, buttonText: "OK")
+                presentAlertVC(title: "\(Emoji.sadFace) Favorites is lonely", message: WFSuccess.noFavorites.rawValue, buttonText: "OK")
             }
             
         default:
             break
         }
-        
     }
     
     //Fire fetch reequest and pass in drinks list paramter, based on tab item selected by user
@@ -73,7 +72,7 @@ class DrinksTableViewController: UITableViewController {
         spinner.startSpinner(viewController: self)
 
         //fire fetch drinks list method
-        let endpoint = EndPoint.popular.rawValue
+        let endpoint = EndPoint.popular
         NetworkManager.shared.fetchDrinks(from: endpoint, using: nil) { [weak self] (result) in
             
             guard let self = self else { return }
@@ -121,6 +120,7 @@ class DrinksTableViewController: UITableViewController {
         return tableSectionsIndex!.count
     }
     
+    
     //set number of section rows based on number of drinks contained within in each section title
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard tableSectionsIndex != nil else { return 0 }
@@ -129,6 +129,7 @@ class DrinksTableViewController: UITableViewController {
         let section = tableSectionsIndex![section]
         return section.value.count
     }
+    
     
     //set and display tbale section headings in tableView (Letter)
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -139,6 +140,7 @@ class DrinksTableViewController: UITableViewController {
         return String(title)
     }
     
+    
     //set titles to display in index on RHS of tableView
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         guard tableSectionsIndex != nil else { return [""] }
@@ -147,6 +149,7 @@ class DrinksTableViewController: UITableViewController {
         let titles = tableSectionsIndex!.map( { String($0.key) } )
         return titles
     }
+    
     
     //method uses custom defined classs
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -210,17 +213,19 @@ class DrinksTableViewController: UITableViewController {
         return cell
     }
     
+    
     //Enable table row delete when an Action is triggered (swipe to delete or Edit Button)
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 
         //Enable row delete only for favorites
-        guard navigationController?.tabBarItem.tag == TabBarItem.Favorites.rawValue else { return false }
+        guard navigationController?.tabBarItem.tag == TabBarItem.Favorites else { return false }
         return true
     }
     
+    
     //Enable swipe to delete on table row for Favorites
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        guard navigationController?.tabBarItem.tag == TabBarItem.Favorites.rawValue else { return }
+        guard navigationController?.tabBarItem.tag == TabBarItem.Favorites else { return }
             if editingStyle == .delete {
                 
                 // Delete the drink object from respective data sources (Favorites and current VC)

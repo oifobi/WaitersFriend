@@ -9,28 +9,29 @@
 import UIKit
 
 //API end points and Url struturing
-enum EndPoint: String {
+enum EndPoint {
     
     //Absolute endpoints
-    case random = "/random.php"
-    case popular = "/popular.php"
-    case recent = "/recent.php"
+    static let random = "/random.php"
+    static let popular = "/popular.php"
+    static let recent = "/recent.php"
     
     //Endpoints for use with Queries
-    case search = "/search.php"
-    case lookup = "/lookup.php"
-    case filter = "/filter.php"
-    case list = "/list.php"
+    static let search = "/search.php"
+    static let lookup = "/lookup.php"
+    static let filter = "/filter.php"
+    static let list = "/list.php"
 }
 
-enum QueryType: String {
-    
-    case drinkName = "s"
-    case firstLetter = "f"
-    case ingredient = "i"
-    case category = "c"
-    case glass = "g"
+
+enum QueryType {
+    static let drinkName = "s"
+    static let firstLetter = "f"
+    static let ingredient = "i"
+    static let category = "c"
+    static let glass = "g"
 }
+
 
 class NetworkManager {
     

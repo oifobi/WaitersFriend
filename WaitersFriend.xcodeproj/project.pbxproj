@@ -27,6 +27,8 @@
 		2AA670AD2327ABFC006534F0 /* DrinksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA670AC2327ABFC006534F0 /* DrinksTableViewController.swift */; };
 		2ACB7FDC2408908F00B3B14B /* Drinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACB7FDB2408908F00B3B14B /* Drinks.swift */; };
 		2ACEB3B8234CB517006D47B5 /* DataPersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACEB3B7234CB517006D47B5 /* DataPersistenceManager.swift */; };
+		2AE51B492409EC150022F22E /* SFSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AE51B482409EC150022F22E /* SFSymbol.swift */; };
+		2AE51B4B2409ECAC0022F22E /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AE51B4A2409ECAC0022F22E /* Emoji.swift */; };
 		2AF1704D2346D3CC00DD206A /* DrinkCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AF1704B2346D3CC00DD206A /* DrinkCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +55,8 @@
 		2AA670AC2327ABFC006534F0 /* DrinksTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksTableViewController.swift; sourceTree = "<group>"; };
 		2ACB7FDB2408908F00B3B14B /* Drinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drinks.swift; sourceTree = "<group>"; };
 		2ACEB3B7234CB517006D47B5 /* DataPersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPersistenceManager.swift; sourceTree = "<group>"; };
+		2AE51B482409EC150022F22E /* SFSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFSymbol.swift; sourceTree = "<group>"; };
+		2AE51B4A2409ECAC0022F22E /* Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emoji.swift; sourceTree = "<group>"; };
 		2AF1704B2346D3CC00DD206A /* DrinkCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DrinkCollectionViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -72,6 +76,8 @@
 			children = (
 				2A22B436240639E200FA7056 /* WFError.swift */,
 				2A29801C240774E200247D30 /* WFSuccess.swift */,
+				2AE51B482409EC150022F22E /* SFSymbol.swift */,
+				2AE51B4A2409ECAC0022F22E /* Emoji.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -248,11 +254,13 @@
 				2A448107233F568500BE602D /* UIView+Extensions.swift in Sources */,
 				2AA6709523263CD4006534F0 /* DrinkDetailsViewController.swift in Sources */,
 				2A5B0FF12339F03D007C977B /* DrinkList.swift in Sources */,
+				2AE51B492409EC150022F22E /* SFSymbol.swift in Sources */,
 				2A22B4302406043200FA7056 /* CacheManager.swift in Sources */,
 				2A768EEC233D02EF00D694C7 /* DrinkTableViewCell.swift in Sources */,
 				2AA67067232632B9006534F0 /* AppDelegate.swift in Sources */,
 				2AA670AD2327ABFC006534F0 /* DrinksTableViewController.swift in Sources */,
 				2AA6709723263EF9006534F0 /* Drink.swift in Sources */,
+				2AE51B4B2409ECAC0022F22E /* Emoji.swift in Sources */,
 				2A29801D240774E200247D30 /* WFSuccess.swift in Sources */,
 				2A53D2E22337302400506AFD /* SpinnerViewController.swift in Sources */,
 				2A75D36E2351831600FC2FB2 /* DrinkSearchViewController.swift in Sources */,

@@ -131,6 +131,7 @@ class DrinkDetailsViewController: UIViewController {
         drinkDetailsImageView.setNeedsDisplay()
     }
     
+    
     //MARK:- Custom View management
     //perform UI setup
     func updateUI(sender: String?) {
@@ -166,10 +167,10 @@ class DrinkDetailsViewController: UIViewController {
             //Set Favorites icon state
             if let id = self.drink?.id {
                 if let _ = DataPersistenceManager.shared.getDrinkIndex(for: id) {
-                        self.favoritesButton.image = UIImage(systemName: "heart.fill")
+                    self.favoritesButton.image = UIImage(systemName: SFSymbol.heartFill)
                     
                 } else {
-                    self.favoritesButton.image = UIImage(systemName: "heart")
+                    self.favoritesButton.image = UIImage(systemName: SFSymbol.heart)
                 }
             }
         }
@@ -177,7 +178,7 @@ class DrinkDetailsViewController: UIViewController {
     
     
     @objc func performFetchDrink() {
-        let endpoint = EndPoint.random.rawValue
+        let endpoint = EndPoint.random
         NetworkManager.shared.fetchDrink(from: endpoint, using: nil) { [weak self] (result) in
             
             guard let self = self else { return }
@@ -290,14 +291,14 @@ class DrinkDetailsViewController: UIViewController {
         //If drink already saved, remove from favorites
         if let index = DataPersistenceManager.shared.getDrinkIndex(for: drinkID) {
             DataPersistenceManager.favorites.remove(at: index)
-            favoritesButton.image = UIImage(systemName: "heart")
-            presentAlertVC(title: "💔 Drink Removed", message: "\(drinkName) \(WFSuccess.favoriteRemoved.rawValue)", buttonText: "OK")
+            favoritesButton.image = UIImage(systemName: SFSymbol.heart)
+            presentAlertVC(title: "\(Emoji.redBrokenHeart) Drink Removed", message: "\(drinkName) \(WFSuccess.favoriteRemoved.rawValue)", buttonText: "OK")
 
         //If drink not already saved, save to favorites
         } else {
             DataPersistenceManager.favorites.append(drink!)
-            favoritesButton.image = UIImage(systemName: "heart.fill")
-            presentAlertVC(title: "❤️ Drink Saved", message: "\(drinkName) \(WFSuccess.favoriteSaved.rawValue).", buttonText: "OK")
+            favoritesButton.image = UIImage(systemName: SFSymbol.heartFill)
+            presentAlertVC(title: "\(Emoji.redHeart) Drink Saved", message: "\(drinkName) \(WFSuccess.favoriteSaved.rawValue).", buttonText: "OK")
         }
     }
 }

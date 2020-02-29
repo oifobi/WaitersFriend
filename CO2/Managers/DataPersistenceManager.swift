@@ -14,6 +14,10 @@ protocol FavoriteDrinksDelegate {
 
 class DataPersistenceManager {
     
+    enum Key {
+        static let favorites = "favorites"
+    }
+    
     //Property to access this struct's methods globally
     static var shared = DataPersistenceManager()
     
@@ -49,7 +53,7 @@ class DataPersistenceManager {
             let favorites = try encoder.encode(DataPersistenceManager.favorites)
      
             //Save Data object to UserDefaults
-            DataPersistenceManager.shared.defaults.set(favorites, forKey: "favorites")
+            DataPersistenceManager.shared.defaults.set(favorites, forKey: Key.favorites)
             completion(.success(.favoriteSaved))
         
         //If save failed handle error
@@ -61,7 +65,7 @@ class DataPersistenceManager {
     
     func loadFavorites(_ completion: @escaping (Result<WFSuccess, WFError>) -> Void) {
         
-        guard let favorites = DataPersistenceManager.shared.defaults.object(forKey: "favorites") as? Data else {
+        guard let favorites = DataPersistenceManager.shared.defaults.object(forKey: Key.favorites) as? Data else {
             completion(.failure(.unableToLoadFavorites))
             return
         }
