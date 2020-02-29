@@ -159,57 +159,51 @@ class DrinksTableViewController: UITableViewController {
         
         //get reference to the section (being shown
         if let section = tableSectionsIndex?[indexPath.section] {
-        
+            
             //get drinks for the section to be shown
             let drinks = section.value
-        
+            
             //ensure table rows matches drinks object array since the same tableView controller is used for different calls to fetch data
             if indexPath.row < drinks.count {
-            
-            let drink = drinks[indexPath.row]
-            
+                
+                let drink = drinks[indexPath.row]
+                
                 //set cell lables text
                 cell.setTitleLabel(text: drink.name)
                 cell.setSubtitleLabel(text: drink.ingredient1 ?? "")
-                    
+                
+                //Cell image
                 //Fetch and set drink image
-                if let imageURL = drink.imageURL {
+                if let urlString = drink.imageURL {
                     
                     //Start cell activity indicator
                     cell.startActivityIndicator()
                     
-                    NetworkManager.shared.fetchDrinkImage(with:imageURL) { (fetchedImage, error) in
-                    if let drinkImage = fetchedImage {
-
-                            //Update cell image to fecthedImage via main thread
-                            DispatchQueue.main.async {
-
-                                //Ensure wrong image isn't inserted into a recycled cell
-                                if let currentIndexPath = self.tableView.indexPath(for: cell),
-
-                                    //If current cell index and table index don't match, exit fetch image method
-                                    currentIndexPath != indexPath {
-                                        return
-                                    }
-
-                                //Set cell image
-                                cell.setImage(drinkImage)
-                                
-                                //Stop cell activity indicator
-                                cell.stopActivityIndicator()
-
-                                //Refresh cell to display fetched image
-                                cell.setNeedsLayout()
-                            }
-
-                        //catch any errors fetching image
-                        } else if let error = error {
-                            print("Error fetching image with error \(error.localizedDescription)\n")
+                    //Update cell image to fecthedImage via main thread
+                    DispatchQueue.main.async {
+                        
+                        //Ensure wrong image isn't inserted into a recycled cell
+                        if let currentIndexPath = self.tableView.indexPath(for: cell),
+                            
+                            //If current cell index and table index don't match, exit fetch image method
+                            currentIndexPath != indexPath {
+                            return
                         }
+                        
+                        //Set cell image
+                        cell.setImage(with: urlString)
+                        
+                        //Stop cell activity indicator
+                        cell.stopActivityIndicator()
+                        
+                        //Refresh cell to display fetched image
+                        cell.setNeedsLayout()
                     }
+                    
                 }
             }
         }
+        
         return cell
     }
     

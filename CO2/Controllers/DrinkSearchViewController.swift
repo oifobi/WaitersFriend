@@ -60,7 +60,6 @@ class DrinkSearchViewController: UIViewController {
           if drinks == nil {
             performSearchForDrinks(from: EndPoint.search, queryName: QueryType.drinkName, queryValue: Ingredient.margarita)
           }
-          
       }
     
     
@@ -74,7 +73,7 @@ class DrinkSearchViewController: UIViewController {
         trendingDrinksCollectionView.register(UINib(nibName: "DrinkCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "DrinkCollectionViewCell")
         
         //Set compositionViewLayout
-        trendingDrinksCollectionView.collectionViewLayout = self.createCompositionalLayout()
+        trendingDrinksCollectionView.collectionViewLayout = createCompositionalLayout()
 
     }
     
@@ -248,48 +247,41 @@ extension DrinkSearchViewController: UITableViewDataSource, UITableViewDelegate 
         
         //Get reference to row
         if indexPath.row < drinks!.count {
-        
-            //Get drinkk
-            if let drink = drinks?[indexPath.row] {
             
+            //Get drink
+            if let drink = drinks?[indexPath.row] {
+                
                 //set cell lables text
                 cell.setTitleLabel(text: drink.name)
                 cell.setSubtitleLabel(text: drink.ingredient1 ?? "")
-                    
+                
+                //set cell image
                 //Fetch and set drink image
-                if let imageURL = drink.imageURL {
+                if let urlString = drink.imageURL {
                     
                     //Start cell activity indicator
                     cell.startActivityIndicator()
                     
-                    NetworkManager.shared.fetchDrinkImage(with:imageURL) { (fetchedImage, error) in
-                    if let drinkImage = fetchedImage {
-
-                            //Update cell image to fecthedImage via main thread
-                            DispatchQueue.main.async {
-
-                                //Ensure wrong image isn't inserted into a recycled cell
-                                if let currentIndexPath = self.searchDrinksTableView.indexPath(for: cell),
-
-                                    //If current cell index and table index don't match, exit fetch image method
-                                    currentIndexPath != indexPath {
-                                        return
-                                    }
-
-                                //Set cell image
-                                cell.setImage(drinkImage)
-                                
-                                //Stop cell activity indicator
-                                cell.stopActivityIndicator()
-
-                                //Refresh cell to display fetched image
-                                cell.setNeedsLayout()
-                            }
-
-                        //catch any errors fetching image
-                        } else if let error = error {
-                            print("Error fetching image with error \(error.localizedDescription)\n")
+                    //Update cell image to fecthedImage via main thread
+                    DispatchQueue.main.async {
+                        
+                        //Ensure wrong image isn't inserted into a recycled cell
+                        if let currentIndexPath = self.searchDrinksTableView.indexPath(for: cell),
+                            
+                            //If current cell index and table index don't match, exit fetch image method
+                            currentIndexPath != indexPath {
+                            cell.stopActivityIndicator()
+                            return
                         }
+                        
+                        //Set cell image
+                        cell.setImage(with: urlString)
+                        
+                        //Stop cell activity indicator
+                        cell.stopActivityIndicator()
+                        
+                        //Refresh cell to display fetched image
+                        cell.setNeedsLayout()
                     }
                 }
             }
@@ -332,14 +324,14 @@ extension DrinkSearchViewController: UICollectionViewDataSource, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(
-          withReuseIdentifier: "DrinkCollectionViewCell", for: indexPath) as? DrinkCollectionViewCell
-        
-        else {
-            preconditionFailure("Invalid cell type")
+            withReuseIdentifier: "DrinkCollectionViewCell", for: indexPath) as? DrinkCollectionViewCell
+            
+            else {
+                preconditionFailure("Invalid cell type")
         }
         
         guard let drink = trendingDrinks?[indexPath.item] else { preconditionFailure("Drinks property is nil") }
-
+        
         //Set cell properties
         //Cell text
         cell.setTitleLabel(text: drink.name)
@@ -347,41 +339,32 @@ extension DrinkSearchViewController: UICollectionViewDataSource, UICollectionVie
         
         //Cell image
         //Fetch and set drink image
-        if let imageURL = drink.imageURL {
+        if let urlString = drink.imageURL {
             
             //Show and start cell activity indicator animation
             cell.startActivityIndicator()
             
-            NetworkManager.shared.fetchDrinkImage(with: imageURL) { (fetchedImage, error) in
-               if let drinkImage = fetchedImage {
-
-                   //Update cell image to fecthedImage via main thread
-                   DispatchQueue.main.async {
-
-                       //Ensure wrong image isn't inserted into a recycled cell
-                        if let currentIndexPath = self.trendingDrinksCollectionView.indexPath(for: cell),
-
-                           //If current cell index and table index don't match, exit fetch image method
-                           currentIndexPath != indexPath {
-                               return
-                           }
-                    
-                        //Set cell image
-                        cell.setImage(drinkImage)
-                    
-                        //Stop acell activity indicator animation and hide
-                        cell.stopActivityIndicator()
-
-                        //Refresh cell to display fetched image
-                        cell.setNeedsLayout()
-                   }
-
-               //Catch any errors fetching image
-               } else if let error = error {
-                   print("Error fetching image with error \(error.localizedDescription)\n")
-               }
-           }
+            //Update cell image to fecthedImage via main thread
+            DispatchQueue.main.async {
+                
+                //Ensure wrong image isn't inserted into a recycled cell
+                if let currentIndexPath = self.trendingDrinksCollectionView.indexPath(for: cell),
+                    currentIndexPath != indexPath {
+                    cell.stopActivityIndicator()
+                    return
+                }
+                
+                //Set cell image
+                cell.setImage(with: urlString)
+                
+                //Stop acell activity indicator animation and hide
+                cell.stopActivityIndicator()
+                
+                //Refresh cell to display fetched image
+                cell.setNeedsLayout()
+            }
         }
+        
         return cell
     }
     
@@ -412,7 +395,7 @@ extension DrinkSearchViewController: UISearchResultsUpdating, UISearchBarDelegat
 }
 
 
-//MARK:- UICollectionView Section methods (Trending Drinks)
+//MARK:- UICollectionView Create Layout (for Trending Drinks)
 extension DrinkSearchViewController {
 
     func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
@@ -455,4 +438,14 @@ extension DrinkSearchViewController {
 
         return layout
     }
+}
+
+
+//MARK:- Set Cell Image (for Search Results TableView and Trending Drinks CollectionView)
+extension DrinkSearchViewController {
+    
+    
+    
+    
+    
 }
