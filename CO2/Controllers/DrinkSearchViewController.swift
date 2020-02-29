@@ -38,15 +38,14 @@ class DrinkSearchViewController: UIViewController {
     //Start fetch of data
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         fireFetchData()
-        setUpNavigationBar()
-        
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureViewController()
+        setUpSearchController()
         configureCollectionView()
     }
     
@@ -63,6 +62,9 @@ class DrinkSearchViewController: UIViewController {
           }
           
       }
+    
+    
+    func configureViewController() { title = "Search" }
     
     
     func configureCollectionView() {
@@ -108,23 +110,17 @@ class DrinkSearchViewController: UIViewController {
     
     
     //MARK:- TableView Section methods (Search Results)
-    func setUpNavigationBar() {
+    func setUpSearchController() {
         
-        title = "Search"
+        //Create / configure onfigure Search Controller
+        let sc = UISearchController(searchResultsController: nil)
+        sc.searchResultsUpdater = self
+        sc.searchBar.delegate = self
+        sc.searchBar.placeholder = "Search by cocktail (e.g. Margarita)"
+        sc.obscuresBackgroundDuringPresentation = false
         
-        DispatchQueue.main.async {
-            
-            //Search Controller
-            let search = UISearchController(searchResultsController: nil)
-            search.searchBar.placeholder = "Search by cocktail (e.g. Margarita)"
-            search.obscuresBackgroundDuringPresentation = false
-            search.searchBar.delegate = self
-            search.searchResultsUpdater = self
-            self.navigationItem.searchController = search
-            self.navigationItem.hidesSearchBarWhenScrolling = false
-            self.definesPresentationContext = true
-                //this property ensures any VCs displayed from this viewController can navigate back
-        }
+        //set created search controller to navigation controller
+        navigationItem.searchController = sc
     }
 
     

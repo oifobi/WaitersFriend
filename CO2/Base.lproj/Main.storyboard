@@ -422,7 +422,7 @@
         <!--Top Rated-->
         <scene sceneID="U91-JJ-mg5">
             <objects>
-                <navigationController storyboardIdentifier="TableViewNavController" automaticallyAdjustsScrollViewInsets="NO" id="lu1-p8-h7M" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="DrinksTableViewNavController" automaticallyAdjustsScrollViewInsets="NO" id="lu1-p8-h7M" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Top Rated" image="hand.thumbsup.fill" catalog="system" id="DPM-VO-zwy"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="M82-aM-3mp">
