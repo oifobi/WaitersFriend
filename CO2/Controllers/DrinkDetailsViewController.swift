@@ -180,7 +180,6 @@ class DrinkDetailsViewController: UIViewController {
     @objc func performFetchDrink() {
         let endpoint = EndPoint.random
         NetworkManager.shared.fetchDrink(from: endpoint, using: nil) { [weak self] (result) in
-            
             guard let self = self else { return }
             
             switch result {
@@ -199,18 +198,16 @@ class DrinkDetailsViewController: UIViewController {
     
     
     @objc func performFetchDrinksImage() {
-        
-        //start / display activity spinner
         spinner.startSpinner(viewController: self)
 
         if let imageURL = drink?.imageURL {
-            NetworkManager.shared.fetchDrinkImage(with: imageURL) { (fetchedImage, error) in
+            NetworkManager.shared.fetchDrinkImage(with: imageURL) { [weak self] (fetchedImage, error) in
+                guard let self = self else { return }
                 
                 if let image = fetchedImage {
                     self.drinkImage = image
                 }
                 
-                //Stop and hide activity spinner
                 self.spinner.stopSpinner()
                 
                 //catch any errors fetching image

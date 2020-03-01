@@ -27,7 +27,13 @@ class DrinkCollectionViewCell: UICollectionViewCell {
     
 
     func setImage(with urlString: String) {
-        NetworkManager.shared.fetchDrinkImage(with: urlString) { (fetchedImage, error) in
+        cellImageView.image = nil
+        startActivityIndicator()
+        
+        NetworkManager.shared.fetchDrinkImage(with: urlString) { [weak self] (fetchedImage, error) in
+            guard let self = self else { return }
+            self.stopActivityIndicator()
+            
             if let fetchedImage = fetchedImage {
                 
                 DispatchQueue.main.async {
@@ -44,14 +50,18 @@ class DrinkCollectionViewCell: UICollectionViewCell {
     
     
     func startActivityIndicator() {
-        cellActivityIndicatorView.isHidden = false
-        cellActivityIndicatorView.startAnimating()
+        DispatchQueue.main.async {
+            self.cellActivityIndicatorView.alpha = 1
+            self.cellActivityIndicatorView.startAnimating()
+        }
     }
     
     
     func stopActivityIndicator() {
-        cellActivityIndicatorView.isHidden = true
-        cellActivityIndicatorView.stopAnimating()
+        DispatchQueue.main.async {
+            self.cellActivityIndicatorView.alpha = 0
+            self.cellActivityIndicatorView.stopAnimating()
+        }
     }
 
 }

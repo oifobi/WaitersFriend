@@ -81,8 +81,6 @@ class DrinkSearchViewController: UIViewController {
     //MARK:- CollectionView Data Fetching methods
     //Fetch Recent Drinks
     @objc func performFetchRecentDrinks() {
-        
-        //create / start activity spinner
         spinner.startSpinner(viewController: self)
 
         //fire fetch recent drinks list method
@@ -126,16 +124,11 @@ class DrinkSearchViewController: UIViewController {
     //MARK:- TableView Data Fetching methods
     //Fetch Selected Base Ingredient Drinks List (drinks made wih specific Base ingredient)
     @objc func performFetchDrinksList(for ingredient: String) {
-        
-        //start spinner
         spinner.startSpinner(viewController: self)
 
         //fire fetch list method
         NetworkManager.shared.fetchList(from: "/filter.php", using: [URLQueryItem(name: "i", value: ingredient)]) { [weak self] (fetchedList) in
-            
             guard let self = self else { return }
-            
-            //Stop and remove activity spinnner
             self.spinner.stopSpinner()
             
             switch fetchedList {
@@ -155,7 +148,6 @@ class DrinkSearchViewController: UIViewController {
     func performSearchForDrinks(from endpoint: String, queryName: String, queryValue: String) {
         
         NetworkManager.shared.fetchDrinks(from: endpoint, using: [URLQueryItem(name: queryName, value: queryValue)]) { [weak self] (result) in
-            
             guard let self = self else { return }
             
             switch result {
@@ -177,10 +169,11 @@ class DrinkSearchViewController: UIViewController {
         DispatchQueue.main.async {
             if view == "collectionView" {
                 self.trendingDrinksCollectionView.reloadData()
+                self.view.bringSubviewToFront(self.trendingDrinksCollectionView)
             
             } else if view == "tableView" {
                 self.searchDrinksTableView.reloadData()
-                self.view.bringSubviewToFront(self.searchDrinksTableView)
+//                self.view.bringSubviewToFront(self.searchDrinksTableView)
             }
         }
     }
@@ -188,17 +181,13 @@ class DrinkSearchViewController: UIViewController {
     
     //Fetch drink details in prep tp pass to DrinkDetailsVC
     @objc func performFetchDrink(with id: String) {
-        
-        //create / start activity spinner
         spinner.startSpinner(viewController: self)
 
         //fire fetch drink method
         let endpoint = EndPoint.lookup
         NetworkManager.shared.fetchDrink(from: endpoint, using: [URLQueryItem(name: QueryType.ingredient, value: id)]) { [weak self] (result) in
-        
             guard let self = self else { return }
             
-            //Stop and remove activity spinnner
             self.spinner.stopSpinner()
             
             switch result {
@@ -259,9 +248,6 @@ extension DrinkSearchViewController: UITableViewDataSource, UITableViewDelegate 
                 //Fetch and set drink image
                 if let urlString = drink.imageURL {
                     
-                    //Start cell activity indicator
-                    cell.startActivityIndicator()
-                    
                     //Update cell image to fecthedImage via main thread
                     DispatchQueue.main.async {
                         
@@ -270,15 +256,11 @@ extension DrinkSearchViewController: UITableViewDataSource, UITableViewDelegate 
                             
                             //If current cell index and table index don't match, exit fetch image method
                             currentIndexPath != indexPath {
-                            cell.stopActivityIndicator()
                             return
                         }
                         
                         //Set cell image
                         cell.setImage(with: urlString)
-                        
-                        //Stop cell activity indicator
-                        cell.stopActivityIndicator()
                         
                         //Refresh cell to display fetched image
                         cell.setNeedsLayout()
@@ -341,24 +323,17 @@ extension DrinkSearchViewController: UICollectionViewDataSource, UICollectionVie
         //Fetch and set drink image
         if let urlString = drink.imageURL {
             
-            //Show and start cell activity indicator animation
-            cell.startActivityIndicator()
-            
             //Update cell image to fecthedImage via main thread
             DispatchQueue.main.async {
                 
                 //Ensure wrong image isn't inserted into a recycled cell
                 if let currentIndexPath = self.trendingDrinksCollectionView.indexPath(for: cell),
                     currentIndexPath != indexPath {
-                    cell.stopActivityIndicator()
                     return
                 }
                 
                 //Set cell image
                 cell.setImage(with: urlString)
-                
-                //Stop acell activity indicator animation and hide
-                cell.stopActivityIndicator()
                 
                 //Refresh cell to display fetched image
                 cell.setNeedsLayout()
@@ -438,14 +413,4 @@ extension DrinkSearchViewController {
 
         return layout
     }
-}
-
-
-//MARK:- Set Cell Image (for Search Results TableView and Trending Drinks CollectionView)
-extension DrinkSearchViewController {
-    
-    
-    
-    
-    
 }

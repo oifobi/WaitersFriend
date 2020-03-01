@@ -16,8 +16,10 @@ class DrinksTableViewController: UITableViewController {
         static let Favorites = 3
     }
     
+    
     //For drinks fetched from Top Rated API and for storing Favorite drinks
     var drinks: [Drink]?
+    var topRatedDrinksFetched = false
     
     //Property to store Table section index
     var tableSectionsIndex: [(key: Substring, value: [Drink])]?
@@ -25,10 +27,12 @@ class DrinksTableViewController: UITableViewController {
     //create spinner
     let spinner = SpinnerViewController()
     
+    
     //MARK:- Built in view management methods
     override func viewWillAppear(_ animated: Bool) {
         configureTableView()
     }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,45 +42,55 @@ class DrinksTableViewController: UITableViewController {
 
     }
     
+    
     //MARK:- Custom Get Data / setup UI methods
     func configureTableView() {
         
         switch navigationController?.tabBarItem.tag {
         
-        //Fetch Top Rated data
         case TabBarItem.TopRated:
-            self.title = "Top Rated"
-            if drinks == nil {
-                performSelector(inBackground: #selector(performFetchDrinks), with: nil)
-            }
+            configureTopRated()
             
-        //Load + Display favorite drinks data
+
         case TabBarItem.Favorites:
-            self.title = "Favorites"
-            drinks = DataPersistenceManager.favorites
-            updateUI()
-            
-            if DataPersistenceManager.favorites.count == 0 {
-                presentAlertVC(title: "\(Emoji.sadFace) Favorites is lonely", message: WFSuccess.noFavorites.rawValue, buttonText: "OK")
-            }
+            configureFavorites()
             
         default:
             break
         }
     }
     
+    
+    func configureTopRated() {
+        self.title = "Top Rated"
+        
+        if !topRatedDrinksFetched {
+            topRatedDrinksFetched = true
+//            if drinks == nil {
+            performSelector(inBackground: #selector(performFetchDrinks), with: nil)
+        }
+    }
+    
+    
+    func configureFavorites() {
+        self.title = "Favorites"
+        drinks = DataPersistenceManager.favorites
+        updateUI()
+        
+        if DataPersistenceManager.favorites.count == 0 {
+            presentAlertVC(title: "\(Emoji.sadFace) Favorites is lonely", message: WFSuccess.noFavorites.rawValue, buttonText: "OK")
+        }
+    }
+    
+    
     //Fire fetch reequest and pass in drinks list paramter, based on tab item selected by user
     @objc func performFetchDrinks() {
-        
-        //create / start activity spinner
         spinner.startSpinner(viewController: self)
 
         //fire fetch drinks list method
         let endpoint = EndPoint.popular
         NetworkManager.shared.fetchDrinks(from: endpoint, using: nil) { [weak self] (result) in
-            
             guard let self = self else { return }
-            
             self.spinner.stopSpinner()
             
             switch result {
@@ -91,8 +105,8 @@ class DrinksTableViewController: UITableViewController {
                 }))
             }
         }
-
     }
+    
     
     func updateUI() {
         DispatchQueue.main.async {
@@ -101,6 +115,7 @@ class DrinksTableViewController: UITableViewController {
             self.view.bringSubviewToFront(self.tableView)
         }
     }
+    
     
     //setup tableViewIndex
     func createTableSectionsIndex() {
@@ -112,6 +127,7 @@ class DrinksTableViewController: UITableViewController {
         tableSectionsIndex = dict.sorted(by: {$0.key < $1.key})
     }
 
+    
     //MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         guard tableSectionsIndex != nil else { return 0 }
@@ -176,9 +192,6 @@ class DrinksTableViewController: UITableViewController {
                 //Fetch and set drink image
                 if let urlString = drink.imageURL {
                     
-                    //Start cell activity indicator
-                    cell.startActivityIndicator()
-                    
                     //Update cell image to fecthedImage via main thread
                     DispatchQueue.main.async {
                         
@@ -193,13 +206,9 @@ class DrinksTableViewController: UITableViewController {
                         //Set cell image
                         cell.setImage(with: urlString)
                         
-                        //Stop cell activity indicator
-                        cell.stopActivityIndicator()
-                        
                         //Refresh cell to display fetched image
                         cell.setNeedsLayout()
                     }
-                    
                 }
             }
         }
