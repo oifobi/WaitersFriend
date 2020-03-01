@@ -116,7 +116,6 @@ class DrinkDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -126,9 +125,9 @@ class DrinkDetailsViewController: UIViewController {
         //Reset segmented control default state
         segmentControlIndex = 0
         
-        //unset drink image so it's not loaded on navigation back VC
-        drinkImage = nil
-        drinkDetailsImageView.setNeedsDisplay()
+//        //unset drink image so it's not loaded on navigation back VC
+//        drinkImage = nil
+//        drinkDetailsImageView.setNeedsDisplay()
     }
     
     
@@ -143,7 +142,6 @@ class DrinkDetailsViewController: UIViewController {
                 
                 //ovveride hideBottomBarOnPush (from storyboard)
                 self.tabBarController?.tabBar.isHidden = false
-                
                 self.performSelector(inBackground: #selector(self.performFetchDrink), with: nil)
             }
 
@@ -198,17 +196,17 @@ class DrinkDetailsViewController: UIViewController {
     
     
     @objc func performFetchDrinksImage() {
+        self.drinkImage = nil
         spinner.startSpinner(viewController: self)
 
         if let imageURL = drink?.imageURL {
             NetworkManager.shared.fetchDrinkImage(with: imageURL) { [weak self] (fetchedImage, error) in
                 guard let self = self else { return }
                 
+                self.spinner.stopSpinner()
                 if let image = fetchedImage {
                     self.drinkImage = image
                 }
-                
-                self.spinner.stopSpinner()
                 
                 //catch any errors fetching image
                 if let error = error {

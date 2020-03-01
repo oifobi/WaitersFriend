@@ -17,9 +17,16 @@ class DrinksTableViewController: UITableViewController {
     }
     
     
-    //For drinks fetched from Top Rated API and for storing Favorite drinks
-    var drinks: [Drink]?
-    var topRatedDrinksFetched = false
+    //For drinks fetched from Top Rated API
+    var drinks = [Drink]()
+    
+    //track if favorites screen is dsiplayed
+    var isFavoritesDisplayed = false {
+        
+        didSet {
+            print("isFavoritesDisplayed: \(isFavoritesDisplayed)\n")
+        }
+    }
     
     //Property to store Table section index
     var tableSectionsIndex: [(key: Substring, value: [Drink])]?
@@ -39,7 +46,6 @@ class DrinksTableViewController: UITableViewController {
         
         //Set self as delegate for when favorites are modified
         DataPersistenceManager.shared.delegate = self
-
     }
     
     
@@ -51,7 +57,6 @@ class DrinksTableViewController: UITableViewController {
         case TabBarItem.TopRated:
             configureTopRated()
             
-
         case TabBarItem.Favorites:
             configureFavorites()
             
@@ -62,28 +67,32 @@ class DrinksTableViewController: UITableViewController {
     
     
     func configureTopRated() {
+        print("isFavoritesDisplayed: \(isFavoritesDisplayed)\n")
+        
+        //trigger fetch of top rated drinks, if favorites screen not displayed
+        guard !isFavoritesDisplayed else { return }
         self.title = "Top Rated"
         
-        if !topRatedDrinksFetched {
-            topRatedDrinksFetched = true
-//            if drinks == nil {
+        if drinks.count == 0 {
             performSelector(inBackground: #selector(performFetchDrinks), with: nil)
         }
     }
     
     
     func configureFavorites() {
-        self.title = "Favorites"
-        drinks = DataPersistenceManager.favorites
-        updateUI()
+        isFavoritesDisplayed = true
         
+        self.title = "Favorites"
         if DataPersistenceManager.favorites.count == 0 {
             presentAlertVC(title: "\(Emoji.sadFace) Favorites is lonely", message: WFSuccess.noFavorites.rawValue, buttonText: "OK")
+        
+        } else {
+            updateUI()
         }
     }
     
     
-    //Fire fetch reequest and pass in drinks list paramter, based on tab item selected by user
+    //Fire request to fetch top rated drinks
     @objc func performFetchDrinks() {
         spinner.startSpinner(viewController: self)
 
@@ -112,19 +121,25 @@ class DrinksTableViewController: UITableViewController {
         DispatchQueue.main.async {
             self.createTableSectionsIndex()
             self.tableView.reloadData()
-            self.view.bringSubviewToFront(self.tableView)
         }
     }
     
     
     //setup tableViewIndex
     func createTableSectionsIndex() {
-        guard drinks != nil else { return }
-        
-        //create dictionary of letters to for index (based on first letter of Drinks name), then sort by keys
-        let dict = Dictionary(grouping: drinks!, by: { $0.name.prefix(1)})
-        
-        tableSectionsIndex = dict.sorted(by: {$0.key < $1.key})
+        switch navigationController?.tabBarItem.tag {
+
+        case TabBarItem.TopRated:
+            let dict = Dictionary(grouping: drinks, by: { $0.name.prefix(1)})
+            tableSectionsIndex = dict.sorted(by: {$0.key < $1.key})
+
+        case TabBarItem.Favorites:
+            let dict = Dictionary(grouping: DataPersistenceManager.favorites, by: { $0.name.prefix(1)})
+            tableSectionsIndex = dict.sorted(by: {$0.key < $1.key})
+
+        default:
+            break
+        }
     }
 
     
@@ -259,7 +274,6 @@ class DrinksTableViewController: UITableViewController {
 //MARK:- Protocol delegate method to update drinks property when user modifies favorites from DrinksTableVC (Favorites mode)
 extension DrinksTableViewController: FavoriteDrinksDelegate {
     func updateDrinks(with favorites: [Drink]) {
-        self.drinks = favorites
         updateUI()
     }
 }
