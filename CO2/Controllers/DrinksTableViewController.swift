@@ -20,7 +20,7 @@ class DrinksTableViewController: UITableViewController {
     //For drinks fetched from Top Rated API
     var drinks = [Drink]()
     
-    //track if favorites screen is dsiplayed
+    static var favorites = [Drink]()
     var isFavoritesDisplayed = false {
         
         didSet {
@@ -45,7 +45,7 @@ class DrinksTableViewController: UITableViewController {
         super.viewDidLoad()
         
         //Set self as delegate for when favorites are modified
-        DataPersistenceManager.shared.delegate = self
+//        DataPersistenceManager.shared.delegate = self
     }
     
     
@@ -73,7 +73,7 @@ class DrinksTableViewController: UITableViewController {
         guard !isFavoritesDisplayed else { return }
         self.title = "Top Rated"
         
-        if drinks.count == 0 {
+        if drinks.isEmpty {
             performSelector(inBackground: #selector(performFetchDrinks), with: nil)
         }
     }
@@ -81,13 +81,25 @@ class DrinksTableViewController: UITableViewController {
     
     func configureFavorites() {
         isFavoritesDisplayed = true
-        
         self.title = "Favorites"
-        if DataPersistenceManager.favorites.count == 0 {
-            presentAlertVC(title: "\(Emoji.sadFace) Favorites is lonely", message: WFSuccess.noFavorites.rawValue, buttonText: "OK")
         
-        } else {
-            updateUI()
+        //Load Favorite drinks data (if any) from user default
+        DataPersistenceManager.shared.getSavedFavorites() { (result) in
+            
+            switch result {
+            case .success(let favorites):
+                DrinksTableViewController.favorites = favorites
+                
+                if DrinksTableViewController.favorites.isEmpty {
+                    self.presentAlertVC(title: "\(Emoji.sadFace) Favorites is lonely", message: WFSuccess.noFavorites.rawValue, buttonText: "OK")
+                
+                } else {
+                    self.updateUI()
+                }
+                
+            case .failure(let error):
+                print(error.rawValue)
+            }
         }
     }
     
@@ -134,7 +146,7 @@ class DrinksTableViewController: UITableViewController {
             tableSectionsIndex = dict.sorted(by: {$0.key < $1.key})
 
         case TabBarItem.Favorites:
-            let dict = Dictionary(grouping: DataPersistenceManager.favorites, by: { $0.name.prefix(1)})
+            let dict = Dictionary(grouping: DrinksTableViewController.favorites, by: { $0.name.prefix(1)})
             tableSectionsIndex = dict.sorted(by: {$0.key < $1.key})
 
         default:
@@ -244,11 +256,24 @@ class DrinksTableViewController: UITableViewController {
     //Enable swipe to delete on table row for Favorites
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard navigationController?.tabBarItem.tag == TabBarItem.Favorites else { return }
-            if editingStyle == .delete {
-                
-                // Delete the drink object from respective data sources (Favorites and current VC)
-                DataPersistenceManager.favorites.remove(at: indexPath.row)
+        
+        if editingStyle == .delete {
+    
+            // Delete the drink object from favorites
+//            let section = tableView.indexPathForSelectedRow!.section
+            let row = indexPath.row
+
+            DrinksTableViewController.favorites.remove(at: row)
+//            tableView.deleteRows(at: [indexPath], with: .left)
+            updateUI()
+            
+            //update Saved favorites data object, or print error if error
+            let favorite = DrinksTableViewController.favorites[indexPath.item]
+            DataPersistenceManager.shared.updateFavorites(with: favorite, action: .remove) { (error) in
+                guard let error = error else {return}
+                print(error.rawValue)
             }
+        }
     }
     
     
@@ -273,7 +298,7 @@ class DrinksTableViewController: UITableViewController {
 
 //MARK:- Protocol delegate method to update drinks property when user modifies favorites from DrinksTableVC (Favorites mode)
 extension DrinksTableViewController: FavoriteDrinksDelegate {
-    func updateDrinks(with favorites: [Drink]) {
-        updateUI()
+    func update() {
+
     }
 }

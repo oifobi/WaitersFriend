@@ -9,7 +9,7 @@
 import UIKit
 
 //Data structure of Drink (Full details)
-struct Drink: Codable {
+struct Drink: Codable, Hashable {
     
     //Define app data properties / fields
     let id: String

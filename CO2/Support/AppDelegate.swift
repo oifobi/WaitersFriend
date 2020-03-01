@@ -14,19 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        
-        //Load Favorite drinks data (if any) from user default
-        DataPersistenceManager.shared.loadFavorites() { (result) in
-            
-            switch result {
-            case .success(let message):
-                print(message.rawValue)
-                
-            case .failure(let error):
-                print(error.rawValue)
-            }
-        }
-        
         return true
     }
 
@@ -46,20 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillResignActive(_ application: UIApplication) {}
 
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        
-        //Save Favorite drinks data to user defaults
-        DataPersistenceManager.shared.saveFavorites() { (result) in
-            
-            switch result {
-            case .success(let message):
-                print(message.rawValue)
-                
-            case .failure(let error):
-                print(error.rawValue)
-            }
-        }
-    }
+    func applicationDidEnterBackground(_ application: UIApplication) {}
 
     //MARK:- App Delegate stubs
     func applicationWillEnterForeground(_ application: UIApplication) {}
