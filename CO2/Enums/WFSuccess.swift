@@ -11,9 +11,9 @@ import Foundation
 enum WFSuccess: String {
     
     //updating favorites messages
-    case favoriteSaved = "saved to Favorites."
+    case favoriteAdded = "saved to Favorites."
     case favoriteRemoved = "removed from Favorites."
+    case favoritesSaved = "Favorites succeesfully saved to user defaults"
     case favoritesLoaded = "Favorites succeesfully loaded from user defaults"
     case noFavorites = "You have no Favorite drinks.\n To add drinks to Favorites, tap on ❤️ in drink details."
-    
 }
