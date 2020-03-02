@@ -33,4 +33,12 @@ extension UIViewController {
             self.present(ac, animated: true)
         }
     }
+    
+    
+    func showEmptyState(with text: String, in parentView: UIView) {
+        let emptyStateView = WFEmptyStateView(labelText: text)
+        emptyStateView.frame = parentView.bounds
+        parentView.addSubview(emptyStateView)
+    }
+    
 }

@@ -15,5 +15,5 @@ enum WFSuccess: String {
     case favoriteRemoved = "removed from Favorites."
     case favoritesSaved = "Favorites succeesfully saved to user defaults"
     case favoritesLoaded = "Favorites succeesfully loaded from user defaults"
-    case noFavorites = "You have no Favorite drinks.\n To add drinks to Favorites, tap on ❤️ in drink details."
+    case noFavorites = "You have 0 Favorites.\nTap ❤️ on the Cocktail Details screen to add Favorites."
 }

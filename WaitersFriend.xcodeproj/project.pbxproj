@@ -17,6 +17,8 @@
 		2A5B0FF12339F03D007C977B /* DrinkList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5B0FF02339F03D007C977B /* DrinkList.swift */; };
 		2A75D36E2351831600FC2FB2 /* DrinkSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A75D36D2351831600FC2FB2 /* DrinkSearchViewController.swift */; };
 		2A768EEC233D02EF00D694C7 /* DrinkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A768EEB233D02EF00D694C7 /* DrinkTableViewCell.swift */; };
+		2A9F8E00240CF3A4006CC7CC /* WFEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9F8DFF240CF3A4006CC7CC /* WFEmptyStateView.swift */; };
+		2A9F8E02240D0B19006CC7CC /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9F8E01240D0B19006CC7CC /* UITableView+Extension.swift */; };
 		2AA67067232632B9006534F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA67066232632B9006534F0 /* AppDelegate.swift */; };
 		2AA6706C232632B9006534F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2AA6706A232632B9006534F0 /* Main.storyboard */; };
 		2AA6706E232632BA006534F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2AA6706D232632BA006534F0 /* Assets.xcassets */; };
@@ -43,6 +45,8 @@
 		2A5B0FF02339F03D007C977B /* DrinkList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkList.swift; sourceTree = "<group>"; };
 		2A75D36D2351831600FC2FB2 /* DrinkSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkSearchViewController.swift; sourceTree = "<group>"; };
 		2A768EEB233D02EF00D694C7 /* DrinkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTableViewCell.swift; sourceTree = "<group>"; };
+		2A9F8DFF240CF3A4006CC7CC /* WFEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WFEmptyStateView.swift; sourceTree = "<group>"; };
+		2A9F8E01240D0B19006CC7CC /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
 		2AA67063232632B9006534F0 /* Waiter's Friend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Waiter's Friend.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AA67066232632B9006534F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2AA6706B232632B9006534F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -98,6 +102,7 @@
 				2A768EEB233D02EF00D694C7 /* DrinkTableViewCell.swift */,
 				2A0119C4233D108000C5C0A6 /* DrinkCollectionViewCell.swift */,
 				2AF1704B2346D3CC00DD206A /* DrinkCollectionViewCell.xib */,
+				2A9F8DFF240CF3A4006CC7CC /* WFEmptyStateView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -169,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				2A22B433240622F400FA7056 /* UIViewController+Extension.swift */,
+				2A9F8E01240D0B19006CC7CC /* UITableView+Extension.swift */,
 				2A448106233F568500BE602D /* UIView+Extensions.swift */,
 			);
 			path = Extensions;
@@ -248,9 +254,11 @@
 			files = (
 				2A22B434240622F400FA7056 /* UIViewController+Extension.swift in Sources */,
 				2ACEB3B8234CB517006D47B5 /* DataPersistenceManager.swift in Sources */,
+				2A9F8E02240D0B19006CC7CC /* UITableView+Extension.swift in Sources */,
 				2AA670AB2327A3D4006534F0 /* NetworkManager.swift in Sources */,
 				2A0119C5233D108000C5C0A6 /* DrinkCollectionViewCell.swift in Sources */,
 				2A22B437240639E200FA7056 /* WFError.swift in Sources */,
+				2A9F8E00240CF3A4006CC7CC /* WFEmptyStateView.swift in Sources */,
 				2A448107233F568500BE602D /* UIView+Extensions.swift in Sources */,
 				2AA6709523263CD4006534F0 /* DrinkDetailsViewController.swift in Sources */,
 				2A5B0FF12339F03D007C977B /* DrinkList.swift in Sources */,

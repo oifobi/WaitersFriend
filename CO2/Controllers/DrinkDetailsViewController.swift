@@ -120,11 +120,12 @@ class DrinkDetailsViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-//        navigationController?.popToRootViewController(animated: false)
         
         //Reset segmented control default state
         segmentControlIndex = 0
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {}
     
     
     //MARK:- Custom View management
@@ -146,7 +147,7 @@ class DrinkDetailsViewController: UIViewController {
             
             //Setup tableView
             //Hide footer section
-            self.ingredientsTableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+            self.ingredientsTableView.hideEmptyCells()
             
             //Get ingredients / meassure
             self.loadIngredientsTableData()

@@ -42,6 +42,12 @@ class DrinksTableViewController: UITableViewController {
     }
     
     
+    override func viewDidDisappear(_ animated: Bool) {
+        self.view = nil
+            //reset views
+    }
+    
+    
     //MARK:- Custom Get Data / setup UI methods
     func configureTableView() {
         
@@ -80,16 +86,17 @@ class DrinksTableViewController: UITableViewController {
             
             switch result {
             case .success(let success):
-                if success == .noFavorites || DataPersistenceManager.shared.favorites.isEmpty {
-                   self.presentAlertVC(title: "\(Emoji.sadFace) Favorites is lonely", message: WFSuccess.noFavorites.rawValue, buttonText: "OK")
+                if success == .noFavorites {
+                    self.showEmptyState(with: success.rawValue, in: self.view)
+                    self.tableView.hideEmptyCells()
 
                 } else {
+                    
                     self.updateUI()
                 }
                 
             case .failure(let error):
                 print(error.rawValue)
-                
             }
         }
     }
@@ -124,6 +131,8 @@ class DrinksTableViewController: UITableViewController {
         DispatchQueue.main.async {
             self.createTableSectionsIndex()
             self.tableView.reloadData()
+            self.view.bringSubviewToFront(self.tableView)
+                //brings table view to front to hide empty state if shown
         }
     }
     

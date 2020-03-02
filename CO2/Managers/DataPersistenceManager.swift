@@ -74,7 +74,14 @@ class DataPersistenceManager {
         do {
             let encoder = JSONDecoder()
             DataPersistenceManager.shared.favorites = try encoder.decode([Drink].self, from: data)
-            completion(.success(.favoritesLoaded))
+            
+            if DataPersistenceManager.shared.favorites.isEmpty {
+                completion(.success(.noFavorites))
+            
+            } else  {
+                completion(.success(.favoritesLoaded))
+            }
+            
             
         } catch {
             completion(.failure(.unableToDecodeFavorites))
