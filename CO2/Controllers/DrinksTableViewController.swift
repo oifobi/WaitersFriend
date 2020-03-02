@@ -79,16 +79,17 @@ class DrinksTableViewController: UITableViewController {
         DataPersistenceManager.shared.loadSavedFavorites { (result) in
             
             switch result {
-            case .success:
-                if DataPersistenceManager.shared.favorites.isEmpty {
-                    self.presentAlertVC(title: "\(Emoji.sadFace) Favorites is lonely", message: WFSuccess.noFavorites.rawValue, buttonText: "OK")
-                
+            case .success(let success):
+                if success == .noFavorites || DataPersistenceManager.shared.favorites.isEmpty {
+                   self.presentAlertVC(title: "\(Emoji.sadFace) Favorites is lonely", message: WFSuccess.noFavorites.rawValue, buttonText: "OK")
+
                 } else {
                     self.updateUI()
                 }
                 
             case .failure(let error):
                 print(error.rawValue)
+                
             }
         }
     }

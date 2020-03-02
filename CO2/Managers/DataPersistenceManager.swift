@@ -67,7 +67,7 @@ class DataPersistenceManager {
     func loadSavedFavorites(_ completion: @escaping (Result<WFSuccess, WFError>) -> Void) {
         
         guard let data = DataPersistenceManager.shared.defaults.object(forKey: "favorites") as? Data else {
-            completion(.failure(.noFavoritesSaved))
+            completion(.success(.noFavorites))
             return
         }
         
