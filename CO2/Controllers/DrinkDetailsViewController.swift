@@ -102,9 +102,7 @@ class DrinkDetailsViewController: UIViewController {
     }
     
     //properties to construct and save ingredients
-//    var ingredients: [(key: String, value: String)]?
     var ingredients = [(key: String, value: String)]()
-//    var measures: [(key: String, value: String)]?
     var measures = [(key: String, value: String)]()
     
     //create spinner
@@ -305,31 +303,19 @@ class DrinkDetailsViewController: UIViewController {
 //MARK:- TableView extension
 extension DrinkDetailsViewController: UITableViewDataSource, UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        ingredients?.count ?? 0
-        ingredients.count
-    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { ingredients.count }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell", for: indexPath)
         
         //set cell ingredient text
-//        if  indexPath.row < ingredients!.count {
-//            if let ingredient = ingredients?[indexPath.row] { cell.textLabel!.text = ingredient.value }
-//        }
-        
         if  indexPath.row < ingredients.count {
             let ingredient = ingredients[indexPath.row]
             cell.textLabel!.text = ingredient.value
         }
         
         //set cell measure text
-//        if  indexPath.row < measures!.count {
-//            if let measure = measures?[indexPath.row] { cell.detailTextLabel!.text = measure.value }
-//        }
-        
-        
         if  indexPath.row < measures.count {
             let measure = measures[indexPath.row]
             cell.detailTextLabel!.text = measure.value

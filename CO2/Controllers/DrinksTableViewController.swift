@@ -28,7 +28,6 @@ class DrinksTableViewController: UITableViewController {
     var isFavoritesDisplayed = false
     
     //Property to store Table section index
-//    var tableSectionsIndex: [(key: Substring, value: [Drink])]?
     var tableSectionsIndex = [(key: Substring, value: [Drink])]()
     
     //create spinner
@@ -162,21 +161,13 @@ class DrinksTableViewController: UITableViewController {
 
     
     //MARK: - Table view data source
-    override func numberOfSections(in tableView: UITableView) -> Int {
-//        guard tableSectionsIndex != nil else { return 0 }
-
-        //set number of sections based on number of section title objects
-//        return tableSectionsIndex!.count
-        return tableSectionsIndex.count
-    }
-    
+    override func numberOfSections(in tableView: UITableView) -> Int { tableSectionsIndex.count }
+        
     
     //set number of section rows based on number of drinks contained within in each section title
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        guard tableSectionsIndex != nil else { return 0 }
         
         //Get the number of rows per section by accessing the key's drinks count
-//        let section = tableSectionsIndex![section]
         let section = tableSectionsIndex[section]
         return section.value.count
     }
@@ -184,10 +175,8 @@ class DrinksTableViewController: UITableViewController {
     
     //set and display tbale section headings in tableView (Letter)
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        guard tableSectionsIndex != nil else { return "" }
         
         //Pull out the key value (Letter) and set as Section heading
-//        let title = tableSectionsIndex![section].key
         let title = tableSectionsIndex[section].key
         return String(title)
     }
@@ -195,10 +184,8 @@ class DrinksTableViewController: UITableViewController {
     
     //set titles to display in index on RHS of tableView
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-//        guard tableSectionsIndex != nil else { return [""] }
         
         //create an array of all the letters for the table index, using the keys and transform to type string
-//        let titles = tableSectionsIndex!.map( { String($0.key) } )
         let titles = tableSectionsIndex.map( { String($0.key) } )
         return titles
     }
@@ -211,45 +198,43 @@ class DrinksTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DrinkCell", for: indexPath) as! DrinkTableViewCell
         
         //get reference to the section (being shown
-//        if let section = tableSectionsIndex?[indexPath.section] {
-            let section = tableSectionsIndex[indexPath.section]
+        let section = tableSectionsIndex[indexPath.section]
+        
+        //get drinks for the section to be shown
+        let drinks = section.value
+        
+        //ensure table rows matches drinks object array since the same tableView controller is used for different calls to fetch data
+        if indexPath.row < drinks.count {
             
-            //get drinks for the section to be shown
-            let drinks = section.value
+            let drink = drinks[indexPath.row]
             
-            //ensure table rows matches drinks object array since the same tableView controller is used for different calls to fetch data
-            if indexPath.row < drinks.count {
+            //set cell lables text
+            cell.setTitleLabel(text: drink.name)
+            cell.setSubtitleLabel(text: drink.ingredient1 ?? "")
+            
+            //Cell image
+            //Fetch and set drink image
+            if let urlString = drink.imageURL {
                 
-                let drink = drinks[indexPath.row]
-                
-                //set cell lables text
-                cell.setTitleLabel(text: drink.name)
-                cell.setSubtitleLabel(text: drink.ingredient1 ?? "")
-                
-                //Cell image
-                //Fetch and set drink image
-                if let urlString = drink.imageURL {
+                //Update cell image to fecthedImage via main thread
+                DispatchQueue.main.async {
                     
-                    //Update cell image to fecthedImage via main thread
-                    DispatchQueue.main.async {
+                    //Ensure wrong image isn't inserted into a recycled cell
+                    if let currentIndexPath = self.tableView.indexPath(for: cell),
                         
-                        //Ensure wrong image isn't inserted into a recycled cell
-                        if let currentIndexPath = self.tableView.indexPath(for: cell),
-                            
-                            //If current cell index and table index don't match, exit fetch image method
-                            currentIndexPath != indexPath {
-                            return
-                        }
-                        
-                        //Set cell image
-                        cell.setImage(with: urlString)
-                        
-                        //Refresh cell to display fetched image
-                        cell.setNeedsLayout()
+                        //If current cell index and table index don't match, exit fetch image method
+                        currentIndexPath != indexPath {
+                        return
                     }
+                    
+                    //Set cell image
+                    cell.setImage(with: urlString)
+                    
+                    //Refresh cell to display fetched image
+                    cell.setNeedsLayout()
                 }
             }
-//        }
+        }
         
         return cell
     }
@@ -284,14 +269,11 @@ class DrinksTableViewController: UITableViewController {
         // Get the new view controller using segue.destination
         if segue.identifier == "DrinksTableVCToDrinkDetailsVC" {
             
-            let vc = segue.destination as! DrinkDetailsViewController
-            
             let sectionIndexOfRowTapped = tableView.indexPathForSelectedRow!.section
             let indexOfRowTapped = tableView.indexPathForSelectedRow!.row
-//            let indexItem = tableSectionsIndex?[sectionIndexOfRowTapped]
             let indexItem = tableSectionsIndex[sectionIndexOfRowTapped]
 
-//            vc.drink = indexItem?.value[indexOfRowTapped]
+            let vc = segue.destination as! DrinkDetailsViewController
             vc.drink = indexItem.value[indexOfRowTapped]
             vc.sender = ViewControllerSender.drinksTableVC
         }

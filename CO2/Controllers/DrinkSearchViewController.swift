@@ -10,7 +10,9 @@ import UIKit
 
 class DrinkSearchViewController: UIViewController {
     
-    enum Section { case main }
+    enum TableViewSection {
+        case main
+    }
     
     
     enum View {
@@ -35,15 +37,13 @@ class DrinkSearchViewController: UIViewController {
     
     //Properties for storing feteched drink/s data objects
     //For CollectionView
-//    var recentDrinks: [Drink]? //Recent drinks
     var recentDrinks = [Drink]() //Recent drinks
     
     //For TableView
-//    var drinks[Drink]? //Search drinks
     var drinks = [Drink]() //Search drinks
     var ingredientDrinks: [DrinkList]? //List of drinks made with base ingredient
     var currentIngredient = String() //for tracking currently selected base ingredient
-    var tableViewDataSource: UITableViewDiffableDataSource<Section, Drink>!
+    var tableViewDataSource: UITableViewDiffableDataSource<TableViewSection, Drink>!
     
     //for searching
     var filteredDrinks = [Drinks]()
@@ -71,25 +71,25 @@ class DrinkSearchViewController: UIViewController {
         configureViewController()
         createSearchController()
         configureCollectionView()
+        configureTableViewCell()
+            //new method for configuring cells in iOS13
     }
     
     
-    //Data management
+    //MARK: ViewController setup
     func fireFetchData() {
         
         //Recents Drink data
-//        if recent Drinks == nil {
-            performSelector(inBackground: #selector(performFetchRecentDrinks), with: nil)
-//        }
-        
+        performSelector(inBackground: #selector(performFetchRecentDrinks), with: nil)
+
         //Drink name data
-//        if drinks == nil {
-            performSearchForDrinks(from: NetworkCallEndPoint.search, queryName: NetworkCallQueryType.drinkName, queryValue: Ingredient.margarita)
-//        }
+        guard drinks.isEmpty else { return }
+                //TODO: TODO move to inside method call when time comes
+        
+        performSearchForDrinks(from: NetworkCallEndPoint.search, queryName: NetworkCallQueryType.drinkName, queryValue: Ingredient.margarita)
     }
     
     
-    //MARK: ViewController configuration
     func configureViewController() { title = "Search" }
     
     
@@ -121,19 +121,30 @@ class DrinkSearchViewController: UIViewController {
     }
     
     
-    //tableView setup
+    //tableViewCell setup
     func configureTableViewCell() {
         
-        
+        tableViewDataSource =  UITableViewDiffableDataSource<TableViewSection, Drink>(tableView: self.drinksTableView, cellProvider: {
+            (tableView, indexPath, drink) -> UITableViewCell? in
+            
+            //same code tha usually goes in cellforRowAt dataSource delegate
+            let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.tableViewCell, for: indexPath) as! DrinkTableViewCell
+            
+            //set cell lables text
+            cell.setTitleLabel(text: drink.name)
+            cell.setSubtitleLabel(text: drink.ingredient1 ?? "")
+            
+            //Fetch and set drink image
+            if let urlString = drink.imageURL {
+                cell.setImage(with: urlString)
+                cell.setNeedsLayout()
+            }
+            
+            return cell
+        })
     }
     
-    
-    
-    
-    
-
-    
-    
+ 
     //MARK: - UI Management
     func updateUI(for view: String) {
         
@@ -148,6 +159,8 @@ class DrinkSearchViewController: UIViewController {
     //MARK:- CollectionView Data Fetching methods
     //Fetch Recent Drinks
     @objc func performFetchRecentDrinks() {
+        guard recentDrinks.isEmpty else { return }
+        
         spinner.startSpinner(viewController: self)
 
         //fire fetch recent drinks list method
@@ -160,7 +173,6 @@ class DrinkSearchViewController: UIViewController {
             switch result {
             case .success(let drinks):
                 self.recentDrinks = drinks
-//                self.trendingDrinks?.sort(by: {$0.name < $1.name} )
                 self.recentDrinks.sort(by: {$0.name < $1.name} )
                 self.updateUI(for: View.collection)
                 
@@ -206,9 +218,13 @@ class DrinkSearchViewController: UIViewController {
             switch result {
             case .success(let drinks):
                 self.drinks = drinks
-//                self.drinks?.sort(by: {$0.name < $1.name} )
                 self.drinks.sort(by: {$0.name < $1.name} )
-                self.updateUI(for: View.table)
+                self.updateTableViewSnapshotData(with: self.drinks)
+                    
+                
+//                self.updateUI(for: View.table)
+                
+                
                 
             case .failure(let error):
                 print(error.rawValue)
@@ -230,72 +246,24 @@ extension DrinkSearchViewController: UISearchResultsUpdating, UISearchBarDelegat
 }
 
 
-//MARK:- TableView Data Source / Delegate
-extension DrinkSearchViewController: UITableViewDataSource, UITableViewDelegate {
+//MARK:- TableView DataSource Methods
+extension DrinkSearchViewController {
     
-    //TableViewDelegate Methods
-    func numberOfSections(in tableView: UITableView) -> Int { 1 }
-    
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        guard let drinks = drinks else { return 0 }
-        return drinks.count
-        
+    //call after fetching drinks data to create table cells
+    func updateTableViewSnapshotData(with drinks: [Drink]) {
+        var snapshot = NSDiffableDataSourceSnapshot<TableViewSection, Drink>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(drinks)
+        self.tableViewDataSource.apply(snapshot, animatingDifferences: true, completion: nil)
     }
-    
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        //point cellForRowAt method to custom cell class by down casting to custom class
-        let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.tableViewCell, for: indexPath) as! DrinkTableViewCell
-        
-        //Get reference to row
-//        if indexPath.row < drinks!.count {
-        if indexPath.row < drinks.count {
-            
-            //Get drink
-//            if let drink = drinks?[indexPath.row] {
-            let drink = drinks[indexPath.row]
-                
-                //set cell lables text
-                cell.setTitleLabel(text: drink.name)
-                cell.setSubtitleLabel(text: drink.ingredient1 ?? "")
-                
-                //set cell image
-                //Fetch and set drink image
-                if let urlString = drink.imageURL {
-                    
-                    //Update cell image to fecthedImage via main thread
-                    DispatchQueue.main.async {
-                        
-                        //Ensure wrong image isn't inserted into a recycled cell
-                        if let currentIndexPath = self.drinksTableView.indexPath(for: cell),
-                            
-                            //If current cell index and table index don't match, exit fetch image method
-                            currentIndexPath != indexPath {
-                            return
-                        }
-                        
-                        //Set cell image
-                        cell.setImage(with: urlString)
-                        
-                        //Refresh cell to display fetched image
-                        cell.setNeedsLayout()
-                    }
-                }
-//            }
-        }
-        
-        return cell
-    }
-    
-    
+}
+
+
+//MARK:- TableView Delegate methods
+extension DrinkSearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        guard drinks != nil else { return }
 
         if let vc = storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as? DrinkDetailsViewController {
-               
-//            vc.drink = drinks![indexPath.item]
             vc.drink = drinks[indexPath.item]
             vc.sender = ViewControllerSender.drinkSearchVC
             navigationController?.pushViewController(vc, animated: true)
@@ -304,27 +272,24 @@ extension DrinkSearchViewController: UITableViewDataSource, UITableViewDelegate 
 }
 
 
-//MARK:- CollectionView Data Source / Delegate
-extension DrinkSearchViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+
+
+
+//MARK:- CollectionView Data Source methods
+extension DrinkSearchViewController: UICollectionViewDataSource {
     
     // Define number of sections
     func numberOfSections(in collectionView: UICollectionView) -> Int { 1 }
     
-
     //Define number of items per section
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        guard let recentDrinks = trendingDrinks else { return 0 }
-        return recentDrinks.count
-    }
-        
-    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { recentDrinks.count }
+
     //Define cells / content per section item
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: Identifier.collectionViewCell, for: indexPath) as? DrinkCollectionViewCell else { preconditionFailure("Invalid cell type") }
         
-//        guard let drink = trendingDrinks?[indexPath.item] else { preconditionFailure("Drinks property is nil") }
         let drink = recentDrinks[indexPath.item]
         
         //Set cell properties
@@ -355,15 +320,16 @@ extension DrinkSearchViewController: UICollectionViewDataSource, UICollectionVie
         
         return cell
     }
-    
+}
+
+
+//MARK:- CollectionView Delegate methods
+extension DrinkSearchViewController: UICollectionViewDelegate {
     
     //Send to DrinkDetailsVC when cell tapped
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        guard trendingDrinks != nil else { return }
 
         if let vc = storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as?         DrinkDetailsViewController {
-               
-//            vc.drink = trendingDrinks![indexPath.item]
             vc.drink = recentDrinks[indexPath.item]
             vc.sender = ViewControllerSender.drinkSearchVC
             navigationController?.pushViewController(vc, animated: true)
