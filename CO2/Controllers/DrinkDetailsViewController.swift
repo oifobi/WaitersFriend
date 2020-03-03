@@ -85,17 +85,12 @@ class DrinkDetailsViewController: UIViewController {
     //MARK:- View / Class properties
     
     //Properties to receive drink object data from sender VC/s
-    var drink: Drink?
-    
-    //update view image
-    var drinkImage: UIImage? {
-        didSet  {
-            DispatchQueue.main.async {
-                self.drinkDetailsImageView.image = self.drinkImage
-                self.drinkDetailsImageView.setNeedsDisplay()
-            }
+    var drink: Drink? {
+        didSet {
+            self.fireFetchImage()
         }
     }
+    
     
     //properties to construct and save ingredients
     var ingredients = [(key: String, value: String)]()
@@ -104,17 +99,28 @@ class DrinkDetailsViewController: UIViewController {
     //create spinner
     let spinner = SpinnerViewController()
     
+    var image = UIImage()
+
     //MARK:- UIView Lifecycle
     //Prepare Drink data content
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fireFetchData()
+        fireFetchDrinkData()
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        configureTabBar()
+        
+        if let tag = navigationController?.tabBarItem.tag {
+            print("NavController tabBar Item tag: \(tag)")
+        }
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateUI()
+        configureViewController()
     }
     
     
@@ -126,11 +132,11 @@ class DrinkDetailsViewController: UIViewController {
     }
     
     
-    override func viewDidDisappear(_ animated: Bool) {}
+//    override func viewDidDisappear(_ animated: Bool) { drinkDetailsImageView.image = nil }
     
     
     //MARK:- Custom View management
-    func fireFetchData() {
+    func fireFetchDrinkData() {
         
         switch navigationController?.tabBarItem.tag {
         case TabBarItem.Featured:
@@ -141,14 +147,21 @@ class DrinkDetailsViewController: UIViewController {
         }
     }
     
-    //perform UI setup
+    
+    //setup initial UI
+    func configureViewController() {
+        self.configureTitle()
+        self.configureNavigationBar()
+        self.configureTableView()
+    }
+    
+    
+    //update UI setup
     func updateUI() {
-        
         DispatchQueue.main.async {
-            self.fireFetchImage()
-            self.configureNavigationBar()
+            self.configureTitle()
+            self.drinkDetailsImageView.image = self.image
             self.configureTableView()
-            self.configureTabBar()
         }
     }
     
@@ -159,18 +172,33 @@ class DrinkDetailsViewController: UIViewController {
     }
     
     
+    func configureTitle() {
+        if let drink = self.drink {
+            self.title = drink.name
+        }
+    }
+    
+    
     //Set navigation items
     func configureNavigationBar() {
         guard let drink = self.drink else { return }
+        
+        switch navigationController?.tabBarItem.tag {
+        case TabBarItem.Search:
+            view.backgroundColor = .systemBackground
+            let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
+            navigationItem.leftBarButtonItem = doneButton
 
-            //title
-            self.title = drink.name
-            
-            //Set Favorites icon state
-            if let _ = DataPersistenceManager.shared.getIndexOf(favorite: drink) {
-                self.favoritesButton.image = UIImage(systemName: SFSymbol.heartFill)
-                
-            } else { self.favoritesButton.image = UIImage(systemName: SFSymbol.heart) }
+        default:
+            break
+
+        }
+        
+        //Set Favorites icon state
+        if let _ = DataPersistenceManager.shared.getIndexOf(favorite: drink) {
+            self.favoritesButton.image = UIImage(systemName: SFSymbol.heartFill)
+
+        } else { self.favoritesButton.image = UIImage(systemName: SFSymbol.heart) }
     }
     
     
@@ -198,13 +226,16 @@ class DrinkDetailsViewController: UIViewController {
     
     
     @objc func performFetchDrink() {
+        DispatchQueue.main.async {
+            guard self.navigationController?.tabBarItem.tag == TabBarItem.Featured else { return }
+        }
+        
         let endpoint = NetworkCallEndPoint.random
         NetworkManager.shared.fetchDrink(from: endpoint, using: nil) { [weak self] (result) in
             guard let self = self else { return }
             
             switch result {
             case .success(let drink):
-                self.updateUI()
                 self.drink = drink
                 
             case .failure(let error):
@@ -218,20 +249,24 @@ class DrinkDetailsViewController: UIViewController {
     
     
     @objc func performFetchDrinksImage() {
-        self.drinkImage = nil
+        guard let drink = self.drink else { return }
         spinner.startSpinner(viewController: self)
 
-        if let imageURL = drink?.imageURL {
+        if let imageURL = drink.imageURL {
             NetworkManager.shared.fetchDrinkImage(with: imageURL) { [weak self] (fetchedImage, error) in
                 guard let self = self else { return }
                 
                 self.spinner.stopSpinner()
+
                 if let image = fetchedImage {
-                    self.drinkImage = image
+                    self.image = image
+                    self.updateUI()
                 }
                 
                 //catch any errors fetching image
-                if let error = error { print("Error fetching image with error \(error.localizedDescription)\n") }
+                if let error = error {
+                    print("Error fetching image with error \(error.localizedDescription)\n")
+                }
             }
         }
     }

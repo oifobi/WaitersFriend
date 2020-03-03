@@ -18,8 +18,10 @@ class SpinnerViewController: UIViewController {
     
     
     func configure() {
-        spinner.color = .white
-        spinner.alpha = 0.75
+//        spinner.color = .white
+//        spinner.alpha = 0.75
+        spinner.color = .black
+        spinner.alpha = 0.25
         view.backgroundColor = UIColor(white: 0, alpha: 0.25)
         spinner.translatesAutoresizingMaskIntoConstraints = false
         

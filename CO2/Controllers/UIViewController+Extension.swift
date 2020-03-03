@@ -41,4 +41,21 @@ extension UIViewController {
         parentView.addSubview(emptyStateView)
     }
     
+    
+    func presentDestinationVC(with identifier: String, for item: Drink) {
+        if let vc = storyboard?.instantiateViewController(withIdentifier: identifier) as? DrinkDetailsViewController {
+            vc.drink = item
+            
+            let nc = UINavigationController(rootViewController: vc)
+            present(nc, animated: true)
+            
+//            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+
+    @objc func dismissViewController() {
+        dismiss(animated: true, completion: nil)
+    }
+    
 }

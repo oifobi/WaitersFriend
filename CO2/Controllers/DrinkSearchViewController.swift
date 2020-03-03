@@ -220,11 +220,7 @@ class DrinkSearchViewController: UIViewController {
                 self.drinks = drinks
                 self.drinks.sort(by: {$0.name < $1.name} )
                 self.updateTableViewSnapshotData(with: self.drinks)
-                    
-                
 //                self.updateUI(for: View.table)
-                
-                
                 
             case .failure(let error):
                 print(error.rawValue)
@@ -240,16 +236,9 @@ extension DrinkSearchViewController: UISearchResultsUpdating, UISearchBarDelegat
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text, !text.isEmpty else { return }
         
-        
-        
-        
-
         //fetch drink name
-        performSearchForDrinks(from: NetworkCallEndPoint.search, queryName: NetworkCallQueryType.drinkName, queryValue: text)
+        performSearchForDrinks(from: NetworkCallEndPoint.search, queryName: NetworkCallQueryType.drinkName, queryValue: text.lowercased())
     }
-    
-    
-    
     
 }
 
@@ -271,10 +260,8 @@ extension DrinkSearchViewController {
 extension DrinkSearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        if let vc = storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as? DrinkDetailsViewController {
-            vc.drink = drinks[indexPath.item]
-            navigationController?.pushViewController(vc, animated: true)
-        }
+        let drink = drinks[indexPath.item]
+        presentDestinationVC(with: StoryboardIdentifier.drinkDetailsVC, for: drink)
     }
 }
 
@@ -332,13 +319,12 @@ extension DrinkSearchViewController: UICollectionViewDelegate {
     
     //Send to DrinkDetailsVC when cell tapped
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-        if let vc = storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as?         DrinkDetailsViewController {
-            vc.drink = recentDrinks[indexPath.item]
-            navigationController?.pushViewController(vc, animated: true)
-        }
+        
+        let drink = recentDrinks[indexPath.item]
+        presentDestinationVC(with: StoryboardIdentifier.drinkDetailsVC, for: drink)
     }
 }
+
 
 
 //MARK:- UICollectionView Create Layout (for Trending Drinks)

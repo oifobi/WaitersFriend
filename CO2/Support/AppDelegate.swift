@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Setup favorites tab bar item
         if let tabBarController = window?.rootViewController as? UITabBarController {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "DrinksTableViewNavController")
+            let vc = storyboard.instantiateViewController(withIdentifier: StoryboardIdentifier.mainNC)
             let image = UIImage(systemName: SFSymbol.heartFill)
             vc.tabBarItem = UITabBarItem.init(title: "Favorites", image: image, tag: TabBarItem.Favorites)
             tabBarController.viewControllers?.append(vc)
