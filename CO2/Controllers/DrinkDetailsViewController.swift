@@ -89,6 +89,7 @@ class DrinkDetailsViewController: UIViewController {
     //Properties to receive drink object data from sender VC/s
     var drink: Drink?
     var sender: String?
+        //must be optional as if nil, will trigger event
     
     //update view image
     var drinkImage: UIImage? {
@@ -101,22 +102,26 @@ class DrinkDetailsViewController: UIViewController {
     }
     
     //properties to construct and save ingredients
-    var ingredients: [(key: String, value: String)]?
-    var measures: [(key: String, value: String)]?
+//    var ingredients: [(key: String, value: String)]?
+    var ingredients = [(key: String, value: String)]()
+//    var measures: [(key: String, value: String)]?
+    var measures = [(key: String, value: String)]()
     
     //create spinner
     let spinner = SpinnerViewController()
     
-    //MARK:- Built-in View managemenet
+    //MARK:- UIView Lifecycle
     //Prepare Drink data content
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateUI(sender: self.sender)
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -124,6 +129,7 @@ class DrinkDetailsViewController: UIViewController {
         //Reset segmented control default state
         segmentControlIndex = 0
     }
+    
     
     override func viewDidDisappear(_ animated: Bool) {}
     
@@ -165,22 +171,21 @@ class DrinkDetailsViewController: UIViewController {
                 if let _ = DataPersistenceManager.shared.getIndexOf(favorite: drink) {
                     self.favoritesButton.image = UIImage(systemName: SFSymbol.heartFill)
                     
-                } else {
-                    self.favoritesButton.image = UIImage(systemName: SFSymbol.heart)
-                }
+                } else { self.favoritesButton.image = UIImage(systemName: SFSymbol.heart) }
             }
         }
     }
     
     
     @objc func performFetchDrink() {
-        let endpoint = EndPoint.random
+        let endpoint = NetworkCallEndPoint.random
         NetworkManager.shared.fetchDrink(from: endpoint, using: nil) { [weak self] (result) in
             guard let self = self else { return }
             
             switch result {
             case .success(let drink):
-                self.updateUI(sender: "TabBarItem")
+//                self.updateUI(sender: "TabBarItem")
+                self.updateUI(sender: ViewControllerSender.drinkDetailsVC)
                 self.drink = drink
                 
             case .failure(let error):
@@ -207,9 +212,7 @@ class DrinkDetailsViewController: UIViewController {
                 }
                 
                 //catch any errors fetching image
-                if let error = error {
-                    print("Error fetching image with error \(error.localizedDescription)\n")
-                }
+                if let error = error { print("Error fetching image with error \(error.localizedDescription)\n") }
             }
         }
     }
@@ -303,7 +306,8 @@ class DrinkDetailsViewController: UIViewController {
 extension DrinkDetailsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ingredients?.count ?? 0
+//        ingredients?.count ?? 0
+        ingredients.count
     }
     
     
@@ -311,17 +315,24 @@ extension DrinkDetailsViewController: UITableViewDataSource, UITableViewDelegate
         let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell", for: indexPath)
         
         //set cell ingredient text
-        if  indexPath.row < ingredients!.count {
-            if let ingredient = ingredients?[indexPath.row] {
-                cell.textLabel!.text = ingredient.value
-            }
+//        if  indexPath.row < ingredients!.count {
+//            if let ingredient = ingredients?[indexPath.row] { cell.textLabel!.text = ingredient.value }
+//        }
+        
+        if  indexPath.row < ingredients.count {
+            let ingredient = ingredients[indexPath.row]
+            cell.textLabel!.text = ingredient.value
         }
         
         //set cell measure text
-        if  indexPath.row < measures!.count {
-            if let measure = measures?[indexPath.row] {
-                cell.detailTextLabel!.text = measure.value
-            }
+//        if  indexPath.row < measures!.count {
+//            if let measure = measures?[indexPath.row] { cell.detailTextLabel!.text = measure.value }
+//        }
+        
+        
+        if  indexPath.row < measures.count {
+            let measure = measures[indexPath.row]
+            cell.detailTextLabel!.text = measure.value
         }
         
         return cell

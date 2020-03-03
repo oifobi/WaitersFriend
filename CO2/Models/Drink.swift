@@ -99,6 +99,7 @@ struct Drink: Codable, Hashable {
         case measure14 = "strMeasure14"
         case measure15 = "strMeasure15"
     }
+    
 }
 
 

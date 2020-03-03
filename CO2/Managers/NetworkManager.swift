@@ -9,7 +9,7 @@
 import UIKit
 
 //API end points and Url struturing
-enum EndPoint {
+enum NetworkCallEndPoint {
     
     //Absolute endpoints
     static let random = "/random.php"
@@ -24,7 +24,7 @@ enum EndPoint {
 }
 
 
-enum QueryType {
+enum NetworkCallQueryType {
     static let drinkName = "s"
     static let firstLetter = "f"
     static let ingredient = "i"
@@ -107,9 +107,7 @@ class NetworkManager {
                 completion(.success(drinks.drinks))
                 
             //catch any errrors
-            } catch {
-                completion(.failure(.invalidDataReturned))
-            }
+            } catch { completion(.failure(.invalidDataReturned)) }
             
         }
         
@@ -139,9 +137,7 @@ class NetworkManager {
                     CacheManager.shared.imageCache.setObject(image, forKey: imageCacheKey)
                     completion(image, nil)
                 
-                } else {
-                    completion(nil, error)
-                }
+                } else { completion(nil, error) }
             }
         }
         
@@ -194,9 +190,7 @@ class NetworkManager {
                 completion(.success(list.type))
                     
             //catch any errors
-            } catch {
-                completion(.failure(.invalidDataReturned))
-            }
+            } catch { completion(.failure(.invalidDataReturned)) }
             
         }
 
@@ -254,14 +248,10 @@ class NetworkManager {
                 let drinks = try jsonDecoder.decode(Drinks.self, from: data)
                 
                 //Pass drinks back to caller
-                if let drink = drinks.drinks.first {
-                    completion(.success(drink))
-                }
+                if let drink = drinks.drinks.first { completion(.success(drink)) }
                     
             //catch any errrors
-            } catch {
-                completion(.failure(.invalidDataReturned))
-            }
+            } catch { completion(.failure(.invalidDataReturned)) }
         }
         
         task.resume()

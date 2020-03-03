@@ -16,14 +16,8 @@ class DrinkCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var cellSubtitleLabel: UILabel!
     
     
-    func setTitleLabel(text: String) {
-        cellTitleLabel.text = text
-    }
-    
-    
-    func setSubtitleLabel(text: String) {
-        cellSubtitleLabel.text = text
-    }
+    func setTitleLabel(text: String) { cellTitleLabel.text = text }
+    func setSubtitleLabel(text: String) { cellSubtitleLabel.text = text }
     
 
     func setImage(with urlString: String) {
@@ -35,10 +29,7 @@ class DrinkCollectionViewCell: UICollectionViewCell {
             self.stopActivityIndicator()
             
             if let fetchedImage = fetchedImage {
-                
-                DispatchQueue.main.async {
-                    self.cellImageView.image = fetchedImage
-                }
+                DispatchQueue.main.async { self.cellImageView.image = fetchedImage }
                 
                 //catch any errors fetching image
             } else if let error = error {

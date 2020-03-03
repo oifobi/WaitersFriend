@@ -17,18 +17,25 @@ class DrinksTableViewController: UITableViewController {
     }
     
     
+    enum ViewTitle {
+        static let TopRated = "Top Rated"
+        static let Favorites = "Favorites"
+    }
+    
+    
     //For drinks fetched from Top Rated API
     var drinks = [Drink]()
     var isFavoritesDisplayed = false
     
     //Property to store Table section index
-    var tableSectionsIndex: [(key: Substring, value: [Drink])]?
+//    var tableSectionsIndex: [(key: Substring, value: [Drink])]?
+    var tableSectionsIndex = [(key: Substring, value: [Drink])]()
     
     //create spinner
     let spinner = SpinnerViewController()
     
     
-    //MARK:- Built in view management methods
+    //MARK:- UIView Lifecycle
     override func viewWillAppear(_ animated: Bool) {
         configureTableView()
     }
@@ -69,7 +76,7 @@ class DrinksTableViewController: UITableViewController {
         
         //trigger fetch of top rated drinks, if favorites screen not displayed
         guard !isFavoritesDisplayed else { return }
-        self.title = "Top Rated"
+        self.title = ViewTitle.TopRated
         
         if drinks.isEmpty {
             performSelector(inBackground: #selector(performFetchDrinks), with: nil)
@@ -79,7 +86,7 @@ class DrinksTableViewController: UITableViewController {
     
     func configureFavorites() {
         isFavoritesDisplayed = true
-        self.title = "Favorites"
+        self.title = ViewTitle.Favorites
         
         //Load Favorite drinks data (if any) from user default
         DataPersistenceManager.shared.loadSavedFavorites { (result) in
@@ -91,7 +98,6 @@ class DrinksTableViewController: UITableViewController {
                     self.tableView.hideEmptyCells()
 
                 } else {
-                    
                     self.updateUI()
                 }
                 
@@ -107,7 +113,7 @@ class DrinksTableViewController: UITableViewController {
         spinner.startSpinner(viewController: self)
 
         //fire fetch drinks list method
-        let endpoint = EndPoint.popular
+        let endpoint = NetworkCallEndPoint.popular
         NetworkManager.shared.fetchDrinks(from: endpoint, using: nil) { [weak self] (result) in
             guard let self = self else { return }
             self.spinner.stopSpinner()
@@ -157,39 +163,43 @@ class DrinksTableViewController: UITableViewController {
     
     //MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        guard tableSectionsIndex != nil else { return 0 }
-        
+//        guard tableSectionsIndex != nil else { return 0 }
+
         //set number of sections based on number of section title objects
-        return tableSectionsIndex!.count
+//        return tableSectionsIndex!.count
+        return tableSectionsIndex.count
     }
     
     
     //set number of section rows based on number of drinks contained within in each section title
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard tableSectionsIndex != nil else { return 0 }
+//        guard tableSectionsIndex != nil else { return 0 }
         
         //Get the number of rows per section by accessing the key's drinks count
-        let section = tableSectionsIndex![section]
+//        let section = tableSectionsIndex![section]
+        let section = tableSectionsIndex[section]
         return section.value.count
     }
     
     
     //set and display tbale section headings in tableView (Letter)
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard tableSectionsIndex != nil else { return "" }
+//        guard tableSectionsIndex != nil else { return "" }
         
         //Pull out the key value (Letter) and set as Section heading
-        let title = tableSectionsIndex![section].key
+//        let title = tableSectionsIndex![section].key
+        let title = tableSectionsIndex[section].key
         return String(title)
     }
     
     
     //set titles to display in index on RHS of tableView
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        guard tableSectionsIndex != nil else { return [""] }
+//        guard tableSectionsIndex != nil else { return [""] }
         
         //create an array of all the letters for the table index, using the keys and transform to type string
-        let titles = tableSectionsIndex!.map( { String($0.key) } )
+//        let titles = tableSectionsIndex!.map( { String($0.key) } )
+        let titles = tableSectionsIndex.map( { String($0.key) } )
         return titles
     }
     
@@ -201,7 +211,8 @@ class DrinksTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DrinkCell", for: indexPath) as! DrinkTableViewCell
         
         //get reference to the section (being shown
-        if let section = tableSectionsIndex?[indexPath.section] {
+//        if let section = tableSectionsIndex?[indexPath.section] {
+            let section = tableSectionsIndex[indexPath.section]
             
             //get drinks for the section to be shown
             let drinks = section.value
@@ -238,7 +249,7 @@ class DrinksTableViewController: UITableViewController {
                     }
                 }
             }
-        }
+//        }
         
         return cell
     }
@@ -277,9 +288,12 @@ class DrinksTableViewController: UITableViewController {
             
             let sectionIndexOfRowTapped = tableView.indexPathForSelectedRow!.section
             let indexOfRowTapped = tableView.indexPathForSelectedRow!.row
-            let indexItem = tableSectionsIndex?[sectionIndexOfRowTapped]
-            vc.drink = indexItem?.value[indexOfRowTapped]
-            vc.sender = "DrinksTableViewController"
+//            let indexItem = tableSectionsIndex?[sectionIndexOfRowTapped]
+            let indexItem = tableSectionsIndex[sectionIndexOfRowTapped]
+
+//            vc.drink = indexItem?.value[indexOfRowTapped]
+            vc.drink = indexItem.value[indexOfRowTapped]
+            vc.sender = ViewControllerSender.drinksTableVC
         }
     }
 }

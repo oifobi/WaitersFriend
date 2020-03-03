@@ -29,20 +29,21 @@ class DataPersistenceManager {
     var favorites = [Drink]() {
         didSet {
             
-            //save modified favorites object to user defaults
-            DataPersistenceManager.shared.save(favorites: DataPersistenceManager.shared.favorites) { (result, error) in
-
-                if let result = result {
-                    print(result.rawValue)
-                }
-
-                if let error = error {
-                    print(error.rawValue)
-                }
-            }
+            //trigger save
+            performSaveFavorites()
 
             //trigger update to delegates
             DataPersistenceManager.shared.delegate?.update()
+        }
+    }
+    
+    
+    func performSaveFavorites() {
+        //save modified favorites object to user defaults
+        DataPersistenceManager.shared.save(favorites: DataPersistenceManager.shared.favorites) { (result, error) in
+
+            if let _ = result {}
+            if let error = error { print(error.rawValue) }
         }
     }
     
@@ -58,9 +59,7 @@ class DataPersistenceManager {
             completion(.favoritesSaved, nil)
 
         //If save failed handle error
-        } catch {
-             completion(nil, .unableToSaveFavorite)
-        }
+        } catch { completion(nil, .unableToSaveFavorite) }
     }
     
     
@@ -78,9 +77,7 @@ class DataPersistenceManager {
             if DataPersistenceManager.shared.favorites.isEmpty {
                 completion(.success(.noFavorites))
             
-            } else  {
-                completion(.success(.favoritesLoaded))
-            }
+            } else  { completion(.success(.favoritesLoaded)) }
             
             
         } catch {

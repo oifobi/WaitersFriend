@@ -264,7 +264,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trending Drinks" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0RZ-Xw-46X">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trending Cocktails" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0RZ-Xw-46X">
                                 <rect key="frame" x="10" y="0.0" width="365" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="ahb-LJ-JHS"/>
@@ -411,8 +411,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="5aQ-lG-mSO"/>
                     <connections>
-                        <outlet property="searchDrinksTableView" destination="yhD-gX-rDW" id="5Za-Ht-C64"/>
-                        <outlet property="trendingDrinksCollectionView" destination="1LI-sX-9XO" id="8hj-ou-3ZY"/>
+                        <outlet property="drinksCollectionView" destination="1LI-sX-9XO" id="8hj-ou-3ZY"/>
+                        <outlet property="drinksTableView" destination="yhD-gX-rDW" id="5Za-Ht-C64"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IRo-q2-6Va" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

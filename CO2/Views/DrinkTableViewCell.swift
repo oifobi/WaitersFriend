@@ -24,14 +24,8 @@ class DrinkTableViewCell: UITableViewCell {
     
     
     //Set cell properties
-    func setTitleLabel(text: String) {
-        cellTitleLabel.text = text
-    }
-       
-    
-    func setSubtitleLabel(text: String) {
-        cellSubtitleLabel.text = text
-    }
+    func setTitleLabel(text: String) { cellTitleLabel.text = text }
+    func setSubtitleLabel(text: String) { cellSubtitleLabel.text = text }
     
     
     func setImage(with urlString: String) {

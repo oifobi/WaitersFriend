@@ -10,31 +10,55 @@ import UIKit
 
 class DrinkSearchViewController: UIViewController {
     
-    enum Ingredient {
-        static let margarita = "margarita"
+    enum Section { case main }
+    
+    
+    enum View {
+        static let table = "tableView"
+        static let collection = "collectionView"
     }
     
+    
+    enum Identifier {
+        static let tableViewCell = "DrinkTableViewCell"
+        static let collectionViewCell = "DrinkCollectionViewCell"
+        
+    }
+    
+    
+    enum Ingredient { static let margarita = "margarita" }
+    
+    
     //IBOutles
-    @IBOutlet weak var trendingDrinksCollectionView: UICollectionView!
-    @IBOutlet weak var searchDrinksTableView: UITableView!
+    @IBOutlet weak var drinksCollectionView: UICollectionView!
+    @IBOutlet weak var drinksTableView: UITableView!
     
     //Properties for storing feteched drink/s data objects
     //For CollectionView
-    var trendingDrinks: [Drink]? //Recent drinks
+//    var recentDrinks: [Drink]? //Recent drinks
+    var recentDrinks = [Drink]() //Recent drinks
     
     //For TableView
-    var drinks: [Drink]? //Search drinks
+//    var drinks[Drink]? //Search drinks
+    var drinks = [Drink]() //Search drinks
     var ingredientDrinks: [DrinkList]? //List of drinks made with base ingredient
     var currentIngredient = String() //for tracking currently selected base ingredient
+    var tableViewDataSource: UITableViewDiffableDataSource<Section, Drink>!
     
-    //Common/shared properties b/w TableView and CollectionView
+    //for searching
+    var filteredDrinks = [Drinks]()
+    var isSearching = false
+    
+    
+    //Common/shared properties b/w TableView
     var drink: Drink?
+    
     
     //create spinner
     let spinner = SpinnerViewController()
     
     
-    //MARK:- Built-in UIView Life-Cycle handlers
+    //MARK:- UIView Lifecycle
     //Start fetch of data
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -45,69 +69,32 @@ class DrinkSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
-        setUpSearchController()
+        createSearchController()
         configureCollectionView()
     }
     
     
+    //Data management
     func fireFetchData() {
-          //Fire fetch Recents Drink
-          if trendingDrinks == nil {
-              performSelector(inBackground: #selector(performFetchRecentDrinks), with: nil)
-          }
-
-          //fetch drink name
-          if drinks == nil {
-            performSearchForDrinks(from: EndPoint.search, queryName: QueryType.drinkName, queryValue: Ingredient.margarita)
-          }
-      }
+        
+        //Recents Drink data
+//        if recent Drinks == nil {
+            performSelector(inBackground: #selector(performFetchRecentDrinks), with: nil)
+//        }
+        
+        //Drink name data
+//        if drinks == nil {
+            performSearchForDrinks(from: NetworkCallEndPoint.search, queryName: NetworkCallQueryType.drinkName, queryValue: Ingredient.margarita)
+//        }
+    }
     
     
+    //MARK: ViewController configuration
     func configureViewController() { title = "Search" }
     
     
-    func configureCollectionView() {
-
-        //CollectionView
-        //Register cell classes and nibs
-        trendingDrinksCollectionView.register(UINib(nibName: "DrinkCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "DrinkCollectionViewCell")
-        
-        //Set compositionViewLayout
-        trendingDrinksCollectionView.collectionViewLayout = createCompositionalLayout()
-
-    }
-    
-    
-    //MARK:- CollectionView Data Fetching methods
-    //Fetch Recent Drinks
-    @objc func performFetchRecentDrinks() {
-        spinner.startSpinner(viewController: self)
-
-        //fire fetch recent drinks list method
-        NetworkManager.shared.fetchDrinks(from: EndPoint.recent, using: nil) { [weak self] (result) in
-            
-            guard let self = self else { return }
-                            
-            self.spinner.stopSpinner()
-
-            switch result {
-            case .success(let drinks):
-                self.trendingDrinks = drinks
-                self.trendingDrinks?.sort(by: {$0.name < $1.name} )
-                self.updateUI(for: "collectionView")
-                
-            case .failure(let error):
-                self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
-                action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
-                        self.fireFetchData()
-                }))
-            }
-        }
-    }
-    
-    
-    //MARK:- TableView Section methods (Search Results)
-    func setUpSearchController() {
+    //MARK:- Search Controller setup (updates TableView Data)
+    func createSearchController() {
         
         //Create / configure onfigure Search Controller
         let sc = UISearchController(searchResultsController: nil)
@@ -119,7 +106,73 @@ class DrinkSearchViewController: UIViewController {
         //set created search controller to navigation controller
         navigationItem.searchController = sc
     }
+    
+    
+    //MARK: - Configure Views
+    //CollectionView setup
+    func configureCollectionView() {
 
+        //CollectionView
+        //Register cell classes and nibs
+        drinksCollectionView.register(UINib(nibName: Identifier.collectionViewCell, bundle: nil), forCellWithReuseIdentifier: Identifier.collectionViewCell)
+        
+        //Set compositionViewLayout
+        drinksCollectionView.collectionViewLayout = createCompositionalLayout()
+    }
+    
+    
+    //tableView setup
+    func configureTableViewCell() {
+        
+        
+    }
+    
+    
+    
+    
+    
+
+    
+    
+    //MARK: - UI Management
+    func updateUI(for view: String) {
+        
+        DispatchQueue.main.async {
+            if view == View.collection { self.drinksCollectionView.reloadData()
+            }
+            else if view == View.table { self.drinksTableView.reloadData() }
+        }
+    }
+    
+    
+    //MARK:- CollectionView Data Fetching methods
+    //Fetch Recent Drinks
+    @objc func performFetchRecentDrinks() {
+        spinner.startSpinner(viewController: self)
+
+        //fire fetch recent drinks list method
+        NetworkManager.shared.fetchDrinks(from: NetworkCallEndPoint.recent, using: nil) { [weak self] (result) in
+            
+            guard let self = self else { return }
+                            
+            self.spinner.stopSpinner()
+
+            switch result {
+            case .success(let drinks):
+                self.recentDrinks = drinks
+//                self.trendingDrinks?.sort(by: {$0.name < $1.name} )
+                self.recentDrinks.sort(by: {$0.name < $1.name} )
+                self.updateUI(for: View.collection)
+                
+            case .failure(let error):
+                self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
+                action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
+                        self.fireFetchData()
+                }))
+            }
+        }
+    }
+    
     
     //MARK:- TableView Data Fetching methods
     //Fetch Selected Base Ingredient Drinks List (drinks made wih specific Base ingredient)
@@ -135,7 +188,7 @@ class DrinkSearchViewController: UIViewController {
             case .success(let list):
                 self.ingredientDrinks = list
                 self.currentIngredient = ingredient
-                self.updateUI(for: "tableView")
+                self.updateUI(for: View.table)
                 
             case .failure(let error):
                 print("Error fetching drinks list with error: \(error.rawValue)\n")
@@ -153,62 +206,26 @@ class DrinkSearchViewController: UIViewController {
             switch result {
             case .success(let drinks):
                 self.drinks = drinks
-                self.drinks?.sort(by: {$0.name < $1.name} )
-                self.updateUI(for: "tableView")
+//                self.drinks?.sort(by: {$0.name < $1.name} )
+                self.drinks.sort(by: {$0.name < $1.name} )
+                self.updateUI(for: View.table)
                 
             case .failure(let error):
                 print(error.rawValue)
             }
         }
     }
-    
-    
-    //MARK:- Custom Shared methods
-    func updateUI(for view: String) {
-        
-        DispatchQueue.main.async {
-            if view == "collectionView" {
-                self.trendingDrinksCollectionView.reloadData()
-                self.view.bringSubviewToFront(self.trendingDrinksCollectionView)
-            
-            } else if view == "tableView" {
-                self.searchDrinksTableView.reloadData()
-//                self.view.bringSubviewToFront(self.searchDrinksTableView)
-            }
-        }
-    }
-    
-    
-    //Fetch drink details in prep tp pass to DrinkDetailsVC
-    @objc func performFetchDrink(with id: String) {
-        spinner.startSpinner(viewController: self)
+}
 
-        //fire fetch drink method
-        let endpoint = EndPoint.lookup
-        NetworkManager.shared.fetchDrink(from: endpoint, using: [URLQueryItem(name: QueryType.ingredient, value: id)]) { [weak self] (result) in
-            guard let self = self else { return }
-            
-            self.spinner.stopSpinner()
-            
-            switch result {
-            case .success(let drink):
-                self.drink = drink
-                
-                //perform segue to detailsVC
-                DispatchQueue.main.async {
-                
-                    if let vc = self.storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as? DrinkDetailsViewController {
-                        vc.drink = drink
-                        vc.sender = "DrinkIngredientCollectionViewController"
-                        self.navigationController?.pushViewController(vc, animated: true)
-                    }
-                }
-                
-            case .failure(let error):
-                print("Error fetching drink with error: \(error.rawValue)\n")
-                
-            }
-        }
+
+//MARK:- UISearch Results / Delegate
+extension DrinkSearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text, !text.isEmpty else { return }
+
+        //fetch drink name
+        performSearchForDrinks(from: NetworkCallEndPoint.search, queryName: NetworkCallQueryType.drinkName, queryValue: text)
     }
 }
 
@@ -217,13 +234,11 @@ class DrinkSearchViewController: UIViewController {
 extension DrinkSearchViewController: UITableViewDataSource, UITableViewDelegate {
     
     //TableViewDelegate Methods
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
+    func numberOfSections(in tableView: UITableView) -> Int { 1 }
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let drinks = drinks else { return 0 }
+//        guard let drinks = drinks else { return 0 }
         return drinks.count
         
     }
@@ -232,13 +247,15 @@ extension DrinkSearchViewController: UITableViewDataSource, UITableViewDelegate 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //point cellForRowAt method to custom cell class by down casting to custom class
-        let cell = tableView.dequeueReusableCell(withIdentifier: "DrinkTableViewCell", for: indexPath) as! DrinkTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.tableViewCell, for: indexPath) as! DrinkTableViewCell
         
         //Get reference to row
-        if indexPath.row < drinks!.count {
+//        if indexPath.row < drinks!.count {
+        if indexPath.row < drinks.count {
             
             //Get drink
-            if let drink = drinks?[indexPath.row] {
+//            if let drink = drinks?[indexPath.row] {
+            let drink = drinks[indexPath.row]
                 
                 //set cell lables text
                 cell.setTitleLabel(text: drink.name)
@@ -252,7 +269,7 @@ extension DrinkSearchViewController: UITableViewDataSource, UITableViewDelegate 
                     DispatchQueue.main.async {
                         
                         //Ensure wrong image isn't inserted into a recycled cell
-                        if let currentIndexPath = self.searchDrinksTableView.indexPath(for: cell),
+                        if let currentIndexPath = self.drinksTableView.indexPath(for: cell),
                             
                             //If current cell index and table index don't match, exit fetch image method
                             currentIndexPath != indexPath {
@@ -266,7 +283,7 @@ extension DrinkSearchViewController: UITableViewDataSource, UITableViewDelegate 
                         cell.setNeedsLayout()
                     }
                 }
-            }
+//            }
         }
         
         return cell
@@ -274,12 +291,13 @@ extension DrinkSearchViewController: UITableViewDataSource, UITableViewDelegate 
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard drinks != nil else { return }
+//        guard drinks != nil else { return }
 
         if let vc = storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as? DrinkDetailsViewController {
                
-            vc.drink = drinks![indexPath.item]
-            vc.sender = "DrinkSearchViewController"
+//            vc.drink = drinks![indexPath.item]
+            vc.drink = drinks[indexPath.item]
+            vc.sender = ViewControllerSender.drinkSearchVC
             navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -290,15 +308,13 @@ extension DrinkSearchViewController: UITableViewDataSource, UITableViewDelegate 
 extension DrinkSearchViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
     // Define number of sections
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
+    func numberOfSections(in collectionView: UICollectionView) -> Int { 1 }
     
 
     //Define number of items per section
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let drinks = trendingDrinks else { return 0 }
-        return drinks.count
+//        guard let recentDrinks = trendingDrinks else { return 0 }
+        return recentDrinks.count
     }
         
     
@@ -306,13 +322,10 @@ extension DrinkSearchViewController: UICollectionViewDataSource, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: "DrinkCollectionViewCell", for: indexPath) as? DrinkCollectionViewCell
-            
-            else {
-                preconditionFailure("Invalid cell type")
-        }
+            withReuseIdentifier: Identifier.collectionViewCell, for: indexPath) as? DrinkCollectionViewCell else { preconditionFailure("Invalid cell type") }
         
-        guard let drink = trendingDrinks?[indexPath.item] else { preconditionFailure("Drinks property is nil") }
+//        guard let drink = trendingDrinks?[indexPath.item] else { preconditionFailure("Drinks property is nil") }
+        let drink = recentDrinks[indexPath.item]
         
         //Set cell properties
         //Cell text
@@ -327,7 +340,7 @@ extension DrinkSearchViewController: UICollectionViewDataSource, UICollectionVie
             DispatchQueue.main.async {
                 
                 //Ensure wrong image isn't inserted into a recycled cell
-                if let currentIndexPath = self.trendingDrinksCollectionView.indexPath(for: cell),
+                if let currentIndexPath = self.drinksCollectionView.indexPath(for: cell),
                     currentIndexPath != indexPath {
                     return
                 }
@@ -346,26 +359,15 @@ extension DrinkSearchViewController: UICollectionViewDataSource, UICollectionVie
     
     //Send to DrinkDetailsVC when cell tapped
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard trendingDrinks != nil else { return }
+//        guard trendingDrinks != nil else { return }
 
-        if let vc = storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as? DrinkDetailsViewController {
+        if let vc = storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as?         DrinkDetailsViewController {
                
-           vc.drink = trendingDrinks![indexPath.item]
-           vc.sender = "DrinkSearchViewController"
-           navigationController?.pushViewController(vc, animated: true)
+//            vc.drink = trendingDrinks![indexPath.item]
+            vc.drink = recentDrinks[indexPath.item]
+            vc.sender = ViewControllerSender.drinkSearchVC
+            navigationController?.pushViewController(vc, animated: true)
         }
-    }
-}
-
-
-//MARK:- UISearch Results / Delegate
-extension DrinkSearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text, !text.isEmpty else { return }
-
-        //fetch drink name
-        performSearchForDrinks(from: EndPoint.search, queryName: QueryType.drinkName, queryValue: text)
     }
 }
 
