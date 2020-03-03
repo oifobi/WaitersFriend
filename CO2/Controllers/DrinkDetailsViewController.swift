@@ -76,9 +76,7 @@ class DrinkDetailsViewController: UIViewController {
     
     //Segmenet controller
     @IBOutlet weak var segmentedControl: UISegmentedControl!
-    @IBAction func segmentedControlTapped(_ sender: UISegmentedControl) {
-        
-        segmentControlIndex = sender.selectedSegmentIndex
+    @IBAction func segmentedControlTapped(_ sender: UISegmentedControl) { segmentControlIndex = sender.selectedSegmentIndex
     }
     
     //tableView outlets
@@ -88,8 +86,6 @@ class DrinkDetailsViewController: UIViewController {
     
     //Properties to receive drink object data from sender VC/s
     var drink: Drink?
-    var sender: String?
-        //must be optional as if nil, will trigger event
     
     //update view image
     var drinkImage: UIImage? {
@@ -112,12 +108,13 @@ class DrinkDetailsViewController: UIViewController {
     //Prepare Drink data content
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        updateUI(sender: self.sender)
+        fireFetchData()
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        updateUI()
     }
     
     
@@ -133,44 +130,69 @@ class DrinkDetailsViewController: UIViewController {
     
     
     //MARK:- Custom View management
+    func fireFetchData() {
+        
+        switch navigationController?.tabBarItem.tag {
+        case TabBarItem.Featured:
+            self.performSelector(inBackground: #selector(self.performFetchDrink), with: nil)
+            
+        default:
+            break
+        }
+    }
+    
     //perform UI setup
-    func updateUI(sender: String?) {
+    func updateUI() {
         
         DispatchQueue.main.async {
-            
-            //Fire fetch data depending if Featured tab item tapped
-            if sender == nil {
-                
-                //ovveride hideBottomBarOnPush (from storyboard)
-                self.tabBarController?.tabBar.isHidden = false
-                self.performSelector(inBackground: #selector(self.performFetchDrink), with: nil)
-            }
+            self.fireFetchImage()
+            self.configureNavigationBar()
+            self.configureTableView()
+            self.configureTabBar()
+        }
+    }
+    
+    
+    //Fetch drink image from API server and set
+    func fireFetchImage() {
+        self.performSelector(inBackground: #selector(self.performFetchDrinksImage), with: nil)
+    }
+    
+    
+    //Set navigation items
+    func configureNavigationBar() {
+        guard let drink = self.drink else { return }
 
-            //Fetch drink image from API server and set
-            self.performSelector(inBackground: #selector(self.performFetchDrinksImage), with: nil)
-            
-            //Setup tableView
-            //Hide footer section
-            self.ingredientsTableView.hideEmptyCells()
-            
-            //Get ingredients / meassure
-            self.loadIngredientsTableData()
-
-            //Set up How to prepare text
-            self.instructionsLabel.text = self.drink?.instructions
-            self.instructionsLabel.sizeToFit()
-            
-            //Set navigation items
-            self.title = self.drink?.name
+            //title
+            self.title = drink.name
             
             //Set Favorites icon state
-            if let drink = self.drink {
+            if let _ = DataPersistenceManager.shared.getIndexOf(favorite: drink) {
+                self.favoritesButton.image = UIImage(systemName: SFSymbol.heartFill)
                 
-                if let _ = DataPersistenceManager.shared.getIndexOf(favorite: drink) {
-                    self.favoritesButton.image = UIImage(systemName: SFSymbol.heartFill)
-                    
-                } else { self.favoritesButton.image = UIImage(systemName: SFSymbol.heart) }
-            }
+            } else { self.favoritesButton.image = UIImage(systemName: SFSymbol.heart) }
+    }
+    
+    
+    func configureTableView() {
+        self.ingredientsTableView.hideEmptyCells()
+        
+        //Get ingredients / meassure
+        self.loadIngredientsTableData()
+        
+        //Set up How to prepare text
+        self.instructionsLabel.text = self.drink?.instructions
+        self.instructionsLabel.sizeToFit()
+    }
+    
+    
+    func configureTabBar() {
+        switch navigationController?.tabBarItem.tag {
+        case TabBarItem.Featured:
+            self.tabBarController?.tabBar.isHidden = false
+            
+        default:
+            self.tabBarController?.tabBar.isHidden = true
         }
     }
     
@@ -182,8 +204,7 @@ class DrinkDetailsViewController: UIViewController {
             
             switch result {
             case .success(let drink):
-//                self.updateUI(sender: "TabBarItem")
-                self.updateUI(sender: ViewControllerSender.drinkDetailsVC)
+                self.updateUI()
                 self.drink = drink
                 
             case .failure(let error):

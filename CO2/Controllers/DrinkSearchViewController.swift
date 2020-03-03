@@ -46,8 +46,8 @@ class DrinkSearchViewController: UIViewController {
     var tableViewDataSource: UITableViewDiffableDataSource<TableViewSection, Drink>!
     
     //for searching
-    var filteredDrinks = [Drinks]()
-    var isSearching = false
+//    var filteredDrinks = [Drinks]()
+//    var isSearching = false
     
     
     //Common/shared properties b/w TableView
@@ -239,10 +239,18 @@ extension DrinkSearchViewController: UISearchResultsUpdating, UISearchBarDelegat
     
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text, !text.isEmpty else { return }
+        
+        
+        
+        
 
         //fetch drink name
         performSearchForDrinks(from: NetworkCallEndPoint.search, queryName: NetworkCallQueryType.drinkName, queryValue: text)
     }
+    
+    
+    
+    
 }
 
 
@@ -265,14 +273,10 @@ extension DrinkSearchViewController: UITableViewDelegate {
 
         if let vc = storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as? DrinkDetailsViewController {
             vc.drink = drinks[indexPath.item]
-            vc.sender = ViewControllerSender.drinkSearchVC
             navigationController?.pushViewController(vc, animated: true)
         }
     }
 }
-
-
-
 
 
 //MARK:- CollectionView Data Source methods
@@ -331,7 +335,6 @@ extension DrinkSearchViewController: UICollectionViewDelegate {
 
         if let vc = storyboard?.instantiateViewController(withIdentifier: "DrinkDetailsVC") as?         DrinkDetailsViewController {
             vc.drink = recentDrinks[indexPath.item]
-            vc.sender = ViewControllerSender.drinkSearchVC
             navigationController?.pushViewController(vc, animated: true)
         }
     }

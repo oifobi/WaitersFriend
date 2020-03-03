@@ -11,11 +11,6 @@ import UIKit
 //MARK:- Class Definition
 class DrinksTableViewController: UITableViewController {
     
-    enum TabBarItem {
-        static let TopRated = 0
-        static let Favorites = 3
-    }
-    
     
     enum ViewTitle {
         static let TopRated = "Top Rated"
@@ -275,7 +270,6 @@ class DrinksTableViewController: UITableViewController {
 
             let vc = segue.destination as! DrinkDetailsViewController
             vc.drink = indexItem.value[indexOfRowTapped]
-            vc.sender = ViewControllerSender.drinksTableVC
         }
     }
 }
