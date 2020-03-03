@@ -46,10 +46,10 @@ extension UIViewController {
         if let vc = storyboard?.instantiateViewController(withIdentifier: identifier) as? DrinkDetailsViewController {
             vc.drink = item
             
-            let nc = UINavigationController(rootViewController: vc)
-            present(nc, animated: true)
+//            let nc = UINavigationController(rootViewController: vc)
+//            present(nc, animated: true)
             
-//            navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     

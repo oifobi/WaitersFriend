@@ -183,16 +183,16 @@ class DrinkDetailsViewController: UIViewController {
     func configureNavigationBar() {
         guard let drink = self.drink else { return }
         
-        switch navigationController?.tabBarItem.tag {
-        case TabBarItem.Search:
-            view.backgroundColor = .systemBackground
-            let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
-            navigationItem.leftBarButtonItem = doneButton
-
-        default:
-            break
-
-        }
+//        switch navigationController?.tabBarItem.tag {
+//        case TabBarItem.Search:
+//            view.backgroundColor = .systemBackground
+//            let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
+//            navigationItem.leftBarButtonItem = doneButton
+//
+//        default:
+//            break
+//
+//        }
         
         //Set Favorites icon state
         if let _ = DataPersistenceManager.shared.getIndexOf(favorite: drink) {
