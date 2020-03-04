@@ -19,7 +19,7 @@ class DataPersistenceManager {
     }
     
     
-    enum FavoriteAction {
+    public enum FavoriteAction {
         case add, remove
     }
     
@@ -35,36 +35,11 @@ class DataPersistenceManager {
         didSet {
             
             //trigger save
-            performSaveFavorites()
+            performSaveFavorites2()
 
             //trigger update to delegates
             DataPersistenceManager.shared.delegate?.update()
         }
-    }
-    
-    
-    func performSaveFavorites() {
-        //save modified favorites object to user defaults
-        DataPersistenceManager.shared.save(favorites: DataPersistenceManager.shared.favorites) { (result, error) in
-
-            if let _ = result {}
-            if let error = error { print(error.rawValue) }
-        }
-    }
-    
-
-    func save(favorites: [Drink], completion: @escaping (WFSuccess?, WFError?) -> Void) {
-
-        do {
-            let encoder = JSONEncoder()
-            let data = try encoder.encode(favorites)
-
-            //Save Data object to UserDefaults
-            DataPersistenceManager.shared.defaults.set(data, forKey: Key.favorites)
-            completion(.favoritesSaved, nil)
-
-        //If save failed handle error
-        } catch { completion(nil, .unableToSaveFavorites) }
     }
     
     
@@ -90,34 +65,7 @@ class DataPersistenceManager {
         }
     }
     
-    
-    func updateFavorites(with drink: Drink, completion: @escaping (WFSuccess) -> Void) {
-        
-        //remove
-        if let index = getIndexOf(favorite: drink) {
-            DataPersistenceManager.shared.favorites.remove(at: index)
-            completion(.favoriteRemoved)
-            
-        //add
-        } else {
-            DataPersistenceManager.shared.favorites.append(drink)
-            completion(.favoriteAdded)
-        }
-    }
-    
-    
-    func getIndexOf(favorite drink: Drink) -> Int? {
-        for (index, favorite) in DataPersistenceManager.shared.favorites.enumerated() {
-            if favorite.id == drink.id {
-               return index
-            }
-        }
-        
-        return nil
-    }
-    
-    
-//MARK:- ---New---
+
     func performSaveFavorites2() {
         //save modified favorites object to user defaults
         DataPersistenceManager.shared.save2(favorites: DataPersistenceManager.shared.favorites) { (result) in
@@ -150,16 +98,19 @@ class DataPersistenceManager {
     }
     
     
-    func updateFavorites2(with drink: Drink, action: FavoriteAction, completion: @escaping (WFSuccess) -> Void) {
+    func updateFavorites2(with drink: Drink, action: FavoriteAction, completion: @escaping (Result<WFSuccess, WFError>) -> Void) {
         
         switch action {
         case .remove:
-            remove(favorite: drink)
-            completion(.favoriteRemoved)
+            if let error = removeFavorite(with: drink.id) {
+                completion(.failure(error))
+            }
             
+            completion(.success(.favoriteRemoved))
+        
         case .add:
             add(favorite: drink)
-            completion(.favoriteAdded)
+            completion(.success(.favoriteAdded))
         }
     }
     
@@ -169,9 +120,23 @@ class DataPersistenceManager {
     }
     
     
-    func remove(favorite drink: Drink) {
-        if let index = getIndexOf(favorite: drink) {
+    func removeFavorite(with id: String) -> WFError? {
+        if let index = getIndexOfFavorite(for: id)  {
             DataPersistenceManager.shared.favorites.remove(at: index)
+            return nil
         }
+        
+        return WFError.unableToUpdateFavorites
+    }
+    
+    
+    func getIndexOfFavorite(for id: String) -> Int? {
+        for (index, favorite) in DataPersistenceManager.shared.favorites.enumerated() {
+            if favorite.id == id {
+               return index
+            }
+        }
+        
+        return nil
     }
 }

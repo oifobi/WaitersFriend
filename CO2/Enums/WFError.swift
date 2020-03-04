@@ -19,4 +19,5 @@ enum WFError: String, Error {
     //favorites related errors
     case unableToSaveFavorites = "Error saving Favorites object to user defaults."
     case unableToDecodeFavorites = "Error decoding saved Favorites object."
+    case unableToUpdateFavorites = "Error updating Favorites"
 }

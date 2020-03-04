@@ -258,16 +258,14 @@ class DrinksTableViewController: UITableViewController {
             let drink = drinks[indexPath.row]
 
             //remove drink
-            DataPersistenceManager.shared.updateFavorites(with: drink) { (result) in
+            DataPersistenceManager.shared.updateFavorites2(with: drink, action: .remove) { (result) in
+                
                 switch result {
-                case .favoriteAdded:
-                    print("favorite added")
-
-                case .favoriteRemoved:
-                    print("favorite removed")
-
-                default:
-                    break
+                case .success(let message):
+                    print("\(drink.name) \(message.rawValue)\n")
+                    
+                case .failure(let error):
+                    print("\(drink.name) \(error.rawValue)\n")
                 }
             }
         }

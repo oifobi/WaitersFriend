@@ -168,15 +168,12 @@ class DrinkDetailsViewController: UIViewController {
         //set title
         self.title = drink.name
         
-        
         //Set Favorites icon state
-        if let _ = DataPersistenceManager.shared.getIndexOf(favorite: drink) {
-            isFavorite = true
-            self.favoritesButton.image = UIImage(systemName: SFSymbol.heartFill)
-       
-        } else { self.favoritesButton.image = UIImage(systemName: SFSymbol.heart) }
-
+        if let _ = DataPersistenceManager.shared.getIndexOfFavorite(for: drink.id) {
+             isFavorite = true
+             self.favoritesButton.image = UIImage(systemName: SFSymbol.heartFill)
         
+         } else { self.favoritesButton.image = UIImage(systemName: SFSymbol.heart) }
     }
 
     
@@ -313,20 +310,34 @@ class DrinkDetailsViewController: UIViewController {
     
     func updateFavorites() {
         guard let drink = drink else { return }
-        
-        DataPersistenceManager.shared.updateFavorites(with: drink) { (result) in
-            
-            switch result {
-            case .favoriteAdded:
-                self.favoritesButton.image = UIImage(systemName: SFSymbol.heartFill)
-                self.presentAlertVC(title: "❤️ Drink Saved", message: "\(drink.name) \(result.rawValue)", buttonText: "OK")
+
+        //remove
+        if isFavorite {
+            DataPersistenceManager.shared.updateFavorites2(with: drink, action: .remove) { (result) in
                 
-            case .favoriteRemoved:
-                self.favoritesButton.image = UIImage(systemName: SFSymbol.heart)
-                self.presentAlertVC(title: "💔 Drink Removed", message: "\(drink.name) \(result.rawValue)", buttonText: "OK")
-                
-            default:
-                break
+                switch result {
+                case .success(let message):
+                    self.favoritesButton.image = UIImage(systemName: SFSymbol.heart)
+                    self.presentAlertVC(title: "💔 Drink Removed", message: "\(drink.name) \(message.rawValue)", buttonText: "OK")
+                    self.isFavorite = false
+                    
+                case .failure(let error):
+                    print(error.rawValue)
+                }
+            }
+  
+        //add
+        } else {
+            DataPersistenceManager.shared.updateFavorites2(with: drink, action: .add) { (result) in
+                switch result {
+                case .success(let message):
+                    self.favoritesButton.image = UIImage(systemName: SFSymbol.heartFill)
+                    self.presentAlertVC(title: "❤️ Drink Saved", message: "\(drink.name) \(message.rawValue)", buttonText: "OK")
+                    self.isFavorite = true
+                    
+                case .failure(let error):
+                    print(error.rawValue)
+                }
             }
         }
     }

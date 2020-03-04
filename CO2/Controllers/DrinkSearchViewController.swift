@@ -48,7 +48,6 @@ class DrinkSearchViewController: UIViewController {
     //Common/shared properties b/w TableView
     var drink: Drink?
     
-    
     //create spinner
     let spinner = SpinnerViewController()
     
@@ -192,7 +191,6 @@ class DrinkSearchViewController: UIViewController {
                 self.drinks = drinks
                 self.drinks.sort(by: {$0.name < $1.name} )
                 self.updateTableViewSnapshotData(with: self.drinks)
-//                self.updateUI(for: View.table)
                 
             case .failure(let error):
                 print(error.rawValue)
