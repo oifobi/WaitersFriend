@@ -78,8 +78,6 @@ class DrinkSearchViewController: UIViewController {
 
         //Drink name data
         guard drinks.isEmpty else { return }
-                //TODO: TODO move to inside method call when time comes
-        
         performSearchForDrinks(from: NetworkCallEndPoint.search, queryName: NetworkCallQueryType.drinkName, queryValue: Ingredient.margarita)
     }
     
