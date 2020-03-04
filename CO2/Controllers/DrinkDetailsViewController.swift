@@ -83,7 +83,6 @@ class DrinkDetailsViewController: UIViewController {
     @IBOutlet weak var ingredientsTableView: UITableView!
 
     //MARK:- View / Class properties
-    
     //Properties to receive drink object data from sender VC/s
     var drink: Drink? {
         didSet {
@@ -91,6 +90,12 @@ class DrinkDetailsViewController: UIViewController {
         }
     }
     
+    var image = UIImage()
+    var isFavorite = false
+        //track if drink is favorite
+    
+    var isFeatured = false
+        //track if drink displayed is from featured
     
     //properties to construct and save ingredients
     var ingredients = [(key: String, value: String)]()
@@ -99,29 +104,26 @@ class DrinkDetailsViewController: UIViewController {
     //create spinner
     let spinner = SpinnerViewController()
     
-    var image = UIImage()
-
+    
     //MARK:- UIView Lifecycle
     //Prepare Drink data content
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fireFetchDrinkData()
-    }
-    
-    
-    override func viewDidAppear(_ animated: Bool) {
-        configureTabBar()
         
-        if let tag = navigationController?.tabBarItem.tag {
-            print("NavController tabBar Item tag: \(tag)")
+        if navigationController?.tabBarItem.tag == TabBarItem.Featured {
+            isFeatured = true
+            fireFetchDrinkData()
         }
     }
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureViewController()
+
+    override func viewDidAppear(_ animated: Bool) {
+        configureTabBar()
+        
     }
+    
+    
+    override func viewDidLoad() { super.viewDidLoad() }
     
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -132,47 +134,25 @@ class DrinkDetailsViewController: UIViewController {
     }
     
     
-    //MARK:- Custom View management
+    //MARK:- Fetch data methods
     func fireFetchDrinkData() {
-        
-        switch navigationController?.tabBarItem.tag {
-        case TabBarItem.Featured:
-            self.performSelector(inBackground: #selector(self.performFetchDrink), with: nil)
-            
-        default:
-            break
-        }
+        self.performSelector(inBackground: #selector(self.performFetchDrink), with: nil)
     }
     
-    
-    //setup initial UI
-    func configureViewController() {
-        self.configureTitle()
-        self.configureNavigationBar()
-        self.configureTableView()
-    }
-    
-    
-    //update UI setup
-    func updateUI() {
-        DispatchQueue.main.async {
-            self.configureTitle()
-            self.configureNavigationBar()
-            self.drinkDetailsImageView.image = self.image
-            self.configureTableView()
-        }
-    }
-    
-    
+
     //Fetch drink image from API server and set
     func fireFetchImage() {
         self.performSelector(inBackground: #selector(self.performFetchDrinksImage), with: nil)
     }
     
+    //MARK:- Custom View management
     
-    func configureTitle() {
-        if let drink = self.drink {
-            self.title = drink.name
+    //setup UI (triggered once image is set)
+    func updateUI() {
+        DispatchQueue.main.async {
+            self.configureNavigationBar()
+            self.drinkDetailsImageView.image = self.image
+            self.configureTableView()
         }
     }
     
@@ -181,24 +161,20 @@ class DrinkDetailsViewController: UIViewController {
     func configureNavigationBar() {
         guard let drink = self.drink else { return }
         
-//        switch navigationController?.tabBarItem.tag {
-//        case TabBarItem.Search:
-//            view.backgroundColor = .systemBackground
-//            let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
-//            navigationItem.leftBarButtonItem = doneButton
-//
-//        default:
-//            break
-//
-//        }
+        //set title
+        self.title = drink.name
+        
         
         //Set Favorites icon state
         if let _ = DataPersistenceManager.shared.getIndexOf(favorite: drink) {
+            isFavorite = true
             self.favoritesButton.image = UIImage(systemName: SFSymbol.heartFill)
-
+       
         } else { self.favoritesButton.image = UIImage(systemName: SFSymbol.heart) }
+
+        
     }
-    
+
     
     func configureTableView() {
         self.ingredientsTableView.hideEmptyCells()
@@ -213,20 +189,17 @@ class DrinkDetailsViewController: UIViewController {
     
     
     func configureTabBar() {
-        switch navigationController?.tabBarItem.tag {
-        case TabBarItem.Featured:
+        if isFeatured {
             self.tabBarController?.tabBar.isHidden = false
-            
-        default:
+        
+        } else {
             self.tabBarController?.tabBar.isHidden = true
         }
     }
     
     
     @objc func performFetchDrink() {
-        DispatchQueue.main.async {
-            guard self.navigationController?.tabBarItem.tag == TabBarItem.Featured else { return }
-        }
+        guard isFeatured else { return }
         
         let endpoint = NetworkCallEndPoint.random
         NetworkManager.shared.fetchDrink(from: endpoint, using: nil) { [weak self] (result) in
@@ -235,6 +208,7 @@ class DrinkDetailsViewController: UIViewController {
             switch result {
             case .success(let drink):
                 self.drink = drink
+                    //triggers fetch of image
                 
             case .failure(let error):
                 self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",

@@ -18,6 +18,11 @@ class DataPersistenceManager {
         static let favorites = "favorites"
     }
     
+    
+    enum FavoriteAction {
+        case add, remove
+    }
+    
     //Property to access this struct's methods globally
     static var shared = DataPersistenceManager()
     
@@ -59,7 +64,7 @@ class DataPersistenceManager {
             completion(.favoritesSaved, nil)
 
         //If save failed handle error
-        } catch { completion(nil, .unableToSaveFavorite) }
+        } catch { completion(nil, .unableToSaveFavorites) }
     }
     
     
@@ -109,5 +114,64 @@ class DataPersistenceManager {
         }
         
         return nil
+    }
+    
+    
+//MARK:- ---New---
+    func performSaveFavorites2() {
+        //save modified favorites object to user defaults
+        DataPersistenceManager.shared.save2(favorites: DataPersistenceManager.shared.favorites) { (result) in
+
+            switch result {
+            case .success(let message):
+                print(message.rawValue)
+                
+            case .failure(let error):
+                print(error.rawValue)
+            }
+        }
+    }
+    
+    
+    func save2(favorites: [Drink], completion: @escaping (Result<WFSuccess, WFError>) -> Void ) {
+
+        do {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(favorites)
+
+            //Save Data object to UserDefaults
+            DataPersistenceManager.shared.defaults.set(data, forKey: Key.favorites)
+            completion(.success(.favoritesSaved))
+
+        //If save failed handle error
+        } catch {
+            completion(.failure(.unableToSaveFavorites))
+        }
+    }
+    
+    
+    func updateFavorites2(with drink: Drink, action: FavoriteAction, completion: @escaping (WFSuccess) -> Void) {
+        
+        switch action {
+        case .remove:
+            remove(favorite: drink)
+            completion(.favoriteRemoved)
+            
+        case .add:
+            add(favorite: drink)
+            completion(.favoriteAdded)
+        }
+    }
+    
+    
+    func add(favorite drink: Drink) {
+        DataPersistenceManager.shared.favorites.append(drink)
+    }
+    
+    
+    func remove(favorite drink: Drink) {
+        if let index = getIndexOf(favorite: drink) {
+            DataPersistenceManager.shared.favorites.remove(at: index)
+        }
     }
 }

@@ -11,12 +11,12 @@ import Foundation
 enum WFError: String, Error {
     
     //network related errors
-    case invalidURLRequested = "Invalid request encountered. Please try again."
-    case unableToCompleteRequest = "Unable to complete request. Please check internet connection."
-    case invalidServerResposne = "Invalid response from server. Please try again."
-    case invalidDataReturned = "Data from server was invalid. Please try again."
+    case invalidURLRequested = "Invalid request encountered./nPlease try again."
+    case unableToCompleteRequest = "Unable to complete request./nPlease check internet connection."
+    case invalidServerResposne = "Invalid response from server./nPlease try again."
+    case invalidDataReturned = "Data from server was invalid./nPlease try again."
     
     //favorites related errors
-    case unableToSaveFavorite = "Error adding Drink to Favorites."
-    case unableToDecodeFavorites = "Error decoding saved Favorites data object."
+    case unableToSaveFavorites = "Error saving Favorites object to user defaults."
+    case unableToDecodeFavorites = "Error decoding saved Favorites object."
 }

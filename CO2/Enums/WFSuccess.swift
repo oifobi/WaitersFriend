@@ -11,8 +11,8 @@ import Foundation
 enum WFSuccess: String {
     
     //internal / debugging
-    case favoritesSaved = "Favorites successfully saved to user defaults"
-    case favoritesLoaded = "Favorites succeesfully loaded from user defaults"
+    case favoritesSaved = "Favorites object successfully saved to user defaults"
+    case favoritesLoaded = "Favorites object succeesfully loaded from user defaults"
     
     //external / user facing
     case favoriteAdded = "saved to Favorites."
