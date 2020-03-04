@@ -18,6 +18,11 @@ class DrinksTableViewController: UITableViewController {
     }
     
     
+    enum CellIdentifier {
+        static let tableViewCell = "DrinkCell"
+    }
+    
+    
     //For drinks fetched from Top Rated API
     var drinks = [Drink]()
     var isFavoritesDisplayed = false
@@ -187,7 +192,7 @@ class DrinksTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //point cellForRowAt method to custom cell class by down casting to custom class
-        let cell = tableView.dequeueReusableCell(withIdentifier: "DrinkCell", for: indexPath) as! DrinkTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier.tableViewCell, for: indexPath) as! DrinkTableViewCell
         
         //get reference to the section (being shown)
         let section = tableSectionsIndex[indexPath.section]

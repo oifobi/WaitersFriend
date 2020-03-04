@@ -21,7 +21,7 @@ class DrinkSearchViewController: UIViewController {
     }
     
     
-    enum Identifier {
+    enum CellIdentifier {
         static let tableViewCell = "DrinkTableViewCell"
         static let collectionViewCell = "DrinkCollectionViewCell"
     }
@@ -109,7 +109,7 @@ class DrinkSearchViewController: UIViewController {
 
         //CollectionView
         //Register cell classes and nibs
-        drinksCollectionView.register(UINib(nibName: Identifier.collectionViewCell, bundle: nil), forCellWithReuseIdentifier: Identifier.collectionViewCell)
+        drinksCollectionView.register(UINib(nibName: CellIdentifier.collectionViewCell, bundle: nil), forCellWithReuseIdentifier: CellIdentifier.collectionViewCell)
         
         //Set compositionViewLayout
         drinksCollectionView.collectionViewLayout = createCompositionalLayout()
@@ -123,7 +123,7 @@ class DrinkSearchViewController: UIViewController {
             (tableView, indexPath, drink) -> UITableViewCell? in
             
             //same code tha usually goes in cellforRowAt dataSource delegate
-            let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.tableViewCell, for: indexPath) as! DrinkTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier.tableViewCell, for: indexPath) as! DrinkTableViewCell
             
             //set cell lables text
             cell.setTitleLabel(text: drink.name)
@@ -181,28 +181,6 @@ class DrinkSearchViewController: UIViewController {
     
     
     //MARK:- TableView Data Fetching methods
-    //Fetch Selected Base Ingredient Drinks List (drinks made wih specific Base ingredient)
-    @objc func performFetchDrinksList(for ingredient: String) {
-        spinner.startSpinner(viewController: self)
-
-        //fire fetch list method
-        NetworkManager.shared.fetchList(from: NetworkCallEndPoint.filter, using: [URLQueryItem(name: NetworkCallQueryType.ingredient, value: ingredient)]) { [weak self] (fetchedList) in
-            guard let self = self else { return }
-            self.spinner.stopSpinner()
-            
-            switch fetchedList {
-            case .success(let list):
-                self.ingredientDrinks = list
-                self.currentIngredient = ingredient
-                self.updateUI(for: View.table)
-                
-            case .failure(let error):
-                print("Error fetching drinks list with error: \(error.rawValue)\n")
-            }
-        }
-    }
-    
-    
     //Fetch drink names from user's search query
     func performSearchForDrinks(from endpoint: String, queryName: String, queryValue: String) {
         
@@ -273,7 +251,7 @@ extension DrinkSearchViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: Identifier.collectionViewCell, for: indexPath) as? DrinkCollectionViewCell else { preconditionFailure("Invalid cell type") }
+            withReuseIdentifier: CellIdentifier.collectionViewCell, for: indexPath) as? DrinkCollectionViewCell else { preconditionFailure("Invalid cell type") }
         
         let drink = recentDrinks[indexPath.item]
         

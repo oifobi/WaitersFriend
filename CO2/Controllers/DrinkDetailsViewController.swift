@@ -10,6 +10,10 @@ import UIKit
 
 class DrinkDetailsViewController: UIViewController {
     
+    enum CellIdentifier {
+        static let tableViewCell = "IngredientCell"
+    }
+        
     //Handle switching between segments
     var segmentControlIndex = 0 {
         didSet {
@@ -314,11 +318,11 @@ class DrinkDetailsViewController: UIViewController {
             
             switch result {
             case .favoriteAdded:
-                self.favoritesButton.image = UIImage(systemName: "heart.fill")
+                self.favoritesButton.image = UIImage(systemName: SFSymbol.heartFill)
                 self.presentAlertVC(title: "❤️ Drink Saved", message: "\(drink.name) \(result.rawValue)", buttonText: "OK")
                 
             case .favoriteRemoved:
-                self.favoritesButton.image = UIImage(systemName: "heart")
+                self.favoritesButton.image = UIImage(systemName: SFSymbol.heart)
                 self.presentAlertVC(title: "💔 Drink Removed", message: "\(drink.name) \(result.rawValue)", buttonText: "OK")
                 
             default:
@@ -336,7 +340,7 @@ extension DrinkDetailsViewController: UITableViewDataSource, UITableViewDelegate
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier.tableViewCell, for: indexPath)
         
         //set cell ingredient text
         if  indexPath.row < ingredients.count {
