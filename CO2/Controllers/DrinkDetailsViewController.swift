@@ -132,9 +132,6 @@ class DrinkDetailsViewController: UIViewController {
     }
     
     
-//    override func viewDidDisappear(_ animated: Bool) { drinkDetailsImageView.image = nil }
-    
-    
     //MARK:- Custom View management
     func fireFetchDrinkData() {
         
@@ -160,6 +157,7 @@ class DrinkDetailsViewController: UIViewController {
     func updateUI() {
         DispatchQueue.main.async {
             self.configureTitle()
+            self.configureNavigationBar()
             self.drinkDetailsImageView.image = self.image
             self.configureTableView()
         }
@@ -339,6 +337,7 @@ class DrinkDetailsViewController: UIViewController {
         guard let drink = drink else { return }
         
         DataPersistenceManager.shared.updateFavorites(with: drink) { (result) in
+            
             switch result {
             case .favoriteAdded:
                 self.favoritesButton.image = UIImage(systemName: "heart.fill")

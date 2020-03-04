@@ -105,7 +105,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="center" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PfA-6z-I4G">
-                                <rect key="frame" x="5" y="299" width="365" height="31"/>
+                                <rect key="frame" x="5" y="274.5" width="365" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="dhH-5k-f8N"/>
                                 </constraints>
@@ -422,7 +422,7 @@
         <!--Top Rated-->
         <scene sceneID="U91-JJ-mg5">
             <objects>
-                <navigationController storyboardIdentifier="DrinksTableViewNavController" automaticallyAdjustsScrollViewInsets="NO" id="lu1-p8-h7M" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MainNC" automaticallyAdjustsScrollViewInsets="NO" id="lu1-p8-h7M" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Top Rated" image="hand.thumbsup.fill" catalog="system" id="DPM-VO-zwy"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="M82-aM-3mp">

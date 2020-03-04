@@ -90,9 +90,6 @@ class DrinksTableViewController: UITableViewController {
                 if success == .noFavorites {
                     self.showEmptyState(with: success.rawValue, in: self.view)
                     self.tableView.hideEmptyCells()
-
-                } else {
-                    self.updateUI()
                 }
                 
             case .failure(let error):
@@ -192,7 +189,7 @@ class DrinksTableViewController: UITableViewController {
         //point cellForRowAt method to custom cell class by down casting to custom class
         let cell = tableView.dequeueReusableCell(withIdentifier: "DrinkCell", for: indexPath) as! DrinkTableViewCell
         
-        //get reference to the section (being shown
+        //get reference to the section (being shown)
         let section = tableSectionsIndex[indexPath.section]
         
         //get drinks for the section to be shown
@@ -249,10 +246,25 @@ class DrinksTableViewController: UITableViewController {
         guard navigationController?.tabBarItem.tag == TabBarItem.Favorites else { return }
         
         if editingStyle == .delete {
-    
-            // Delete the drink object from favorites
-            let row = indexPath.row
-            DataPersistenceManager.shared.favorites.remove(at: row)
+            
+            //get drink
+            let section = tableSectionsIndex[indexPath.section]
+            let drinks = section.value
+            let drink = drinks[indexPath.row]
+
+            //remove drink
+            DataPersistenceManager.shared.updateFavorites(with: drink) { (result) in
+                switch result {
+                case .favoriteAdded:
+                    print("favorite added")
+
+                case .favoriteRemoved:
+                    print("favorite removed")
+
+                default:
+                    break
+                }
+            }
         }
     }
     
@@ -264,12 +276,12 @@ class DrinksTableViewController: UITableViewController {
         // Get the new view controller using segue.destination
         if segue.identifier == SegueIdentifier.drinksTableVCToDrinkDetailsVC {
             
-            let sectionIndexOfRowTapped = tableView.indexPathForSelectedRow!.section
-            let indexOfRowTapped = tableView.indexPathForSelectedRow!.row
-            let indexItem = tableSectionsIndex[sectionIndexOfRowTapped]
+            let section = tableView.indexPathForSelectedRow!.section
+            let row = tableView.indexPathForSelectedRow!.row
+            let item = tableSectionsIndex[section]
 
             let vc = segue.destination as! DrinkDetailsViewController
-            vc.drink = indexItem.value[indexOfRowTapped]
+            vc.drink = item.value[row]
         }
     }
 }

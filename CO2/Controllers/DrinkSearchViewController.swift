@@ -149,8 +149,7 @@ class DrinkSearchViewController: UIViewController {
     func updateUI(for view: String) {
         
         DispatchQueue.main.async {
-            if view == View.collection { self.drinksCollectionView.reloadData()
-            }
+            if view == View.collection { self.drinksCollectionView.reloadData() }
             else if view == View.table { self.drinksTableView.reloadData() }
         }
     }
