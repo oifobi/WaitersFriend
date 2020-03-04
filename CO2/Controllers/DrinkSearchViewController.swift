@@ -24,7 +24,6 @@ class DrinkSearchViewController: UIViewController {
     enum Identifier {
         static let tableViewCell = "DrinkTableViewCell"
         static let collectionViewCell = "DrinkCollectionViewCell"
-        
     }
     
     
@@ -44,10 +43,6 @@ class DrinkSearchViewController: UIViewController {
     var ingredientDrinks: [DrinkList]? //List of drinks made with base ingredient
     var currentIngredient = String() //for tracking currently selected base ingredient
     var tableViewDataSource: UITableViewDiffableDataSource<TableViewSection, Drink>!
-    
-    //for searching
-//    var filteredDrinks = [Drinks]()
-//    var isSearching = false
     
     
     //Common/shared properties b/w TableView
@@ -191,7 +186,7 @@ class DrinkSearchViewController: UIViewController {
         spinner.startSpinner(viewController: self)
 
         //fire fetch list method
-        NetworkManager.shared.fetchList(from: "/filter.php", using: [URLQueryItem(name: "i", value: ingredient)]) { [weak self] (fetchedList) in
+        NetworkManager.shared.fetchList(from: NetworkCallEndPoint.filter, using: [URLQueryItem(name: NetworkCallQueryType.ingredient, value: ingredient)]) { [weak self] (fetchedList) in
             guard let self = self else { return }
             self.spinner.stopSpinner()
             
