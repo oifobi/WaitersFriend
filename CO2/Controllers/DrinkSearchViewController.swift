@@ -311,25 +311,12 @@ extension DrinkSearchViewController {
             //Define Group
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: NSCollectionLayoutSize(widthDimension: .estimated(250),
-                heightDimension: .absolute(170)),
+                heightDimension: .estimated(160)), //wass .absolute(170)
                 subitem: item,
                 count: 1)
 
             //Define Section
             let section = NSCollectionLayoutSection(group: group)
-
-            //Define Section header
-            let headerView = NSCollectionLayoutBoundarySupplementaryItem(
-                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),heightDimension: .absolute(1.0)),
-                elementKind: UICollectionView.elementKindSectionHeader,
-                alignment: .top)
-
-            headerView.pinToVisibleBounds = true
-            section.boundarySupplementaryItems = [headerView]
-            section.contentInsets = NSDirectionalEdgeInsets(top: 5.0,
-                                                            leading: 0.0,
-                                                            bottom: 16.0,
-                                                            trailing: 0.0)
             section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
             return section
         }

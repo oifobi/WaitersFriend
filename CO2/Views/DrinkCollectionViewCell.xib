@@ -22,43 +22,43 @@
                             <constraint firstAttribute="height" constant="100" id="Xun-TF-tz9"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nE8-ju-Bx5">
-                        <rect key="frame" x="10" y="100" width="240" height="30"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nE8-ju-Bx5">
+                        <rect key="frame" x="10" y="100" width="240" height="25"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="30" id="1pw-DD-VyM"/>
+                            <constraint firstAttribute="height" constant="25" id="N9R-bR-LMT"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="nzj-ns-gt9">
+                    <activityIndicatorView opaque="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="nzj-ns-gt9">
                         <rect key="frame" x="105" y="30" width="40" height="40"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="ZZN-1E-pIx"/>
                             <constraint firstAttribute="width" constant="40" id="p58-Ec-ekw"/>
                         </constraints>
-                        <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </activityIndicatorView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Vd-It-zyt">
                         <rect key="frame" x="10" y="130" width="240" height="30"/>
                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
             </view>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="nzj-ns-gt9" firstAttribute="centerY" secondItem="GRa-S5-D8Z" secondAttribute="centerY" id="EOV-9S-kdq"/>
-                <constraint firstItem="nE8-ju-Bx5" firstAttribute="top" secondItem="GRa-S5-D8Z" secondAttribute="bottom" id="Ebe-Ag-6Dd"/>
                 <constraint firstItem="2Vd-It-zyt" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="Pf4-Mq-7wJ"/>
                 <constraint firstItem="nE8-ju-Bx5" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="TpT-Xv-eCG"/>
                 <constraint firstAttribute="trailing" secondItem="2Vd-It-zyt" secondAttribute="trailing" id="Ve2-Rk-NTM"/>
                 <constraint firstAttribute="trailing" secondItem="GRa-S5-D8Z" secondAttribute="trailing" id="Z9C-C4-Moz"/>
                 <constraint firstItem="GRa-S5-D8Z" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="fAN-ov-y9G"/>
+                <constraint firstItem="nE8-ju-Bx5" firstAttribute="top" secondItem="GRa-S5-D8Z" secondAttribute="bottom" id="jq1-8e-khM"/>
                 <constraint firstItem="GRa-S5-D8Z" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="jtu-5p-Oj6"/>
                 <constraint firstAttribute="trailing" secondItem="nE8-ju-Bx5" secondAttribute="trailing" id="rIi-Jg-uFb"/>
-                <constraint firstItem="2Vd-It-zyt" firstAttribute="top" secondItem="nE8-ju-Bx5" secondAttribute="bottom" id="xVN-X6-UQq"/>
+                <constraint firstItem="2Vd-It-zyt" firstAttribute="top" secondItem="nE8-ju-Bx5" secondAttribute="bottom" constant="5" id="xVN-X6-UQq"/>
                 <constraint firstItem="nzj-ns-gt9" firstAttribute="centerX" secondItem="GRa-S5-D8Z" secondAttribute="centerX" id="y1Q-ej-72M"/>
                 <constraint firstAttribute="bottom" secondItem="2Vd-It-zyt" secondAttribute="bottom" constant="10" id="zRs-O8-cG1"/>
             </constraints>
@@ -72,7 +72,7 @@
                     <real key="value" value="1"/>
                 </userDefinedRuntimeAttribute>
                 <userDefinedRuntimeAttribute type="color" keyPath="viewBorderColor">
-                    <color key="value" red="0.75406885150000003" green="0.75408679249999999" blue="0.75407713649999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
             <connections>

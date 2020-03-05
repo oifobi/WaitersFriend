@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if let rootVC = window?.rootViewController as? UITabBarController {
             
-            //embed navigation controlelrs in root tab bar controller
+            //embed navigation controllers in root tab bar controller
             rootVC.viewControllers = getNavigationControllers()
             
             //get and add to storyboard
@@ -51,7 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return [topRatedVC, featuredVC, searchVC, favoritesVC]
     }
-    
     
     
     func createTopRatedNavigationController() -> UINavigationController {
