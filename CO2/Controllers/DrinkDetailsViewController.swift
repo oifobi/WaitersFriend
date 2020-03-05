@@ -31,7 +31,8 @@ class DrinkDetailsViewController: UIViewController {
     }
     
     //MARK:- Inteface Builder outlets and Actions
-    //Favorites on NavigationBarItem
+    //Navigation Bar button Items
+    //Favorites Button
     @IBOutlet weak var favoritesButton: UIBarButtonItem!
     @IBAction func favoritesButtonTapped(_ sender: UIBarButtonItem) {
         updateFavorites()
@@ -44,7 +45,6 @@ class DrinkDetailsViewController: UIViewController {
     //Stackview outlets
     //ImageView
     @IBOutlet weak var drinkDetailsImageView: UIImageView!
-//    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
     //Detect and take action with Long press on UIViewImage
     @IBAction func drinkDetailsImageViewGesture(recognizer: UILongPressGestureRecognizer) {
@@ -165,12 +165,18 @@ class DrinkDetailsViewController: UIViewController {
         //set title
         self.title = drink.name
         
-        //Set Favorites icon state
+        //configue done button
+        if !isFeatured {
+            let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
+            navigationItem.leftBarButtonItem = doneButton
+        }
+        
+        //configure favorites button
         if let _ = DataPersistenceManager.shared.getIndexOfFavorite(for: drink.id) {
              isFavorite = true
-             self.favoritesButton.image = UIImage(systemName: SFSymbol.heartFill)
+             favoritesButton.image = UIImage(systemName: SFSymbol.heartFill)
         
-         } else { self.favoritesButton.image = UIImage(systemName: SFSymbol.heart) }
+         } else { favoritesButton.image = UIImage(systemName: SFSymbol.heart) }
     }
 
     
@@ -244,7 +250,6 @@ class DrinkDetailsViewController: UIViewController {
   
     //MARK:- TableView data prep method/s (TO BE REFACTORED!)
     func loadIngredientsTableData() {
-    
         ingredients = getIngredients()
         measures = getMeasures()
         ingredientsTableView.reloadData()
@@ -305,7 +310,7 @@ class DrinkDetailsViewController: UIViewController {
     }
     
     
-    func updateFavorites() {
+    @objc func updateFavorites() {
         guard let drink = drink else { return }
 
         //remove
@@ -341,7 +346,7 @@ class DrinkDetailsViewController: UIViewController {
 }
 
 
-//MARK:- TableView extension
+//MARK:- Extension TableView extension
 extension DrinkDetailsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { ingredients.count }

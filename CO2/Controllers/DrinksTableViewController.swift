@@ -152,9 +152,11 @@ class DrinksTableViewController: UITableViewController {
             break
         }
     }
-
+}
+ 
+//MARK:- Extension TableView Datasource
+extension DrinksTableViewController {
     
-    //MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int { tableSectionsIndex.count }
         
     
@@ -232,7 +234,11 @@ class DrinksTableViewController: UITableViewController {
         
         return cell
     }
+}
     
+
+//MARK:- Extension TableView Delegate
+extension DrinksTableViewController {
     
     //Enable table row delete when an Action is triggered (swipe to delete or Edit Button)
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -269,26 +275,20 @@ class DrinksTableViewController: UITableViewController {
     }
     
     
-    //MARK: - Navigation
-    //Set and push selected cell data to DetailVC
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    //MARK:- Navigation
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        // Get the new view controller using segue.destination
-        if segue.identifier == SegueIdentifier.selfToDrinkDetailsVC {
-            
-            let section = tableView.indexPathForSelectedRow!.section
-            let row = tableView.indexPathForSelectedRow!.row
-            let item = tableSectionsIndex[section]
-            let drink = item.value[row]
-
-            let vc = segue.destination as! DrinkDetailsViewController
-            vc.drink = drink
-        }
+        let section = tableView.indexPathForSelectedRow!.section
+        let row = tableView.indexPathForSelectedRow!.row
+        let item = tableSectionsIndex[section]
+        let drink = item.value[row]
+        
+        presentDestinationVC(with: StoryboardIdentifier.drinkDetailsVC, for: drink)
     }
 }
 
 
-//MARK:- Protocol delegate method to update drinks property when user modifies favorites from DrinksTableVC (Favorites mode)
+//MARK:- Extension Protocol delegate method to update drinks property when user modifies favorites from DrinksTableVC (Favorites mode)
 extension DrinksTableViewController: FavoriteDrinksDelegate {
     func update() {
         updateUI()

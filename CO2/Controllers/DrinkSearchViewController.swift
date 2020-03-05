@@ -192,7 +192,7 @@ class DrinkSearchViewController: UIViewController {
 }
 
 
-//MARK:- UISearch Results / Delegate
+//MARK:- Extension: UISearch Results / Delegate
 extension DrinkSearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
     
     func updateSearchResults(for searchController: UISearchController) {
@@ -205,7 +205,7 @@ extension DrinkSearchViewController: UISearchResultsUpdating, UISearchBarDelegat
 }
 
 
-//MARK:- TableView DataSource Methods
+//MARK:- Extension TableView Diffable DataSource
 extension DrinkSearchViewController {
     
     //call after fetching drinks data to create table cells
@@ -218,8 +218,10 @@ extension DrinkSearchViewController {
 }
 
 
-//MARK:- TableView Delegate methods
+//MARK:- Extension TableView Delegate
 extension DrinkSearchViewController: UITableViewDelegate {
+    
+    //MARK:- Navigation
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         let drink = drinks[indexPath.item]
@@ -228,7 +230,7 @@ extension DrinkSearchViewController: UITableViewDelegate {
 }
 
 
-//MARK:- CollectionView Data Source methods
+//MARK:- Extension CollectionView Data Source methods
 extension DrinkSearchViewController: UICollectionViewDataSource {
     
     // Define number of sections
@@ -276,9 +278,10 @@ extension DrinkSearchViewController: UICollectionViewDataSource {
 }
 
 
-//MARK:- CollectionView Delegate methods
+//MARK:- Extension CollectionView Delegate
 extension DrinkSearchViewController: UICollectionViewDelegate {
     
+    //MARK:- Navigation
     //Send to DrinkDetailsVC when cell tapped
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -290,7 +293,7 @@ extension DrinkSearchViewController: UICollectionViewDelegate {
 
 
 
-//MARK:- UICollectionView Create Layout (for Trending Drinks)
+//MARK:- Extension UICollectionView Create Layout (for Trending Drinks)
 extension DrinkSearchViewController {
 
     func createCompositionalLayout() -> UICollectionViewCompositionalLayout {

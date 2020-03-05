@@ -79,7 +79,6 @@
                                     <outlet property="cellImageView" destination="Wo4-iG-Pfg" id="XTM-ix-5nr"/>
                                     <outlet property="cellSubtitleLabel" destination="UFl-il-9hJ" id="6A5-e7-y5N"/>
                                     <outlet property="cellTitleLabel" destination="1Eh-XZ-dnh" id="4IY-6L-hYs"/>
-                                    <segue destination="rJa-FV-Fid" kind="show" identifier="DrinksTableVCToDrinkDetailsVC" id="evS-SR-87Y"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -88,7 +87,6 @@
                             <outlet property="delegate" destination="2j6-AA-q3l" id="fFC-Xq-9E8"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Mz0-O0-35L"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kee-sB-3DZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -99,11 +97,11 @@
             <objects>
                 <viewController storyboardIdentifier="DrinkDetailsVC" automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="rJa-FV-Fid" customClass="DrinkDetailsViewController" customModule="Waiter_s_Friend" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pMF-p5-Pqd">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="center" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PfA-6z-I4G">
-                                <rect key="frame" x="5" y="311" width="365" height="31"/>
+                                <rect key="frame" x="5" y="321" width="365" height="31"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="dhH-5k-f8N"/>
@@ -117,7 +115,7 @@
                                 </connections>
                             </segmentedControl>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Mq7-4N-WKi">
-                                <rect key="frame" x="5" y="5" width="365" height="301"/>
+                                <rect key="frame" x="5" y="5" width="365" height="311"/>
                                 <gestureRecognizers/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="viewCornerRadius">
@@ -129,10 +127,10 @@
                                 </connections>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="903-Mt-1ph" userLabel="Container View">
-                                <rect key="frame" x="5" y="346" width="365" height="301"/>
+                                <rect key="frame" x="5" y="356" width="365" height="311"/>
                                 <subviews>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="top" bounces="NO" showsHorizontalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qiF-tW-WQI">
-                                        <rect key="frame" x="0.0" y="0.0" width="365" height="301"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="365" height="311"/>
                                         <subviews>
                                             <label clipsSubviews="YES" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o7G-Mg-f49">
                                                 <rect key="frame" x="0.0" y="0.0" width="365" height="0.0"/>
@@ -151,7 +149,7 @@
                                         </constraints>
                                     </scrollView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="NiU-RU-wQK">
-                                        <rect key="frame" x="0.0" y="0.0" width="365" height="301"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="365" height="311"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="IngredientCell" textLabel="duo-Vn-bu6" detailTextLabel="vfk-Lo-D2N" style="IBUITableViewCellStyleSubtitle" id="D3S-cf-foI">
@@ -390,7 +388,6 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ZF4-Wr-IN3"/>
                     </view>
-                    <navigationItem key="navigationItem" id="5aQ-lG-mSO"/>
                     <connections>
                         <outlet property="drinksCollectionView" destination="1LI-sX-9XO" id="8hj-ou-3ZY"/>
                         <outlet property="drinksTableView" destination="yhD-gX-rDW" id="5Za-Ht-C64"/>
@@ -408,7 +405,7 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="Mq9-wT-k9E">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.88724222340000003" green="0.43159508810000002" blue="0.41319261759999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </tabBar>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s0a-0P-xI6" userLabel="First Responder" sceneMemberID="firstResponder"/>
