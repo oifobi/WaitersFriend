@@ -291,6 +291,7 @@ extension DrinkSearchViewController: UICollectionViewDelegate {
         let drink = recentDrinks[indexPath.item]
         presentDestinationVC(with: StoryboardIdentifier.drinkDetailsVC, for: drink)
     }
+    
 }
 
 

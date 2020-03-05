@@ -23,6 +23,11 @@ class DrinksTableViewController: UITableViewController {
     }
     
     
+    enum SegueIdentifier {
+        static let selfToDrinkDetailsVC = "DrinksTableVCToDrinkDetailsVC"
+    }
+    
+    
     //For drinks fetched from Top Rated API
     var drinks = [Drink]()
     var isFavoritesDisplayed = false
@@ -253,8 +258,8 @@ class DrinksTableViewController: UITableViewController {
         if editingStyle == .delete {
             
             //get drink
-            let section = tableSectionsIndex[indexPath.section]
-            let drinks = section.value
+            let item = tableSectionsIndex[indexPath.section]
+            let drinks = item.value
             let drink = drinks[indexPath.row]
 
             //remove drink
@@ -277,14 +282,15 @@ class DrinksTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         // Get the new view controller using segue.destination
-        if segue.identifier == SegueIdentifier.drinksTableVCToDrinkDetailsVC {
+        if segue.identifier == SegueIdentifier.selfToDrinkDetailsVC {
             
             let section = tableView.indexPathForSelectedRow!.section
             let row = tableView.indexPathForSelectedRow!.row
             let item = tableSectionsIndex[section]
+            let drink = item.value[row]
 
             let vc = segue.destination as! DrinkDetailsViewController
-            vc.drink = item.value[row]
+            vc.drink = drink
         }
     }
 }

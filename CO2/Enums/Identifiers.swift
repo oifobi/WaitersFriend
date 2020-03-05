@@ -13,7 +13,3 @@ enum StoryboardIdentifier {
     static let drinkDetailsVC = "DrinkDetailsVC"
     static let mainNC = "MainNC"
 }
-
-enum SegueIdentifier {
-    static let drinksTableVCToDrinkDetailsVC = "DrinksTableVCToDrinkDetailsVC"
-}
