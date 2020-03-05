@@ -44,7 +44,7 @@ class DrinkDetailsViewController: UIViewController {
     //Stackview outlets
     //ImageView
     @IBOutlet weak var drinkDetailsImageView: UIImageView!
-    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
+//    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
     //Detect and take action with Long press on UIViewImage
     @IBAction func drinkDetailsImageViewGesture(recognizer: UILongPressGestureRecognizer) {
@@ -114,17 +114,14 @@ class DrinkDetailsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if navigationController?.tabBarItem.tag == TabBarItem.Featured {
+        if navigationController?.tabBarItem.tag == TabBarItemTag.featured {
             isFeatured = true
             fireFetchDrinkData()
         }
     }
     
 
-    override func viewDidAppear(_ animated: Bool) {
-        configureTabBar()
-        
-    }
+    override func viewDidAppear(_ animated: Bool) { configureTabBar() }
     
     
     override func viewDidLoad() { super.viewDidLoad() }
@@ -224,7 +221,7 @@ class DrinkDetailsViewController: UIViewController {
     @objc func performFetchDrinksImage() {
         guard let drink = self.drink else { return }
         spinner.startSpinner(viewController: self)
-
+        
         if let imageURL = drink.imageURL {
             NetworkManager.shared.fetchDrinkImage(with: imageURL) { [weak self] (fetchedImage, error) in
                 guard let self = self else { return }

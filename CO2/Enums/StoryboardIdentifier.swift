@@ -10,6 +10,12 @@ import Foundation
 
 //StoryBaord
 enum StoryboardIdentifier {
+
+    //root tab view controller
+    static let rooTabBarVC = "rootTabBarVC"
+
+    // view controllers
+    static let drinksTableVC = "DrinksTableVC"
     static let drinkDetailsVC = "DrinkDetailsVC"
-    static let mainNC = "MainNC"
+    static let drinkSearchVC = "DrinkSearchVC"
 }

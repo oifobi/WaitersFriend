@@ -21,12 +21,6 @@ class DrinkSearchViewController: UIViewController {
     }
     
     
-    enum CellIdentifier {
-        static let tableViewCell = "DrinkTableViewCell"
-        static let collectionViewCell = "DrinkCollectionViewCell"
-    }
-    
-    
     enum Ingredient { static let margarita = "margarita" }
     
     
@@ -106,7 +100,7 @@ class DrinkSearchViewController: UIViewController {
 
         //CollectionView
         //Register cell classes and nibs
-        drinksCollectionView.register(UINib(nibName: CellIdentifier.collectionViewCell, bundle: nil), forCellWithReuseIdentifier: CellIdentifier.collectionViewCell)
+        drinksCollectionView.register(UINib(nibName: DrinkCollectionViewCell.nib, bundle: nil), forCellWithReuseIdentifier: DrinkCollectionViewCell.reuseIdentifier)
         
         //Set compositionViewLayout
         drinksCollectionView.collectionViewLayout = createCompositionalLayout()
@@ -120,7 +114,7 @@ class DrinkSearchViewController: UIViewController {
             (tableView, indexPath, drink) -> UITableViewCell? in
             
             //same code tha usually goes in cellforRowAt dataSource delegate
-            let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier.tableViewCell, for: indexPath) as! DrinkTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: DrinkTableViewCell.reuseIdentifier, for: indexPath) as! DrinkTableViewCell
             
             //set cell lables text
             cell.setTitleLabel(text: drink.name)
@@ -247,7 +241,7 @@ extension DrinkSearchViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: CellIdentifier.collectionViewCell, for: indexPath) as? DrinkCollectionViewCell else { preconditionFailure("Invalid cell type") }
+            withReuseIdentifier: DrinkCollectionViewCell.reuseIdentifier, for: indexPath) as? DrinkCollectionViewCell else { preconditionFailure("Invalid cell type") }
         
         let drink = recentDrinks[indexPath.item]
         

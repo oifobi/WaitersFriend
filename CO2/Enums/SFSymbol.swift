@@ -11,4 +11,7 @@ import Foundation
 enum SFSymbol {
     static let heartFill = "heart.fill"
     static let heart = "heart"
+    static let thumbsUp = "hand.thumbsup.fill"
+    static let starFill = "star.fill"
+    static let search = "magnifyingglass"
 }

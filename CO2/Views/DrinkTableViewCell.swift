@@ -9,6 +9,7 @@
 import UIKit
 
 class DrinkTableViewCell: UITableViewCell {
+    static let reuseIdentifier = "DrinkCell"
     
     @IBOutlet weak var cellTitleLabel: UILabel!
     @IBOutlet weak var cellSubtitleLabel: UILabel!

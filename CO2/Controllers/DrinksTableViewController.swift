@@ -11,23 +11,16 @@ import UIKit
 //MARK:- Class Definition
 class DrinksTableViewController: UITableViewController {
     
-    
     enum ViewTitle {
         static let TopRated = "Top Rated"
         static let Favorites = "Favorites"
     }
     
-    
-    enum CellIdentifier {
-        static let tableViewCell = "DrinkCell"
-    }
-    
-    
     enum SegueIdentifier {
         static let selfToDrinkDetailsVC = "DrinksTableVCToDrinkDetailsVC"
     }
     
-    
+ 
     //For drinks fetched from Top Rated API
     var drinks = [Drink]()
     var isFavoritesDisplayed = false
@@ -37,7 +30,6 @@ class DrinksTableViewController: UITableViewController {
     
     //create spinner
     let spinner = SpinnerViewController()
-    
     
     //MARK:- UIView Lifecycle
     override func viewWillAppear(_ animated: Bool) {
@@ -64,10 +56,10 @@ class DrinksTableViewController: UITableViewController {
         
         switch navigationController?.tabBarItem.tag {
         
-        case TabBarItem.TopRated:
+        case TabBarItemTag.topRated:
             configureTopRated()
             
-        case TabBarItem.Favorites:
+        case TabBarItemTag.favorites:
             configureFavorites()
             
         default:
@@ -148,11 +140,11 @@ class DrinksTableViewController: UITableViewController {
     func createTableSectionsIndex() {
         switch navigationController?.tabBarItem.tag {
 
-        case TabBarItem.TopRated:
+        case TabBarItemTag.topRated:
             let dict = Dictionary(grouping: drinks, by: { $0.name.prefix(1)})
             tableSectionsIndex = dict.sorted(by: {$0.key < $1.key})
 
-        case TabBarItem.Favorites:
+        case TabBarItemTag.favorites:
             let dict = Dictionary(grouping: DataPersistenceManager.shared.favorites, by: { $0.name.prefix(1)})
             tableSectionsIndex = dict.sorted(by: {$0.key < $1.key})
 
@@ -197,7 +189,7 @@ class DrinksTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //point cellForRowAt method to custom cell class by down casting to custom class
-        let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier.tableViewCell, for: indexPath) as! DrinkTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: DrinkTableViewCell.reuseIdentifier, for: indexPath) as! DrinkTableViewCell
         
         //get reference to the section (being shown)
         let section = tableSectionsIndex[indexPath.section]
@@ -246,14 +238,14 @@ class DrinksTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 
         //Enable row delete only for favorites
-        guard navigationController?.tabBarItem.tag == TabBarItem.Favorites else { return false }
+        guard navigationController?.tabBarItem.tag == TabBarItemTag.favorites else { return false }
         return true
     }
     
     
     //Enable swipe to delete on table row for Favorites
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        guard navigationController?.tabBarItem.tag == TabBarItem.Favorites else { return }
+        guard navigationController?.tabBarItem.tag == TabBarItemTag.favorites else { return }
         
         if editingStyle == .delete {
             

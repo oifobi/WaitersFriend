@@ -21,7 +21,7 @@ class SpinnerViewController: UIViewController {
 //        spinner.color = .white
 //        spinner.alpha = 0.75
         spinner.color = .black
-        spinner.alpha = 0.25
+        spinner.alpha = 0.50
         view.backgroundColor = UIColor(white: 0, alpha: 0.25)
         spinner.translatesAutoresizingMaskIntoConstraints = false
         

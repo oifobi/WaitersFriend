@@ -9,6 +9,8 @@
 import UIKit
 
 class DrinkCollectionViewCell: UICollectionViewCell {
+    static let reuseIdentifier = "DrinkCollectionViewCell"
+    static let nib = "DrinkCollectionViewCell"
     
     @IBOutlet weak var cellActivityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var cellImageView: UIImageView!
