@@ -16,6 +16,7 @@ struct DrinkListType: Codable {
     }
 }
 
+
 //Generic Collection of different list types (ie: base ingredients, drink types, glass types etc)
 struct DrinkList: Codable  {
     

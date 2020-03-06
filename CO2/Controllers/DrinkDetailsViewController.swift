@@ -10,9 +10,11 @@ import UIKit
 
 class DrinkDetailsViewController: UIViewController {
     
+    
     enum CellIdentifier {
         static let tableViewCell = "IngredientCell"
     }
+    
         
     //Handle switching between segments
     var segmentControlIndex = 0 {
@@ -29,6 +31,7 @@ class DrinkDetailsViewController: UIViewController {
             }
         }
     }
+    
     
     //MARK:- Inteface Builder outlets and Actions
     //Navigation Bar button Items
@@ -109,6 +112,13 @@ class DrinkDetailsViewController: UIViewController {
     //create spinner
     let spinner = SpinnerViewController()
     
+    //prevent tab bar f
+    override var title: String? {
+        didSet {
+            self.tabBarItem.title = ViewTitle.featured
+        }
+    }
+    
     
     //MARK:- UIView Lifecycle
     //Prepare Drink data content
@@ -181,7 +191,7 @@ class DrinkDetailsViewController: UIViewController {
     func configureNavigationBar() {
         guard let drink = self.drink else { return }
         
-        //set title
+        //set nav title
         self.title = drink.name
         
         //configue done button
@@ -335,7 +345,7 @@ class DrinkDetailsViewController: UIViewController {
 
         //remove
         if isFavorite {
-            DataPersistenceManager.shared.updateFavorites2(with: drink, action: .remove) { (result) in
+            DataPersistenceManager.shared.updateFavorites(with: drink, action: .remove) { (result) in
                 
                 switch result {
                 case .success(let message):
@@ -350,7 +360,7 @@ class DrinkDetailsViewController: UIViewController {
   
         //add
         } else {
-            DataPersistenceManager.shared.updateFavorites2(with: drink, action: .add) { (result) in
+            DataPersistenceManager.shared.updateFavorites(with: drink, action: .add) { (result) in
                 switch result {
                 case .success(let message):
                     self.favoritesButton.image = UIImage(systemName: SFSymbol.heartFill)

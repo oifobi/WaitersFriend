@@ -12,7 +12,9 @@ protocol FavoriteDrinksDelegate {
     func update()
 }
 
+
 class DataPersistenceManager {
+    
     
     enum Key {
         static let favorites = "favorites"
@@ -35,7 +37,7 @@ class DataPersistenceManager {
         didSet {
             
             //trigger save
-            performSaveFavorites2()
+            performSaveFavorites()
 
             //trigger update to delegates
             DataPersistenceManager.shared.delegate?.update()
@@ -66,9 +68,9 @@ class DataPersistenceManager {
     }
     
 
-    func performSaveFavorites2() {
+    func performSaveFavorites() {
         //save modified favorites object to user defaults
-        DataPersistenceManager.shared.save2(favorites: DataPersistenceManager.shared.favorites) { (result) in
+        DataPersistenceManager.shared.save(favorites: DataPersistenceManager.shared.favorites) { (result) in
 
             switch result {
             case .success(let message):
@@ -81,7 +83,7 @@ class DataPersistenceManager {
     }
     
     
-    func save2(favorites: [Drink], completion: @escaping (Result<WFSuccess, WFError>) -> Void ) {
+    func save(favorites: [Drink], completion: @escaping (Result<WFSuccess, WFError>) -> Void ) {
 
         do {
             let encoder = JSONEncoder()
@@ -98,7 +100,7 @@ class DataPersistenceManager {
     }
     
     
-    func updateFavorites2(with drink: Drink, action: FavoriteAction, completion: @escaping (Result<WFSuccess, WFError>) -> Void) {
+    func updateFavorites(with drink: Drink, action: FavoriteAction, completion: @escaping (Result<WFSuccess, WFError>) -> Void) {
         
         switch action {
         case .remove:

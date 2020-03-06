@@ -11,18 +11,17 @@ import UIKit
 //MARK:- Class Definition
 class DrinksTableViewController: UITableViewController {
     
-    enum ViewTitle {
-        static let TopRated = "Top Rated"
-        static let Favorites = "Favorites"
-    }
     
-    enum SegueIdentifier {
-        static let selfToDrinkDetailsVC = "DrinksTableVCToDrinkDetailsVC"
-    }
+    enum TableViewSection { case main }
+    
+    
+    enum SegueIdentifier { static let selfToDrinkDetailsVC = "DrinksTableVCToDrinkDetailsVC" }
     
  
     //For drinks fetched from Top Rated API
     var drinks = [Drink]()
+    var tableViewDataSource: UITableViewDiffableDataSource<TableViewSection, Drink>!
+    
     var isFavoritesDisplayed = false
     
     //Property to store Table section index
@@ -43,6 +42,7 @@ class DrinksTableViewController: UITableViewController {
         
         //Set self as delegate for when favorites are modified
         DataPersistenceManager.shared.delegate = self
+//        configureTableViewCell()
     }
     
     
@@ -69,11 +69,44 @@ class DrinksTableViewController: UITableViewController {
     }
     
     
+   //tableViewCell setup
+    func configureTableViewCell() {
+
+        tableViewDataSource =  UITableViewDiffableDataSource<TableViewSection, Drink>(tableView: tableView, cellProvider: {
+            (tableView, indexPath, drink) -> UITableViewCell? in
+
+            //same code tha usually goes in cellforRowAt dataSource delegate
+            let cell = tableView.dequeueReusableCell(withIdentifier: DrinkTableViewCell.reuseIdentifier, for: indexPath) as! DrinkTableViewCell
+
+            //set cell lables text
+            cell.setTitleLabel(text: drink.name)
+            cell.setSubtitleLabel(text: drink.ingredient1 ?? "")
+
+            //Fetch and set drink image
+            if let urlString = drink.imageURL {
+                cell.setImage(with: urlString)
+                cell.setNeedsLayout()
+            }
+
+            return cell
+        })
+    }
+    
+    
+    func updateTableViewSnapshotData(with drinks: [Drink]) {
+        var snapshot = NSDiffableDataSourceSnapshot<TableViewSection, Drink>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(drinks)
+        self.tableViewDataSource.apply(snapshot, animatingDifferences: true, completion: nil)
+    }
+
+    
+    
     func configureTopRated() {
         
         //trigger fetch of top rated drinks, if favorites screen not displayed
         guard !isFavoritesDisplayed else { return }
-        self.title = ViewTitle.TopRated
+        self.title = ViewTitle.topRated
         
         if drinks.isEmpty {
             performSelector(inBackground: #selector(performFetchDrinks), with: nil)
@@ -83,7 +116,7 @@ class DrinksTableViewController: UITableViewController {
     
     func configureFavorites() {
         isFavoritesDisplayed = true
-        self.title = ViewTitle.Favorites
+        self.title = ViewTitle.favorites
         
         //Load Favorite drinks data (if any) from user default
         DataPersistenceManager.shared.loadSavedFavorites { (result) in
@@ -93,6 +126,7 @@ class DrinksTableViewController: UITableViewController {
                 if success == .noFavorites {
                     self.showEmptyState(with: success.rawValue, in: self.view)
                     self.tableView.hideEmptyCells()
+                    self.tableView.isScrollEnabled = false
                 }
                 
             case .failure(let error):
@@ -115,6 +149,7 @@ class DrinksTableViewController: UITableViewController {
             switch result {
             case .success(let drinks):
                 self.drinks = drinks
+//                self.updateTableViewSnapshotData(with: drinks)
                 self.updateUI()
                 
             case .failure(let error):
@@ -187,8 +222,7 @@ extension DrinksTableViewController {
         return titles
     }
     
-    
-    //method uses custom defined classs
+    //set cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //point cellForRowAt method to custom cell class by down casting to custom class
@@ -262,7 +296,7 @@ extension DrinksTableViewController {
             let drink = drinks[indexPath.row]
 
             //remove drink
-            DataPersistenceManager.shared.updateFavorites2(with: drink, action: .remove) { (result) in
+            DataPersistenceManager.shared.updateFavorites(with: drink, action: .remove) { (result) in
                 
                 switch result {
                 case .success(let message):

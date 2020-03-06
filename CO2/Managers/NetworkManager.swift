@@ -38,6 +38,7 @@ class NetworkManager {
     //Global Property for VCs to access DrinkController methods
     static let shared = NetworkManager()
     
+    
     //MARK:- Fetch data from given API end point based on list parameter passed in (set by user tab bar item selected)
     //Setup construction of URL
     func constructURLComponents() -> URLComponents {
@@ -52,6 +53,7 @@ class NetworkManager {
         components.path = "/api/json/v2/"+apiKey
         return components
     }
+    
     
     //Fetch Drink Details
     func fetchDrinks(from endpoint: String, using queryItems: [URLQueryItem]?, _ completion: @escaping (Result<[Drink], WFError>) -> Void)  {
@@ -114,6 +116,7 @@ class NetworkManager {
         task.resume()
     }
     
+    
     //Fetch Drink images
     func fetchDrinkImage(with url: String, completion: @escaping (UIImage?, Error?) -> Void) {
         
@@ -143,6 +146,7 @@ class NetworkManager {
         
         task.resume()
     }
+    
     
     //Fetch List type (generic method to fetch any list type)
     func fetchList(from path: String, using queryItems: [URLQueryItem], completion: @escaping (Result<[DrinkList], WFError>) -> Void) {
@@ -196,6 +200,7 @@ class NetworkManager {
 
         task.resume()
     }
+    
     
     //Fetch drink details by drink id lookup
     func fetchDrink(from path: String, using queryItems: [URLQueryItem]?, completion: @escaping (Result<Drink, WFError>) -> Void) {

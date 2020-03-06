@@ -9,8 +9,8 @@
 import UIKit
 
 enum TabBarItemTitle {
-    static let topRated = "Top Rated"
-    static let featured = "Featured"
+    static let topRated = "Popular"
+    static let featured = "Random"
     static let search = "Search"
     static let favorites = "Favorites"
 }
