@@ -80,7 +80,8 @@ class DrinkDetailsViewController: UIViewController {
     
     //Segmenet controller
     @IBOutlet weak var segmentedControl: UISegmentedControl!
-    @IBAction func segmentedControlTapped(_ sender: UISegmentedControl) { segmentControlIndex = sender.selectedSegmentIndex
+    @IBAction func segmentedControlTapped(_ sender: UISegmentedControl){
+        segmentControlIndex = sender.selectedSegmentIndex
     }
     
     //tableView outlets
@@ -121,10 +122,16 @@ class DrinkDetailsViewController: UIViewController {
     }
     
 
-    override func viewDidAppear(_ animated: Bool) { configureTabBar() }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        configureTabBar()
+    }
     
     
-    override func viewDidLoad() { super.viewDidLoad() }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureSegmentedControl()
+    }
     
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -146,15 +153,27 @@ class DrinkDetailsViewController: UIViewController {
         self.performSelector(inBackground: #selector(self.performFetchDrinksImage), with: nil)
     }
     
-    //MARK:- Custom View management
     
-    //setup UI (triggered once image is set)
-    func updateUI() {
-        DispatchQueue.main.async {
-            self.configureNavigationBar()
-            self.drinkDetailsImageView.image = self.image
-            self.configureTableView()
+    //MARK:- Custom View management
+    func configureTabBar() {
+        if isFeatured {
+            self.tabBarController?.tabBar.isHidden = false
+        
+        } else {
+            self.tabBarController?.tabBar.isHidden = true
         }
+    }
+    
+
+    func configureSegmentedControl() {
+        
+        //unselected
+        segmentedControl.setTitleTextAttributes( [NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
+        
+        //selected
+        segmentedControl.setTitleTextAttributes([
+            NSAttributedString.Key.foregroundColor: UIColor.black],
+            for: .selected)
     }
     
     
@@ -192,12 +211,37 @@ class DrinkDetailsViewController: UIViewController {
     }
     
     
-    func configureTabBar() {
-        if isFeatured {
-            self.tabBarController?.tabBar.isHidden = false
+    //setup UI (triggered once image is set)
+    func updateUI() {
+        DispatchQueue.main.async {
+            self.configureNavigationBar()
+            self.drinkDetailsImageView.image = self.image
+            self.configureTableView()
+        }
+    }
+    
+    
+    //MARK:- Data fetch methods
+    @objc func performFetchDrinksImage() {
+        guard let drink = self.drink else { return }
+        spinner.startSpinner(viewController: self)
         
-        } else {
-            self.tabBarController?.tabBar.isHidden = true
+        if let imageURL = drink.imageURL {
+            NetworkManager.shared.fetchDrinkImage(with: imageURL) { [weak self] (fetchedImage, error) in
+                guard let self = self else { return }
+                
+                self.spinner.stopSpinner()
+
+                if let image = fetchedImage {
+                    self.image = image
+                    self.updateUI()
+                }
+                
+                //catch any errors fetching image
+                if let error = error {
+                    print("Error fetching image with error \(error.localizedDescription)\n")
+                }
+            }
         }
     }
     
@@ -219,30 +263,6 @@ class DrinkDetailsViewController: UIViewController {
                 action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
                         self.performFetchDrink()
                 }))
-            }
-        }
-    }
-    
-    
-    @objc func performFetchDrinksImage() {
-        guard let drink = self.drink else { return }
-        spinner.startSpinner(viewController: self)
-        
-        if let imageURL = drink.imageURL {
-            NetworkManager.shared.fetchDrinkImage(with: imageURL) { [weak self] (fetchedImage, error) in
-                guard let self = self else { return }
-                
-                self.spinner.stopSpinner()
-
-                if let image = fetchedImage {
-                    self.image = image
-                    self.updateUI()
-                }
-                
-                //catch any errors fetching image
-                if let error = error {
-                    print("Error fetching image with error \(error.localizedDescription)\n")
-                }
             }
         }
     }

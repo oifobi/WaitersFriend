@@ -35,9 +35,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             //get and add to storyboard
             let storyboard = UIStoryboard(name: StoryboardName.main, bundle: nil)
             storyboard.instantiateViewController(withIdentifier: StoryboardIdentifier.rooTabBarVC)
+            
+            //setup navigation bar
+            configureNavigationBar()
         }
         
         return true
+    }
+    
+    
+    func configureNavigationBar() {
+        UINavigationBar.appearance().tintColor = .systemGreen
+            //set navBar tint color to system green app wide
     }
     
     

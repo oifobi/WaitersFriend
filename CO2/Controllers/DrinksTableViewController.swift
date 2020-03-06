@@ -33,6 +33,7 @@ class DrinksTableViewController: UITableViewController {
     
     //MARK:- UIView Lifecycle
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         configureTableView()
     }
     

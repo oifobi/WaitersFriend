@@ -40,7 +40,7 @@ class WFEmptyStateView: UIView {
     private func configureLabel() {
         addSubview(label)
         label.numberOfLines = 0
-        label.textColor = .white
+        label.textColor = .secondaryLabel
         label.font = UIFont.preferredFont(forTextStyle: .title2)
         label.translatesAutoresizingMaskIntoConstraints = false
         
