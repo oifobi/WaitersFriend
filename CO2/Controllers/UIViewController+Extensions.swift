@@ -56,5 +56,4 @@ extension UIViewController {
     @objc func dismissViewController() {
         dismiss(animated: true, completion: nil)
     }
-    
 }

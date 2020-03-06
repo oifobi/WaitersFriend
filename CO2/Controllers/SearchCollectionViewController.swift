@@ -79,53 +79,38 @@ class SearchCollectionViewController: UICollectionViewController {
          collectionView.register(UINib(nibName: DrinkCollectionViewCell.nib, bundle: nil), forCellWithReuseIdentifier: DrinkCollectionViewCell.reuseIdentifier)
         
         //Set compositionViewLayout
-        let layout = createCompositionalLayout()
-        collectionView.collectionViewLayout = layout
+        collectionView.collectionViewLayout = createCollectionViewFlowLayout()
+        
     }
     
     
-    func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
-
-        //Define Layout
-        let layout = UICollectionViewCompositionalLayout {
-            (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-
-            //Define Item
-            let item = NSCollectionLayoutItem(
-                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .fractionalHeight(1.0)))
-                item.contentInsets = NSDirectionalEdgeInsets(top: 10.0, leading: 25.0, bottom: 15.0, trailing: 0.0)
-
-            //Define Group
-            let group = NSCollectionLayoutGroup.horizontal(
-                layoutSize: NSCollectionLayoutSize(widthDimension: .estimated(345),
-                heightDimension: .estimated(250)), //wass .absolute(170)
-                subitem: item,
-                count: 2)
-
-            //Define Section
-            let section = NSCollectionLayoutSection(group: group)
-            return section
-        }
-
+    //set flow layout
+    func createCollectionViewFlowLayout() -> UICollectionViewFlowLayout {
+            
+        //configure width of cells / columns based on 3 column layout
+        let numberOfColumns: CGFloat = 2
+        
+        //set properies to calculate cell width
+        let viewWidth = view.bounds.width //CGFloat value
+        let edgeInsetsPadding: CGFloat = 20
+        let minimumCellSpacing: CGFloat = 20 * (numberOfColumns - 1)
+            //*n to account for number of spcaes between all columns
+        
+        //calculate cell width
+        let availableWidthForCell = viewWidth - (edgeInsetsPadding * 2) - minimumCellSpacing
+            //edgeInsets *2 to allow for both left + right edges of screen
+        
+        //set cell width
+        let cellWidth = availableWidthForCell / numberOfColumns
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = layout.setEdgeInsets(to: edgeInsetsPadding) 
+        layout.itemSize = CGSize(width: cellWidth, height: cellWidth + 20)
+        
         return layout
     }
-    
-    
-    func createFlowLayout() -> UICollectionViewFlowLayout {
 
-        //Define Layout
-        
-        
-        
 
-        return UICollectionViewFlowLayout()
-    }
-    
-    
-    
-    
-    
      func configureCollectionViewCell() {
         collectionViewDataSource = UICollectionViewDiffableDataSource<CollectionViewSection, Drink>(collectionView: self.collectionView, cellProvider: {
             
@@ -136,7 +121,6 @@ class SearchCollectionViewController: UICollectionViewController {
              
              //set cell lables text
              cell.setTitleLabel(text: drink.name)
-             cell.setSubtitleLabel(text: drink.ingredient1 ?? "")
              
              //Fetch and set drink image
              if let urlString = drink.imageURL {
@@ -191,8 +175,6 @@ extension SearchCollectionViewController: UISearchResultsUpdating, UISearchBarDe
             searchController.searchBar.becomeFirstResponder()
         }
     }
-    
-    
 }
 
 

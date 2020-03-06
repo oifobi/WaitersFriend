@@ -61,9 +61,6 @@ class DrinkDetailsViewController: UIViewController {
           
           //move recognizer view to front of all other views
           recognizer.view?.superview?.bringSubviewToFront(recognizer.view!)
-
-          //set new image scaling
-          drinkDetailsImageView.contentMode = .scaleAspectFit
           
           //set transforms
           recognizer.view?.transform = CGAffineTransform(scaleX: 2.5, y: 2.5).translatedBy(x: 0, y: 50)
@@ -72,9 +69,6 @@ class DrinkDetailsViewController: UIViewController {
       //stop transform, reset to pre-transform state
       if recognizer.state == .ended {
           self.resignFirstResponder()
-          
-          //reset new image scaling
-          drinkDetailsImageView.contentMode = .scaleAspectFill
           
           //reset transform
           recognizer.view?.transform = CGAffineTransform.identity
@@ -160,7 +154,7 @@ class DrinkDetailsViewController: UIViewController {
 
     //Fetch drink image from API server and set
     func fireFetchImage() {
-        self.performSelector(inBackground: #selector(self.performFetchDrinksImage), with: nil)
+        self.performSelector(inBackground: #selector(self.performFetchDrinkImage), with: nil)
     }
     
     
@@ -232,7 +226,7 @@ class DrinkDetailsViewController: UIViewController {
     
     
     //MARK:- Data fetch methods
-    @objc func performFetchDrinksImage() {
+    @objc func performFetchDrinkImage() {
         guard let drink = self.drink else { return }
         spinner.startSpinner(viewController: self)
         

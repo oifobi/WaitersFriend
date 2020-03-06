@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -25,9 +26,10 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Wo4-iG-Pfg">
-                                            <rect key="frame" x="300" y="5" width="75" height="70"/>
+                                            <rect key="frame" x="305" y="5" width="70" height="70"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="75" id="Sab-fC-OYb"/>
+                                                <constraint firstAttribute="width" constant="70" id="Sab-fC-OYb"/>
+                                                <constraint firstAttribute="height" constant="70" id="ebc-6u-hX8"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="number" keyPath="viewCornerRadius">
@@ -36,17 +38,17 @@
                                             </userDefinedRuntimeAttributes>
                                         </imageView>
                                         <activityIndicatorView opaque="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Qwe-OX-CSA">
-                                            <rect key="frame" x="327.5" y="30" width="20" height="20"/>
+                                            <rect key="frame" x="330" y="30" width="20" height="20"/>
                                             <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </activityIndicatorView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="top" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Eh-XZ-dnh">
-                                            <rect key="frame" x="10" y="10" width="290" height="50"/>
+                                            <rect key="frame" x="10" y="10" width="295" height="50"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <color key="highlightedColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UFl-il-9hJ">
-                                            <rect key="frame" x="25" y="65" width="275" height="0.0"/>
+                                            <rect key="frame" x="25" y="65" width="280" height="0.0"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="highlightedColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -54,11 +56,10 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="1Eh-XZ-dnh" firstAttribute="top" secondItem="x5n-Xq-Xf7" secondAttribute="top" constant="10" id="5wW-OI-pjO"/>
+                                        <constraint firstItem="Wo4-iG-Pfg" firstAttribute="centerY" secondItem="x5n-Xq-Xf7" secondAttribute="centerY" id="DN3-bi-tOA"/>
                                         <constraint firstItem="Qwe-OX-CSA" firstAttribute="centerX" secondItem="Wo4-iG-Pfg" secondAttribute="centerX" id="O6C-95-fqF"/>
-                                        <constraint firstItem="Wo4-iG-Pfg" firstAttribute="top" secondItem="x5n-Xq-Xf7" secondAttribute="top" constant="5" id="QrQ-WG-NmZ"/>
                                         <constraint firstAttribute="bottom" secondItem="UFl-il-9hJ" secondAttribute="bottom" constant="15" id="ZSd-8u-rO4"/>
                                         <constraint firstItem="1Eh-XZ-dnh" firstAttribute="leading" secondItem="x5n-Xq-Xf7" secondAttribute="leading" constant="10" id="akn-xB-uuC"/>
-                                        <constraint firstAttribute="bottom" secondItem="Wo4-iG-Pfg" secondAttribute="bottom" constant="5" id="eCO-cV-tVk"/>
                                         <constraint firstItem="Wo4-iG-Pfg" firstAttribute="leading" secondItem="UFl-il-9hJ" secondAttribute="trailing" id="k4Q-iG-Wh2"/>
                                         <constraint firstItem="Wo4-iG-Pfg" firstAttribute="leading" secondItem="1Eh-XZ-dnh" secondAttribute="trailing" id="m3i-z9-19n"/>
                                         <constraint firstItem="Qwe-OX-CSA" firstAttribute="centerY" secondItem="Wo4-iG-Pfg" secondAttribute="centerY" id="p2D-rk-keR"/>
@@ -94,7 +95,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="center" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PfA-6z-I4G">
-                                <rect key="frame" x="10" y="331" width="355" height="31"/>
+                                <rect key="frame" x="10" y="330" width="355" height="31"/>
                                 <color key="backgroundColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="dhH-5k-f8N"/>
@@ -107,9 +108,13 @@
                                     <action selector="segmentedControlTapped:" destination="rJa-FV-Fid" eventType="valueChanged" id="2pR-WF-1gG"/>
                                 </connections>
                             </segmentedControl>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Mq7-4N-WKi">
-                                <rect key="frame" x="10" y="15" width="355" height="301"/>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Mq7-4N-WKi">
+                                <rect key="frame" x="37.5" y="15" width="300" height="300"/>
                                 <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="NzN-rq-iZ8"/>
+                                    <constraint firstAttribute="height" constant="300" id="am1-Qb-Moj"/>
+                                </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="viewCornerRadius">
                                         <real key="value" value="7"/>
@@ -123,10 +128,10 @@
                                 </connections>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="903-Mt-1ph" userLabel="Container View">
-                                <rect key="frame" x="10" y="366" width="355" height="301"/>
+                                <rect key="frame" x="10" y="365" width="355" height="302"/>
                                 <subviews>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="top" bounces="NO" showsHorizontalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qiF-tW-WQI">
-                                        <rect key="frame" x="10" y="10" width="335" height="281"/>
+                                        <rect key="frame" x="10" y="10" width="335" height="282"/>
                                         <subviews>
                                             <label clipsSubviews="YES" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o7G-Mg-f49">
                                                 <rect key="frame" x="0.0" y="0.0" width="335" height="0.0"/>
@@ -145,7 +150,7 @@
                                         </constraints>
                                     </scrollView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="NiU-RU-wQK">
-                                        <rect key="frame" x="0.0" y="0.0" width="355" height="301"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="355" height="302"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="IngredientCell" textLabel="duo-Vn-bu6" detailTextLabel="vfk-Lo-D2N" style="IBUITableViewCellStyleSubtitle" id="D3S-cf-foI">
@@ -197,9 +202,7 @@
                             <constraint firstItem="7pf-wm-6Mg" firstAttribute="trailing" secondItem="PfA-6z-I4G" secondAttribute="trailing" constant="10" id="HGt-Hc-pw4"/>
                             <constraint firstItem="903-Mt-1ph" firstAttribute="leading" secondItem="7pf-wm-6Mg" secondAttribute="leading" constant="10" id="LdR-Jm-oio"/>
                             <constraint firstItem="7pf-wm-6Mg" firstAttribute="bottom" secondItem="903-Mt-1ph" secondAttribute="bottom" id="P1N-5J-gFO"/>
-                            <constraint firstItem="Mq7-4N-WKi" firstAttribute="leading" secondItem="7pf-wm-6Mg" secondAttribute="leading" constant="10" id="T9t-UB-jRd"/>
-                            <constraint firstItem="7pf-wm-6Mg" firstAttribute="trailing" secondItem="Mq7-4N-WKi" secondAttribute="trailing" constant="10" id="UpL-tQ-kyz"/>
-                            <constraint firstItem="903-Mt-1ph" firstAttribute="height" secondItem="Mq7-4N-WKi" secondAttribute="height" id="WDe-OS-loB"/>
+                            <constraint firstItem="Mq7-4N-WKi" firstAttribute="centerX" secondItem="7pf-wm-6Mg" secondAttribute="centerX" id="aZc-cH-dIk"/>
                             <constraint firstItem="PfA-6z-I4G" firstAttribute="leading" secondItem="7pf-wm-6Mg" secondAttribute="leading" constant="10" id="b6f-H7-VtF"/>
                             <constraint firstItem="Mq7-4N-WKi" firstAttribute="top" secondItem="7pf-wm-6Mg" secondAttribute="top" constant="15" id="dVh-mo-P6L"/>
                             <constraint firstItem="903-Mt-1ph" firstAttribute="top" secondItem="PfA-6z-I4G" secondAttribute="bottom" constant="5" id="frS-DA-7R2"/>
@@ -242,17 +245,17 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dzs-sG-dho">
-                            <size key="itemSize" width="246" height="129"/>
+                            <size key="itemSize" width="210" height="220"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DrinkCollectionViewCell" id="08L-wx-WiV" customClass="DrinkCollectionViewCell" customModule="Waiter_s_Friend" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <rect key="frame" x="82.5" y="0.0" width="210" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="0vw-gv-17L">
+                                    <rect key="frame" x="0.0" y="0.0" width="210" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </collectionViewCellContentView>
                             </collectionViewCell>

@@ -48,7 +48,7 @@ class DrinksTableViewController: UITableViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         self.view = nil
-            //reset views
+            //reset views to avoid overlapping with  empty state
     }
     
     
@@ -190,6 +190,7 @@ class DrinksTableViewController: UITableViewController {
     }
 }
  
+
 //MARK:- Extension TableView Datasource
 extension DrinksTableViewController {
     
@@ -221,6 +222,7 @@ extension DrinksTableViewController {
         let titles = tableSectionsIndex.map( { String($0.key) } )
         return titles
     }
+    
     
     //set cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

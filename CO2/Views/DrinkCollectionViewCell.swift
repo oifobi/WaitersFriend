@@ -15,11 +15,9 @@ class DrinkCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var cellActivityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var cellImageView: UIImageView!
     @IBOutlet weak var cellTitleLabel: UILabel!
-    @IBOutlet weak var cellSubtitleLabel: UILabel!
     
     
     func setTitleLabel(text: String) { cellTitleLabel.text = text }
-    func setSubtitleLabel(text: String) { cellSubtitleLabel.text = text }
     
 
     func setImage(with urlString: String) {
