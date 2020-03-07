@@ -48,6 +48,11 @@ class SearchCollectionViewController: UICollectionViewController {
             //new method for configuring cells in iOS13
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        collectionView.backgroundView = nil
+            //reset bacground view to clear empty state view
+    }
+    
     
     //MARK: ViewController setup
     func configureViewController() { title = ViewTitle.search }
