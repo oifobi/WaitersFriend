@@ -18,6 +18,7 @@ class WFEmptyStateView: UIView {
     //MARK: - UIView object initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
+        configureView()
         configureLabel()
         configureImageView()
     }
@@ -34,6 +35,11 @@ class WFEmptyStateView: UIView {
         label.text = labelText
         configureLabel()
         configureImageView()
+    }
+    
+    
+    private func configureView() {
+        self.backgroundColor = .white
     }
     
     
@@ -55,15 +61,15 @@ class WFEmptyStateView: UIView {
     
     private func configureImageView() {
         addSubview(imageView)
-        imageView.image = UIImage(named: "TequilaSunriseCocktail")
-        imageView.alpha = 0.25
+        imageView.image = UIImage(named: "cocktail-purple-green")
+
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             imageView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.3),
             imageView.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.3),
             imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 170),
-            imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 40),
+            imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20),
         ])
     }
 }

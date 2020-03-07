@@ -35,10 +35,15 @@ extension UIViewController {
     }
     
     
-    func showEmptyState(with text: String, in parentView: UIView) {
+    func showEmptyStateView(with text: String, in parentView: UIView) {
         let emptyStateView = WFEmptyStateView(labelText: text)
         emptyStateView.frame = parentView.bounds
         parentView.addSubview(emptyStateView)
+    }
+    
+    
+    func showBackgroundView(view: UIView) {
+        
     }
     
     

@@ -109,7 +109,7 @@ class NetworkManager {
                 completion(.success(drinks.drinks))
                 
             //catch any errrors
-            } catch { completion(.failure(.invalidDataReturned)) }
+            } catch { completion(.failure(.unableToDecodeData)) }
             
         }
         
@@ -193,8 +193,8 @@ class NetworkManager {
                 //Pass list back to caller
                 completion(.success(list.type))
                     
-            //catch any errors
-            } catch { completion(.failure(.invalidDataReturned)) }
+            //catch decoding error
+            } catch { completion(.failure(.unableToDecodeData)) }
             
         }
 
@@ -255,8 +255,8 @@ class NetworkManager {
                 //Pass drinks back to caller
                 if let drink = drinks.drinks.first { completion(.success(drink)) }
                     
-            //catch any errrors
-            } catch { completion(.failure(.invalidDataReturned)) }
+            //catch decoding error
+            } catch { completion(.failure(.unableToDecodeData)) }
         }
         
         task.resume()

@@ -16,7 +16,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="172" height="201"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GRa-S5-D8Z">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cocktail-purple-green" translatesAutoresizingMaskIntoConstraints="NO" id="GRa-S5-D8Z">
                         <rect key="frame" x="0.0" y="0.0" width="172" height="136"/>
                     </imageView>
                     <activityIndicatorView opaque="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="nzj-ns-gt9">
@@ -67,4 +67,7 @@
             <point key="canvasLocation" x="-79.710144927536234" y="24.441964285714285"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="cocktail-purple-green" width="256" height="256"/>
+    </resources>
 </document>

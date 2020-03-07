@@ -159,6 +159,28 @@ class DrinkDetailsViewController: UIViewController {
     
     
     //MARK:- Custom View management
+    //Set navigation items
+    func configureNavigationBar() {
+        guard let drink = self.drink else { return }
+        
+        //set nav title
+        self.title = drink.name
+        
+        //configue done button
+        if !isFeatured {
+            let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
+            navigationItem.leftBarButtonItem = doneButton
+        }
+        
+        //configure favorites button
+        if let _ = DataPersistenceManager.shared.getIndexOfFavorite(for: drink.id) {
+             isFavorite = true
+             favoritesButton.image = UIImage(systemName: SFSymbol.heartFill)
+        
+         } else { favoritesButton.image = UIImage(systemName: SFSymbol.heart) }
+    }
+    
+    
     func configureTabBar() {
         if isFeatured {
             self.tabBarController?.tabBar.isHidden = false
@@ -180,29 +202,7 @@ class DrinkDetailsViewController: UIViewController {
             for: .selected)
     }
     
-    
-    //Set navigation items
-    func configureNavigationBar() {
-        guard let drink = self.drink else { return }
-        
-        //set nav title
-        self.title = drink.name
-        
-        //configue done button
-        if !isFeatured {
-            let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
-            navigationItem.leftBarButtonItem = doneButton
-        }
-        
-        //configure favorites button
-        if let _ = DataPersistenceManager.shared.getIndexOfFavorite(for: drink.id) {
-             isFavorite = true
-             favoritesButton.image = UIImage(systemName: SFSymbol.heartFill)
-        
-         } else { favoritesButton.image = UIImage(systemName: SFSymbol.heart) }
-    }
-
-    
+ 
     func configureTableView() {
         self.ingredientsTableView.hideEmptyCells()
         

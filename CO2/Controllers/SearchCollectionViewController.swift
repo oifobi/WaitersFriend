@@ -25,6 +25,7 @@ class SearchCollectionViewController: UICollectionViewController {
     
     //Common/shared properties b/w TableView
     var drink: Drink?
+    var searchText: String!
     
     //create spinner
     let spinner = SpinnerViewController()
@@ -133,8 +134,19 @@ class SearchCollectionViewController: UICollectionViewController {
      }
     
     
+    func updateUI() {
+        DispatchQueue.main.async {
+            self.updateCollectionViewSnapshotData(with: self.drinks)
+            
+            if !self.drinks.isEmpty {
+                self.collectionView.backgroundView = nil
+            }
+        }
+    }
+    
+    
     //MARK:- CollectionView Data Fetching methods
-    func performSearchForDrinks(from endpoint: String, queryName: String, queryValue: String) {
+    func performFetchDrinks(from endpoint: String, queryName: String, queryValue: String) {
         spinner.startSpinner(viewController: self)
         
         NetworkManager.shared.fetchDrinks(from: endpoint, using: [URLQueryItem(name: queryName, value: queryValue)]) { [weak self] (result) in
@@ -146,11 +158,34 @@ class SearchCollectionViewController: UICollectionViewController {
             case .success(let drinks):
                 self.drinks = drinks
                 self.drinks.sort(by: {$0.name < $1.name} )
-                self.updateCollectionViewSnapshotData(with: self.drinks)
+                self.updateUI()
                 
             case .failure(let error):
-                print(error.rawValue)
-            }
+                switch error {
+                case .unableToCompleteRequest:
+                    self.presentErrorAlertVC(title: "Uh Oh!", message: error.rawValue, buttonText: "OK",
+                    action: UIAlertAction(title: "Try again?", style: .default, handler: { action in
+                        self.performFetchDrinks(from: NetworkCallEndPoint.search, queryName: NetworkCallQueryType.drinkName, queryValue: self.searchText)
+                    }))
+                    
+                //catch keyword search errrors
+                case .unableToDecodeData:
+
+                    DispatchQueue.main.async {
+                        let emptyView = WFEmptyStateView(labelText: error.rawValue)
+                        self.drinks.removeAll()
+                        self.collectionView.backgroundView = emptyView
+                        self.updateUI()
+                    }
+                    
+                case .invalidDataReturned:
+                    print("Data fetch error: \(error.rawValue)")
+                    
+                default:
+                    break
+                }//inner switch
+                
+            }//outer switch
         }
     }
 }
@@ -162,9 +197,10 @@ extension SearchCollectionViewController: UISearchResultsUpdating, UISearchBarDe
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text, !text.isEmpty else { return }
  
+        searchText = text.lowercased()
         
         //fetch drink name
-        performSearchForDrinks(from: NetworkCallEndPoint.search, queryName: NetworkCallQueryType.drinkName, queryValue: text.lowercased())
+        performFetchDrinks(from: NetworkCallEndPoint.search, queryName: NetworkCallQueryType.drinkName, queryValue: searchText)
     }
     
     

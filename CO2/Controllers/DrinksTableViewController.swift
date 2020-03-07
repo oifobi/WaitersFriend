@@ -30,6 +30,7 @@ class DrinksTableViewController: UITableViewController {
     //create spinner
     let spinner = SpinnerViewController()
     
+    
     //MARK:- UIView Lifecycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -46,10 +47,7 @@ class DrinksTableViewController: UITableViewController {
     }
     
     
-    override func viewDidDisappear(_ animated: Bool) {
-        self.view = nil
-            //reset views to avoid overlapping with  empty state
-    }
+    override func viewDidDisappear(_ animated: Bool) {}
     
     
     //MARK:- Custom Get Data / setup UI methods
@@ -116,6 +114,8 @@ class DrinksTableViewController: UITableViewController {
     
     func configureFavorites() {
         isFavoritesDisplayed = true
+            //set favorites flag
+        
         self.title = ViewTitle.favorites
         
         //Load Favorite drinks data (if any) from user default
@@ -124,9 +124,9 @@ class DrinksTableViewController: UITableViewController {
             switch result {
             case .success(let success):
                 if success == .noFavorites {
-                    self.showEmptyState(with: success.rawValue, in: self.view)
-                    self.tableView.hideEmptyCells()
-                    self.tableView.isScrollEnabled = false
+                    let emptyView = WFEmptyStateView(labelText: success.rawValue)
+                    self.tableView.backgroundView = emptyView
+                    self.updateUI()
                 }
                 
             case .failure(let error):
@@ -149,7 +149,6 @@ class DrinksTableViewController: UITableViewController {
             switch result {
             case .success(let drinks):
                 self.drinks = drinks
-//                self.updateTableViewSnapshotData(with: drinks)
                 self.updateUI()
                 
             case .failure(let error):
@@ -164,10 +163,21 @@ class DrinksTableViewController: UITableViewController {
     
     func updateUI() {
         DispatchQueue.main.async {
+            if self.isFavoritesDisplayed {
+                if self.tableSectionsIndex.isEmpty {
+                    self.tableView.hideEmptyCells()
+                    self.tableView.isScrollEnabled = false
+                
+                } else {
+                    self.tableView.backgroundView = nil
+                        //remove empty state view
+                }
+            }
+            
+            //setup data for tableView (favorites and top rated)
+//            self.updateTableViewSnapshotData(with: self.drinks)
             self.createTableSectionsIndex()
             self.tableView.reloadData()
-            self.view.bringSubviewToFront(self.tableView)
-                //brings table view to front to hide empty state if shown
         }
     }
     
@@ -226,49 +236,49 @@ extension DrinksTableViewController {
     
     //set cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         //point cellForRowAt method to custom cell class by down casting to custom class
         let cell = tableView.dequeueReusableCell(withIdentifier: DrinkTableViewCell.reuseIdentifier, for: indexPath) as! DrinkTableViewCell
-        
+
         //get reference to the section (being shown)
         let section = tableSectionsIndex[indexPath.section]
-        
+
         //get drinks for the section to be shown
         let drinks = section.value
-        
+
         //ensure table rows matches drinks object array since the same tableView controller is used for different calls to fetch data
         if indexPath.row < drinks.count {
-            
+
             let drink = drinks[indexPath.row]
-            
+
             //set cell lables text
             cell.setTitleLabel(text: drink.name)
             cell.setSubtitleLabel(text: drink.ingredient1 ?? "")
-            
+
             //Cell image
             //Fetch and set drink image
             if let urlString = drink.imageURL {
-                
+
                 //Update cell image to fecthedImage via main thread
                 DispatchQueue.main.async {
-                    
+
                     //Ensure wrong image isn't inserted into a recycled cell
                     if let currentIndexPath = self.tableView.indexPath(for: cell),
-                        
+
                         //If current cell index and table index don't match, exit fetch image method
                         currentIndexPath != indexPath {
                         return
                     }
-                    
+
                     //Set cell image
                     cell.setImage(with: urlString)
-                    
+
                     //Refresh cell to display fetched image
                     cell.setNeedsLayout()
                 }
             }
         }
-        
+
         return cell
     }
 }
