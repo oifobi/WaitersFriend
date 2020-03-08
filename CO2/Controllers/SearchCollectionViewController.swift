@@ -63,14 +63,20 @@ class SearchCollectionViewController: UICollectionViewController {
         
         //Create / configure onfigure Search Controller
         let sc = UISearchController(searchResultsController: nil)
+        sc.searchBar.text = ""
         sc.searchResultsUpdater = self
         sc.searchBar.delegate = self
         sc.searchBar.placeholder = "Search by cocktail (e.g. Margarita)"
         sc.searchBar.returnKeyType = UIReturnKeyType.search
         sc.obscuresBackgroundDuringPresentation = false
+            //if set to true, handle when it's set back to false upon results
+        sc.hidesNavigationBarDuringPresentation = false
         
         //set created search controller to navigation controller
         navigationItem.searchController = sc
+        
+        //unhide navigation controller on return (used when sc.hidesNavigationBarDuringPresentation = true)
+        navigationController?.isNavigationBarHidden = false
         
         //set sc as focus to trigger kb on load
         didPresentSearchController(sc)
@@ -178,8 +184,8 @@ class SearchCollectionViewController: UICollectionViewController {
 
                     DispatchQueue.main.async {
                         let emptyView = WFEmptyStateView(labelText: error.rawValue)
-                        self.drinks.removeAll()
                         self.collectionView.backgroundView = emptyView
+                        self.drinks.removeAll()
                         self.updateUI()
                     }
                     
@@ -199,23 +205,29 @@ class SearchCollectionViewController: UICollectionViewController {
 //MARK:- Extension: UISearch Results / Delegate
 extension SearchCollectionViewController: UISearchResultsUpdating, UISearchBarDelegate {
     
+    
     func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text, !text.isEmpty else { return }
- 
-        searchText = text.lowercased()
-        
-        //fetch drink name
-        performFetchDrinks(from: NetworkCallEndPoint.search, queryName: NetworkCallQueryType.drinkName, queryValue: searchText)
+        //requied delegate method. respondes to text input immediataly
     }
     
     
     //deelgate method to detect when sc is presented
     func didPresentSearchController(_ searchController: UISearchController) {
-
+        
         DispatchQueue.main.async {
             searchController.searchBar.becomeFirstResponder()
         }
+        
     }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text, !text.isEmpty else { return }
+           searchText = text.lowercased()
+           
+           //fetch drink name
+           performFetchDrinks(from: NetworkCallEndPoint.search, queryName: NetworkCallQueryType.drinkName, queryValue: searchText)
+    }
+    
 }
 
 

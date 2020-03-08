@@ -8,24 +8,20 @@
 
 import UIKit
 
+
 //MARK:- Class Definition
 class DrinksTableViewController: UITableViewController {
-    
-    
-    enum TableViewSection { case main }
     
     
     enum SegueIdentifier { static let selfToDrinkDetailsVC = "DrinksTableVCToDrinkDetailsVC" }
     
  
-    //For drinks fetched from Top Rated API
-    var drinks = [Drink]()
-    var tableViewDataSource: UITableViewDiffableDataSource<TableViewSection, Drink>!
-    
-    var isFavoritesDisplayed = false
-    
     //Property to store Table section index
+    var drinks = [Drink]()
     var tableSectionsIndex = [(key: Substring, value: [Drink])]()
+
+    //track context of data displayed
+    var isFavoritesDisplayed = false
     
     //create spinner
     let spinner = SpinnerViewController()
@@ -43,7 +39,6 @@ class DrinksTableViewController: UITableViewController {
         
         //Set self as delegate for when favorites are modified
         DataPersistenceManager.shared.delegate = self
-//        configureTableViewCell()
     }
     
     
@@ -65,40 +60,7 @@ class DrinksTableViewController: UITableViewController {
             break
         }
     }
-    
-    
-   //tableViewCell setup
-    func configureTableViewCell() {
 
-        tableViewDataSource =  UITableViewDiffableDataSource<TableViewSection, Drink>(tableView: tableView, cellProvider: {
-            (tableView, indexPath, drink) -> UITableViewCell? in
-
-            //same code tha usually goes in cellforRowAt dataSource delegate
-            let cell = tableView.dequeueReusableCell(withIdentifier: DrinkTableViewCell.reuseIdentifier, for: indexPath) as! DrinkTableViewCell
-
-            //set cell lables text
-            cell.setTitleLabel(text: drink.name)
-            cell.setSubtitleLabel(text: drink.ingredient1 ?? "")
-
-            //Fetch and set drink image
-            if let urlString = drink.imageURL {
-                cell.setImage(with: urlString)
-                cell.setNeedsLayout()
-            }
-
-            return cell
-        })
-    }
-    
-    
-    func updateTableViewSnapshotData(with drinks: [Drink]) {
-        var snapshot = NSDiffableDataSourceSnapshot<TableViewSection, Drink>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(drinks)
-        self.tableViewDataSource.apply(snapshot, animatingDifferences: true, completion: nil)
-    }
-
-    
     
     func configureTopRated() {
         
@@ -175,7 +137,6 @@ class DrinksTableViewController: UITableViewController {
             }
             
             //setup data for tableView (favorites and top rated)
-//            self.updateTableViewSnapshotData(with: self.drinks)
             self.createTableSectionsIndex()
             self.tableView.reloadData()
         }
@@ -203,37 +164,37 @@ class DrinksTableViewController: UITableViewController {
 
 //MARK:- Extension TableView Datasource
 extension DrinksTableViewController {
-    
+
     override func numberOfSections(in tableView: UITableView) -> Int { tableSectionsIndex.count }
-        
-    
+
+
     //set number of section rows based on number of drinks contained within in each section title
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
+
         //Get the number of rows per section by accessing the key's drinks count
         let section = tableSectionsIndex[section]
         return section.value.count
     }
-    
-    
+
+
     //set and display tbale section headings in tableView (Letter)
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
+
         //Pull out the key value (Letter) and set as Section heading
         let title = tableSectionsIndex[section].key
         return String(title)
     }
-    
-    
+
+
     //set titles to display in index on RHS of tableView
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        
+
         //create an array of all the letters for the table index, using the keys and transform to type string
         let titles = tableSectionsIndex.map( { String($0.key) } )
         return titles
     }
-    
-    
+
+
     //set cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 

@@ -42,12 +42,6 @@ extension UIViewController {
     }
     
     
-    func showBackgroundView(view: UIView) {
-        
-    }
-    
-    
-    
     func presentDestinationVC(with identifier: String, for item: Drink) {
         if let vc = storyboard?.instantiateViewController(withIdentifier: identifier) as? DrinkDetailsViewController {
             vc.drink = item
