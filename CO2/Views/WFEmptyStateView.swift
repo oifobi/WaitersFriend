@@ -69,7 +69,7 @@ class WFEmptyStateView: UIView {
             imageView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.3),
             imageView.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.3),
             imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 170),
-            imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20),
+            imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 40),
         ])
     }
 }
