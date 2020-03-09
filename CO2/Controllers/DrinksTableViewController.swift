@@ -128,7 +128,6 @@ class DrinksTableViewController: UITableViewController {
             if self.isFavoritesDisplayed {
                 if self.tableSectionsIndex.isEmpty {
                     self.tableView.hideEmptyCells()
-                    self.tableView.isScrollEnabled = false
                 
                 } else {
                     self.tableView.backgroundView = nil
