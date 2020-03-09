@@ -16,8 +16,9 @@
                 <rect key="frame" x="0.0" y="0.0" width="172" height="201"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cocktail-purple-green" translatesAutoresizingMaskIntoConstraints="NO" id="GRa-S5-D8Z">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="appLogo" translatesAutoresizingMaskIntoConstraints="NO" id="GRa-S5-D8Z">
                         <rect key="frame" x="0.0" y="0.0" width="172" height="136"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </imageView>
                     <activityIndicatorView opaque="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="nzj-ns-gt9">
                         <rect key="frame" x="67.5" y="49.5" width="37" height="37"/>
@@ -68,6 +69,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="cocktail-purple-green" width="256" height="256"/>
+        <image name="appLogo" width="256" height="256"/>
     </resources>
 </document>

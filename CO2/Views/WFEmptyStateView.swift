@@ -61,7 +61,7 @@ class WFEmptyStateView: UIView {
     
     private func configureImageView() {
         addSubview(imageView)
-        imageView.image = UIImage(named: "cocktail-purple-green")
+        imageView.image = UIImage(named: "appLogo")
 
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
